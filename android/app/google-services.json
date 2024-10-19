@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "304542064690",
+    "project_id": "stockchef-e08d4",
+    "storage_bucket": "stockchef-e08d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:304542064690:android:b711f3ce74981a9ce45c2b",
+        "android_client_info": {
+          "package_name": "com.stockchef.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAugcYpc4X4nVmV2BLtG1FklTcaabKVLg4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
