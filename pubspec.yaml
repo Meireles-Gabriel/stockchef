@@ -17,6 +17,22 @@ dependencies:
   cloud_firestore:
   firebase_auth:
   flutter_stripe:
+  flutter_launcher_icons:
+  flutter_native_splash:
+
+flutter_native_splash:
+  color: "#EEEFF5"
+  image: "assets/icon.png"
+  android: true
+  ios: true
+
+flutter_icons:
+  image_path: "assets/icon.png"
+  ios: true
+  remove_alpha_ios: true
+  android: "launcher_icon"
+  adaptive_icon_background: "#EEEFF5"
+  adaptive_icon_foreground: "assets/icon_android.png"
 
 dev_dependencies:
   flutter_test:
