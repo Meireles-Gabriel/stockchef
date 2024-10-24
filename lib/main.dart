@@ -1,13 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stockchef/firebase_options.dart';
-import 'package:stockchef/pages/intro_page.dart';
+import 'package:stockchef/pages/settings_page.dart';
+import 'package:stockchef/utilities/firebase_options.dart';
+import 'package:stockchef/utilities/theme_notifier.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MainApp());
+  runApp(const ProviderScope(child: MainApp()));
 }
 
 class MainApp extends StatefulWidget {
@@ -18,37 +20,26 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  ThemeMode _themeMode = ThemeMode.system;
 
-  @override
-  void initState() {
-    super.initState();
-    _loadTheme();
-  }
-
-  void _loadTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    final themeIndex = prefs.getInt('themeMode') ?? 0;
-    setState(() {
-      _themeMode = ThemeMode.values[themeIndex];
-    });
-  }
-
-  void _saveTheme(ThemeMode themeMode) async {
+  void saveTheme(ThemeMode themeMode) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('themeMode', themeMode.index);
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'StockChef',
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      themeMode: _themeMode,
-      home: const IntroPage(),
-    );
+    return Consumer(builder: (context, ref, child) {
+      final themeMode = ref.watch(themeNotifierProvider); // Observa o themeMode
+
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'StockChef',
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        themeMode: themeMode,
+        home: const SettingsPage(),
+      );
+    });
   }
 
   //   return Scaffold(

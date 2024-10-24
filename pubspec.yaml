@@ -12,6 +12,7 @@ dependencies:
   
   google_fonts:
   animate_do:
+  flutter_riverpod:
   shared_preferences:
   firebase_core:
   cloud_firestore:
