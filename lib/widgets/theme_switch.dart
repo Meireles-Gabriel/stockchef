@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stockchef/utilities/theme_notifier.dart';
-
 
 class ThemeSwitch extends StatelessWidget {
   const ThemeSwitch({
@@ -21,9 +19,7 @@ class ThemeSwitch extends StatelessWidget {
             value: isDarkMode,
             onChanged: (value) async {
               ref.read(themeNotifierProvider.notifier).toggleTheme(value);
-              final prefs = await SharedPreferences.getInstance();
-              final themeMode = ref.watch(themeNotifierProvider);
-              await prefs.setInt('themeMode', themeMode.index);
+              
             },
           ),
           const Icon(Icons.nightlight),

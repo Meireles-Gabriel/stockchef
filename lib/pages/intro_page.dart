@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:stockchef/utilities/design.dart';
 import 'package:stockchef/utilities/helper_class.dart';
-import 'package:stockchef/utilities/texts.dart';
+import 'package:stockchef/utilities/language_notifier.dart';
+import 'package:stockchef/utilities/theme_notifier.dart';
 import 'package:stockchef/widgets/language_switch.dart';
 import 'package:stockchef/widgets/theme_switch.dart';
 
@@ -14,13 +18,48 @@ class IntroPage extends StatefulWidget {
 }
 
 class _IntroPageState extends State<IntroPage> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+  late Timer _timer;
+
+  void _startAutoSlide() {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (_currentPage < 2) {
+        _currentPage++;
+      } else {
+        _currentPage = 0;
+      }
+      _pageController.animateToPage(
+        _currentPage,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startAutoSlide();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(),
       body: HelperClass(
-        mobile: const MobileBody(),
+        mobile: MobileBody(
+          pageController: _pageController,
+          currentPage: _currentPage,
+        ),
         tablet: const Placeholder(),
         desktop: const Placeholder(),
         paddingWidth: size.width * 0.1,
@@ -30,14 +69,17 @@ class _IntroPageState extends State<IntroPage> {
   }
 }
 
+// ignore: must_be_immutable
 class MobileBody extends ConsumerWidget {
-  const MobileBody({
-    super.key,
-  });
+  final PageController pageController;
+  int currentPage;
+
+  MobileBody(
+      {super.key, required this.pageController, required this.currentPage});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Map texts = ref.watch(textsNotifierProvider);
+    Map texts = ref.watch(languageNotifierProvider)['texts'];
     final Size size = MediaQuery.sizeOf(context);
     return Center(
       child: Column(
@@ -70,8 +112,44 @@ class MobileBody extends ConsumerWidget {
               ),
             ],
           ),
-          Image.asset('assets/intro.png', width: size.width * .8),
-          Text(texts['intro'][0]),
+          Image.asset('assets/intro.png', width: size.width * .7),
+          Column(
+            children: [
+              SizedBox(
+                height: 100,
+                child: PageView.builder(
+                  controller: pageController,
+                  itemCount: texts['intro'].length,
+                  onPageChanged: (index) {
+                    currentPage = index;
+                  },
+                  itemBuilder: (context, index) {
+                    return Center(
+                      child: Text(
+                        texts['intro'][index],
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SmoothPageIndicator(
+                controller: pageController,
+                count: texts['intro'].length,
+                effect: WormEffect(
+                  dotHeight: 10,
+                  dotWidth: 10,
+                  activeDotColor:
+                      ref.watch(themeNotifierProvider) == ThemeMode.dark
+                          ? darkTheme.colorScheme.primary
+                          : lightTheme.colorScheme.primary,
+                  dotColor: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+          
           const LanguageSwitch(),
           const ThemeSwitch()
         ],

@@ -25,10 +25,10 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
-      final locale = ref.watch(languageNotifierProvider);
+      final languageConfig = ref.watch(languageNotifierProvider);
       final themeMode = ref.watch(themeNotifierProvider);
       return MaterialApp(
-        locale: Locale(locale),
+        locale: Locale(languageConfig['language']),
         debugShowCheckedModeBanner: false,
         title: 'StockChef',
         theme: lightTheme,
