@@ -2,23 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stockchef/utilities/theme_notifier.dart';
-// Importa o provider
 
-class SettingsPage extends ConsumerWidget {
-  const SettingsPage({super.key});
+
+class ThemeSwitch extends StatelessWidget {
+  const ThemeSwitch({
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isDarkMode = ref.watch(themeNotifierProvider) == ThemeMode.dark;
-
-    return Scaffold(
-      appBar: AppBar(title: const Text('Configurações')),
-      body: Column(
+  Widget build(BuildContext context) {
+    return Consumer(builder: (context, ref, child) {
+      final isDarkMode = ref.watch(themeNotifierProvider) == ThemeMode.dark;
+      return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Tema'),
-          SwitchListTile(
-            title: const Text('Modo Escuro'),
+          const Icon(Icons.sunny),
+          Switch(
             value: isDarkMode,
             onChanged: (value) async {
               ref.read(themeNotifierProvider.notifier).toggleTheme(value);
@@ -27,8 +26,9 @@ class SettingsPage extends ConsumerWidget {
               await prefs.setInt('themeMode', themeMode.index);
             },
           ),
+          const Icon(Icons.nightlight),
         ],
-      ),
-    );
+      );
+    });
   }
 }
