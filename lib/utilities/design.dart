@@ -13,6 +13,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
 ThemeData darkTheme = ThemeData.dark().copyWith(
   colorScheme: const ColorScheme.dark().copyWith(
     surface: const Color.fromARGB(255, 19, 19, 19),
+    
   ),
   textTheme: GoogleFonts.montserratTextTheme(ThemeData.light().textTheme).apply(
     bodyColor: const Color.fromARGB(255, 238, 239, 245),

@@ -8,7 +8,6 @@ import 'package:stockchef/utilities/helper_class.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
 import 'package:stockchef/utilities/theme_notifier.dart';
 import 'package:stockchef/widgets/language_switch.dart';
-import 'package:stockchef/widgets/theme_switch.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({super.key});
@@ -54,14 +53,27 @@ class _IntroPageState extends State<IntroPage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: const [
+          LanguageSwitch(),
+        ],
+      ),
       body: HelperClass(
-        mobile: MobileBody(
+        mobile: IntroBody(
           pageController: _pageController,
           currentPage: _currentPage,
+          imageWidth: .5,
         ),
-        tablet: const Placeholder(),
-        desktop: const Placeholder(),
+        tablet: IntroBody(
+          pageController: _pageController,
+          currentPage: _currentPage,
+          imageWidth: .3,
+        ),
+        desktop: IntroBody(
+          pageController: _pageController,
+          currentPage: _currentPage,
+          imageWidth: .2,
+        ),
         paddingWidth: size.width * 0.1,
         bgColor: Theme.of(context).colorScheme.surface,
       ),
@@ -70,12 +82,16 @@ class _IntroPageState extends State<IntroPage> {
 }
 
 // ignore: must_be_immutable
-class MobileBody extends ConsumerWidget {
+class IntroBody extends ConsumerWidget {
   final PageController pageController;
   int currentPage;
+  final double imageWidth;
 
-  MobileBody(
-      {super.key, required this.pageController, required this.currentPage});
+  IntroBody(
+      {super.key,
+      required this.pageController,
+      required this.currentPage,
+      required this.imageWidth});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -112,14 +128,15 @@ class MobileBody extends ConsumerWidget {
               ),
             ],
           ),
-          Image.asset('assets/intro.png', width: size.width * .7),
+          Image.asset('assets/intro.png', width: size.width * imageWidth),
           Column(
             children: [
               SizedBox(
-                height: 100,
+                width: size.width * .8,
+                height: 80,
                 child: PageView.builder(
                   controller: pageController,
-                  itemCount: texts['intro'].length,
+                  itemCount: texts['intro'].length - 1,
                   onPageChanged: (index) {
                     currentPage = index;
                   },
@@ -136,9 +153,9 @@ class MobileBody extends ConsumerWidget {
               ),
               SmoothPageIndicator(
                 controller: pageController,
-                count: texts['intro'].length,
+                count: texts['intro'].length - 1,
                 effect: WormEffect(
-                  dotHeight: 10,
+                  dotHeight: 7,
                   dotWidth: 10,
                   activeDotColor:
                       ref.watch(themeNotifierProvider) == ThemeMode.dark
@@ -149,9 +166,23 @@ class MobileBody extends ConsumerWidget {
               ),
             ],
           ),
-          
-          const LanguageSwitch(),
-          const ThemeSwitch()
+          SizedBox(
+            height: 50,
+            width: 200,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(
+                    Theme.of(context).colorScheme.primary),
+              ),
+              child: Text(
+                texts['intro'][3],
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          )
         ],
       ),
     );

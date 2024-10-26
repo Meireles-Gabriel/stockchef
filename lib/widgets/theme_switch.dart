@@ -15,12 +15,14 @@ class ThemeSwitch extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(Icons.sunny),
-          Switch(
-            value: isDarkMode,
-            onChanged: (value) async {
-              ref.read(themeNotifierProvider.notifier).toggleTheme(value);
-              
-            },
+          Transform.scale(
+            scale: .8,
+            child: Switch(
+              value: isDarkMode,
+              onChanged: (value) async {
+                ref.read(themeNotifierProvider.notifier).toggleTheme(value);
+              },
+            ),
           ),
           const Icon(Icons.nightlight),
         ],

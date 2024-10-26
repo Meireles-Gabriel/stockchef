@@ -23,25 +23,35 @@ class LanguageSwitch extends StatelessWidget {
               await prefs.setString('language', value);
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'en',
-                child: Text('EN'),
+                child: Center(
+                  child: Text(
+                    'English',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'pt',
-                child: Text('PT'),
+                child: Center(
+                  child: Text(
+                    'Português',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
               ),
             ],
             icon: Row(
               children: [
-                const Icon(Icons.language),
-                const SizedBox(
-                  width: 5,
-                ),
                 Text(
                   currentLanguage == 'en' ? 'EN' : 'PT',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
+                const SizedBox(
+                  width: 7,
+                ),
+                const Icon(Icons.language),
               ],
             ),
           ),
