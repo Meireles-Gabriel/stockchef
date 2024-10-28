@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stockchef/pages/dashboard_page.dart';
@@ -6,6 +9,7 @@ import 'package:stockchef/pages/intro_page.dart';
 import 'package:stockchef/pages/login_page.dart';
 import 'package:stockchef/pages/payment_page.dart';
 import 'package:stockchef/pages/sell_page.dart';
+import 'package:stockchef/utilities/auth_services.dart';
 import 'package:stockchef/utilities/design.dart';
 import 'package:stockchef/utilities/firebase_options.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
@@ -25,7 +29,46 @@ class MainApp extends StatefulWidget {
   State<MainApp> createState() => _MainAppState();
 }
 
+String userSubscriptionType = 'not logged';
+
+Future<String> _userSubscriptionType()async {
+  try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final uid = user.uid;
+
+        final docSnapshot = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(uid)
+            .get();
+      
+      return docSnapshot.data()!['subscriptionType'];
+      
+      }
+      else{
+        return 'not logged';
+        }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Erro ao buscar informações do usuário: $e\nLogging Out.');
+      }
+      try{
+        AuthServices().logOut();
+      }catch(e){if (kDebugMode) {
+        print('Falha no LogOut: $e');
+      }
+      }
+      return 'not logged';
+    }
+}
+
 class _MainAppState extends State<MainApp> {
+  @override
+  Future<void> initState() async {
+    super.initState();
+    userSubscriptionType = await _userSubscriptionType();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
@@ -38,7 +81,20 @@ class _MainAppState extends State<MainApp> {
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: themeMode,
-        home: const IntroPage(),
+        home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+
+                if (userSubscriptionType == 'trial') {
+                  return const SellPage();
+                } else {
+                  return const DashboardPage();
+                }
+              } else {
+                return const IntroPage();
+              }
+            }),
         routes: {
           '/intro': (context) => const IntroPage(),
           '/login': (context) => const LoginPage(),

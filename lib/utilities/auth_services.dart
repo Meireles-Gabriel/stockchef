@@ -15,17 +15,22 @@ class AuthServices {
       required String name}) async {
     try {
       if (name.isNotEmpty && email.isNotEmpty && password.isNotEmpty) {
-        UserCredential credential = await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
-        await _firestore.collection('Users').doc(credential.user!.uid).set({
-          'name': name,
-          'email': email,
-          'subscriptionType': 'trial',
-          'subscriptionStartDate': DateTime.now().toString(),
-          'shareWith': '',
-          'createdAt': DateTime.now().toString()
-        });
-        return 'success';
+        if (password.length >= 6) {
+          UserCredential credential = await _auth
+              .createUserWithEmailAndPassword(email: email, password: password);
+          await _firestore.collection('Users').doc(credential.user!.uid).set({
+            'name': name,
+            'email': email,
+            'subscriptionType': 'trial',
+            'subscriptionStartDate': DateTime.now().toString(),
+            'shareWith': '',
+            'createdAt': DateTime.now().toString()
+          });
+          return 'success';
+        } else {
+          showSnackBar(context, texts['login'][9]);
+          return 'short password';
+        }
       } else {
         showSnackBar(context, texts['login'][8]);
         return 'fields not filled';
@@ -63,5 +68,19 @@ class AuthServices {
     } catch (e) {
       return e.toString();
     }
+  }
+
+  Future<void> forgotPassowrd(context, texts, email) async {
+    await _auth.sendPasswordResetEmail(email: email).then((value) {
+      showSnackBar(
+        context,
+        texts['login'][13],
+      );
+    }).onError((error, stachTrace) {
+      showSnackBar(
+        context,
+        error.toString(),
+      );
+    });
   }
 }

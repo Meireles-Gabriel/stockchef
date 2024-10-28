@@ -22,6 +22,10 @@ List<String> loginPT = [
   'Preencha todos os campos para entrar.', //7
   'Preencha todos os campos para cadastrar.', //8
   'Algo deu errado. Tente novamente mais tarde.', //9
+  'A senha deve ter pelo menos 6 caracteres.', //10
+  'Email inválido.', //11
+  'Email já cadastrado.', //12
+  'Um email foi enviado com o link para criar uma nova senha.', //13
 ];
 List<String> loginEN = [
   'Name', //0
@@ -34,6 +38,10 @@ List<String> loginEN = [
   'Fill in all fields to log in.', //7
   'Fill in all fields to sign up.', //8
   'Something went wrong. Please try again later.', //9
+  'The password must be at least 6 characters long.', //10
+  'Invalid Email.', //11
+  'Email already registered.', //12
+  'An email has been sent with the link to create a new password.', //13
 ];
 
 Map<String, List<String>> portugueseTexts = {
