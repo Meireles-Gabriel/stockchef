@@ -1,7 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stockchef/pages/dashboard_page.dart';
 import 'package:stockchef/pages/intro_page.dart';
+import 'package:stockchef/pages/login_page.dart';
+import 'package:stockchef/pages/payment_page.dart';
+import 'package:stockchef/pages/sell_page.dart';
 import 'package:stockchef/utilities/design.dart';
 import 'package:stockchef/utilities/firebase_options.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
@@ -35,6 +39,13 @@ class _MainAppState extends State<MainApp> {
         darkTheme: darkTheme,
         themeMode: themeMode,
         home: const IntroPage(),
+        routes: {
+          '/intro': (context) => const IntroPage(),
+          '/login': (context) => const LoginPage(),
+          '/sell': (context) => const SellPage(),
+          '/payment': (context) => const PaymentPage(),
+          '/dashboard': (context) => const DashboardPage(),
+        },
       );
     });
   }
