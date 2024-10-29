@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stockchef/utilities/auth_services.dart';
 import 'package:stockchef/utilities/helper_class.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
 import 'package:stockchef/widgets/default_button.dart';
+import 'package:stockchef/widgets/forgot_password_dialog.dart';
 import 'package:stockchef/widgets/language_switch.dart';
 
 class LoginPage extends StatelessWidget {
@@ -48,8 +50,44 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-            tablet: const Placeholder(),
-            desktop: const Placeholder(),
+            tablet: SingleChildScrollView(
+              child: SizedBox(
+                height: size.height * .8,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    LogInFields(
+                        logInEmail: logInEmail, logInPassword: logInPassword),
+                    VDivider(texts: texts),
+                    SignUpFields(
+                      signUpName,
+                      signUpEmail,
+                      signUpPassword,
+                      signUpCheckPassword,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            desktop: SingleChildScrollView(
+              child: SizedBox(
+                height: size.height * .8,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    LogInFields(
+                        logInEmail: logInEmail, logInPassword: logInPassword),
+                    VDivider(texts: texts),
+                    SignUpFields(
+                      signUpName,
+                      signUpEmail,
+                      signUpPassword,
+                      signUpCheckPassword,
+                    ),
+                  ],
+                ),
+              ),
+            ),
             paddingWidth: size.width * 0.1,
             bgColor: Theme.of(context).colorScheme.surface,
           );
@@ -76,11 +114,11 @@ class HDivider extends StatelessWidget {
           child: Divider(),
         ),
         const SizedBox(
-          width: 5,
+          width: 10,
         ),
         Text(texts['login'][5]),
         const SizedBox(
-          width: 5,
+          width: 10,
         ),
         const Expanded(
           child: Divider(),
@@ -107,11 +145,11 @@ class VDivider extends StatelessWidget {
           child: VerticalDivider(),
         ),
         const SizedBox(
-          height: 5,
+          height: 10,
         ),
         Text(texts['login'][5]),
         const SizedBox(
-          height: 5,
+          height: 10,
         ),
         const Expanded(
           child: VerticalDivider(),
@@ -137,7 +175,7 @@ class LogInFields extends ConsumerWidget {
     final Size size = MediaQuery.sizeOf(context);
     return Center(
       child: SizedBox(
-        width: size.width < 768 ? size.width * .7 : size.height * .7,
+        width: size.width < 768 ? size.width * .7 : size.height * .35,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -164,14 +202,22 @@ class LogInFields extends ConsumerWidget {
               width: size.width * .7,
               child: DefaultButton(
                 text: texts['login'][3],
-                action: () {},
+                action: () {
+                  AuthServices().logIn(
+                      context: context,
+                      texts: texts,
+                      email: logInEmail.text,
+                      password: logInPassword.text);
+                },
               ),
             ),
             const SizedBox(
               height: 5,
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                forgotPasswordDialog(context, texts);
+              },
               child: Text(
                 texts['login'][4],
               ),
@@ -202,7 +248,7 @@ class SignUpFields extends ConsumerWidget {
     final Size size = MediaQuery.sizeOf(context);
     return Center(
       child: SizedBox(
-        width: size.width < 768 ? size.width * .7 : size.height * .7,
+        width: size.width < 768 ? size.width * .7 : size.height * .35,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -248,7 +294,15 @@ class SignUpFields extends ConsumerWidget {
               width: size.width * .7,
               child: DefaultButton(
                 text: texts['login'][6],
-                action: () {},
+                action: () {
+                  AuthServices().signUp(
+                      context: context,
+                      texts: texts,
+                      email: signUpEmail.text,
+                      password: signUpPassword.text,
+                      checkPassword: signUpCheckPassword.text,
+                      name: signUpName.text);
+                },
               ),
             )
           ],

@@ -50,7 +50,7 @@ class _MainAppState extends State<MainApp> {
         print('Erro ao buscar informações do usuário: $e\nLogging Out.');
       }
       try {
-        AuthServices().logOut();
+        AuthServices().logOut(context);
       } catch (e) {
         if (kDebugMode) {
           print('Falha no LogOut: $e');
@@ -97,7 +97,7 @@ class _MainAppState extends State<MainApp> {
             }),
         routes: {
           '/intro': (context) => const IntroPage(),
-          '/login': (context) => LoginPage(),
+          '/login': (context) => const LoginPage(),
           '/sell': (context) => const SellPage(),
           '/payment': (context) => const PaymentPage(),
           '/dashboard': (context) => const DashboardPage(),
