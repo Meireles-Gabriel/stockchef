@@ -29,44 +29,45 @@ class MainApp extends StatefulWidget {
   State<MainApp> createState() => _MainAppState();
 }
 
-String userSubscriptionType = 'not logged';
+class _MainAppState extends State<MainApp> {
+  String userSubscriptionType = 'not logged';
 
-Future<String> _userSubscriptionType()async {
-  try {
+  Future<String> _userSubscriptionType() async {
+    try {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         final uid = user.uid;
 
-        final docSnapshot = await FirebaseFirestore.instance
-            .collection('Users')
-            .doc(uid)
-            .get();
-      
-      return docSnapshot.data()!['subscriptionType'];
-      
-      }
-      else{
+        final docSnapshot =
+            await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+
+        return docSnapshot.data()!['subscriptionType'];
+      } else {
         return 'not logged';
-        }
+      }
     } catch (e) {
       if (kDebugMode) {
         print('Erro ao buscar informações do usuário: $e\nLogging Out.');
       }
-      try{
+      try {
         AuthServices().logOut();
-      }catch(e){if (kDebugMode) {
-        print('Falha no LogOut: $e');
-      }
+      } catch (e) {
+        if (kDebugMode) {
+          print('Falha no LogOut: $e');
+        }
       }
       return 'not logged';
     }
-}
+  }
 
-class _MainAppState extends State<MainApp> {
-  @override
-  Future<void> initState() async {
-    super.initState();
+  Future<void> _initializeUserSubscriptionType() async {
     userSubscriptionType = await _userSubscriptionType();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeUserSubscriptionType();
   }
 
   @override
@@ -85,7 +86,6 @@ class _MainAppState extends State<MainApp> {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-
                 if (userSubscriptionType == 'trial') {
                   return const SellPage();
                 } else {
@@ -97,7 +97,7 @@ class _MainAppState extends State<MainApp> {
             }),
         routes: {
           '/intro': (context) => const IntroPage(),
-          '/login': (context) => const LoginPage(),
+          '/login': (context) => LoginPage(),
           '/sell': (context) => const SellPage(),
           '/payment': (context) => const PaymentPage(),
           '/dashboard': (context) => const DashboardPage(),

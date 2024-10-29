@@ -12,21 +12,28 @@ class AuthServices {
       required Map texts,
       required String email,
       required String password,
+      required String checkPassword,
       required String name}) async {
     try {
       if (name.isNotEmpty && email.isNotEmpty && password.isNotEmpty) {
         if (password.length >= 6) {
-          UserCredential credential = await _auth
-              .createUserWithEmailAndPassword(email: email, password: password);
-          await _firestore.collection('Users').doc(credential.user!.uid).set({
-            'name': name,
-            'email': email,
-            'subscriptionType': 'trial',
-            'subscriptionStartDate': DateTime.now().toString(),
-            'shareWith': '',
-            'createdAt': DateTime.now().toString()
-          });
-          return 'success';
+          if (password == checkPassword) {
+            UserCredential credential =
+                await _auth.createUserWithEmailAndPassword(
+                    email: email, password: password);
+            await _firestore.collection('Users').doc(credential.user!.uid).set({
+              'name': name,
+              'email': email,
+              'subscriptionType': 'trial',
+              'subscriptionStartDate': DateTime.now().toString(),
+              'shareWith': '',
+              'createdAt': DateTime.now().toString()
+            });
+            return 'success';
+          } else {
+            showSnackBar(context, texts['login'][15]);
+            return 'passwords not equal';
+          }
         } else {
           showSnackBar(context, texts['login'][9]);
           return 'short password';

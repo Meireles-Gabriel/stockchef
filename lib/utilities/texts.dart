@@ -26,6 +26,9 @@ List<String> loginPT = [
   'Email inválido.', //11
   'Email já cadastrado.', //12
   'Um email foi enviado com o link para criar uma nova senha.', //13
+  'Confirmar Senha', //14
+  'As senhas digitadas não são iguais. Digite-as novamente.', //15
+  ''
 ];
 List<String> loginEN = [
   'Name', //0
@@ -42,6 +45,8 @@ List<String> loginEN = [
   'Invalid Email.', //11
   'Email already registered.', //12
   'An email has been sent with the link to create a new password.', //13
+  'Confirm Password', //14
+  'The passwords entered do not match. Please enter them again.', //15
 ];
 
 Map<String, List<String>> portugueseTexts = {

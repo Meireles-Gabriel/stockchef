@@ -7,6 +7,7 @@ import 'package:stockchef/utilities/design.dart';
 import 'package:stockchef/utilities/helper_class.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
 import 'package:stockchef/utilities/theme_notifier.dart';
+import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/language_switch.dart';
 
 class IntroPage extends StatefulWidget {
@@ -54,9 +55,7 @@ class _IntroPageState extends State<IntroPage> {
     final Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
-        actions: const [
-          LanguageSwitch(),
-        ],
+        actions: const [LanguageSwitch()],
       ),
       body: HelperClass(
         mobile: IntroBody(
@@ -95,6 +94,7 @@ class IntroBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ThemeMode theme = ref.watch(themeNotifierProvider);
     Map texts = ref.watch(languageNotifierProvider)['texts'];
     final Size size = MediaQuery.sizeOf(context);
     return Center(
@@ -111,13 +111,15 @@ class IntroBody extends ConsumerWidget {
                       width: 71,
                       height: 71,
                       decoration: BoxDecoration(
-                        color: lightTheme.colorScheme.surface,
+                        color: Theme.of(context).textTheme.titleLarge!.color,
                         shape: BoxShape.circle,
                       ),
                     ),
                   Image.asset(
                     'assets/logo.png',
-                    color: darkTheme.colorScheme.surface,
+                    color: theme == ThemeMode.light
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.surface,
                     height: 70,
                   ),
                 ],
@@ -128,7 +130,11 @@ class IntroBody extends ConsumerWidget {
               ),
             ],
           ),
-          Image.asset('assets/intro.png', width: size.width * imageWidth),
+          Image.asset(
+              theme == ThemeMode.light
+                  ? 'assets/intro1.png'
+                  : 'assets/intro2.png',
+              width: size.width * imageWidth),
           Column(
             children: [
               SizedBox(
@@ -169,18 +175,11 @@ class IntroBody extends ConsumerWidget {
           SizedBox(
             height: 50,
             width: 200,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(
-                    Theme.of(context).colorScheme.primary),
-              ),
-              child: Text(
-                texts['intro'][3],
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold),
-              ),
+            child: DefaultButton(
+              text: texts['intro'][3],
+              action: () {
+                Navigator.pushNamed(context, '/login');
+              },
             ),
           )
         ],

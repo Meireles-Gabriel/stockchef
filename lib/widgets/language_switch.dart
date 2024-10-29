@@ -14,6 +14,7 @@ class LanguageSwitch extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           PopupMenuButton<String>(
+            color: Theme.of(context).colorScheme.surface,
             onSelected: (value) async {
               final isEnglish = value == 'en';
               ref
