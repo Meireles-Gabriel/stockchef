@@ -128,4 +128,24 @@ class AuthServices {
       );
     });
   }
+
+  Future<String> getUserUID() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    final uid = user!.uid;
+
+    final docSnapshot =
+        await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+
+    return docSnapshot.data()!['subscriptionType'];
+  }
+
+  Future<String> getUserSubscription() async {
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(await getUserUID())
+        .get();
+
+    return docSnapshot.data()!['subscriptionType'];
+  }
 }

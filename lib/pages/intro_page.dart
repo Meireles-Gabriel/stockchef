@@ -55,6 +55,7 @@ class _IntroPageState extends State<IntroPage> {
     final Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         actions: const [LanguageSwitch()],
       ),
       body: HelperClass(
