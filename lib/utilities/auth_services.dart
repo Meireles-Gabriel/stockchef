@@ -1,9 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:stockchef/utilities/stripe_services.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
+import 'package:http/http.dart' as http;
 
 class AuthServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -23,11 +27,26 @@ class AuthServices {
             UserCredential credential =
                 await _auth.createUserWithEmailAndPassword(
                     email: email, password: password);
+            final customerResponse = await http.post(
+              Uri.parse('https://api.stripe.com/v1/customers'),
+              headers: {
+                'Authorization': 'Bearer ${StripeServices().secKey}',
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: {
+                'email': email,
+              },
+            );
+
+            final customerId = jsonDecode(customerResponse.body)['id'];
+            
             await _firestore.collection('Users').doc(credential.user!.uid).set({
               'name': name,
               'email': email,
               'subscriptionType': 'trial',
               'subscriptionStartDate': DateTime.now().toString(),
+              'subscriptionId': '',
+              'customerId': customerId,
               'shareWith': '',
               'createdAt': DateTime.now().toString()
             });
@@ -107,8 +126,10 @@ class AuthServices {
 
   Future<String> logOut(context) async {
     try {
-      await _auth.signOut();
-      Navigator.pushNamed(context, '/intro');
+      await _auth.signOut().then((value) {
+        Navigator.pushNamed(context, '/intro');
+      });
+
       return 'success';
     } catch (e) {
       return e.toString();

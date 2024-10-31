@@ -19,8 +19,11 @@ dependencies:
   cloud_firestore:
   firebase_auth:
   flutter_stripe:
+  flutter_stripe_web:
+  http:
   flutter_launcher_icons:
   flutter_native_splash:
+
 
 flutter_native_splash:
 

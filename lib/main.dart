@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:stockchef/pages/dashboard_page.dart';
 import 'package:stockchef/pages/intro_page.dart';
 import 'package:stockchef/pages/login_page.dart';
@@ -13,11 +14,14 @@ import 'package:stockchef/utilities/auth_services.dart';
 import 'package:stockchef/utilities/design.dart';
 import 'package:stockchef/utilities/firebase_options.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
+import 'package:stockchef/utilities/stripe_services.dart';
 import 'package:stockchef/utilities/theme_notifier.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  Stripe.publishableKey = StripeServices().pubKey;
+  await Stripe.instance.applySettings();
 
   runApp(const ProviderScope(child: MainApp()));
 }

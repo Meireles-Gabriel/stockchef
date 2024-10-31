@@ -17,9 +17,7 @@ class DashboardPage extends StatelessWidget {
           return HelperClass(
               mobile: SingleChildScrollView(
                 child: SizedBox(
-                  height: size.height * .8,
-                  child: const Placeholder(),
-                ),
+                    height: size.height * .8, child: const Placeholder()),
               ),
               tablet: SingleChildScrollView(
                 child: SizedBox(

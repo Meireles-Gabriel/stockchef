@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stockchef/utilities/helper_class.dart';
+import 'package:stockchef/widgets/default_button.dart';
 
 class SellPage extends StatelessWidget {
   const SellPage({super.key});
@@ -24,7 +26,22 @@ class SellPage extends StatelessWidget {
               mobile: SingleChildScrollView(
                 child: SizedBox(
                   height: size.height * .8,
-                  child: const Placeholder(),
+                  child: Center(
+                    child: SizedBox(
+                      height: 50,
+                      width: 80,
+                      child: DefaultButton(
+                        text: 'Pay',
+                        action: () {
+                          try {} catch (e) {
+                            if (kDebugMode) {
+                              print(e);
+                            }
+                          }
+                        },
+                      ),
+                    ),
+                  ),
                 ),
               ),
               tablet: SingleChildScrollView(
