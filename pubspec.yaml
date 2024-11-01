@@ -21,6 +21,7 @@ dependencies:
   flutter_stripe:
   flutter_stripe_web:
   http:
+  url_launcher:
   flutter_launcher_icons:
   flutter_native_splash:
 

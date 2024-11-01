@@ -8,7 +8,6 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:stockchef/pages/dashboard_page.dart';
 import 'package:stockchef/pages/intro_page.dart';
 import 'package:stockchef/pages/login_page.dart';
-import 'package:stockchef/pages/payment_page.dart';
 import 'package:stockchef/pages/sell_page.dart';
 import 'package:stockchef/utilities/auth_services.dart';
 import 'package:stockchef/utilities/design.dart';
@@ -41,7 +40,45 @@ class _MainAppState extends State<MainApp> {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         final uid = user.uid;
-
+        String? userStripeId = await StripeServices()
+            .getCustomerIdByEmail(await AuthServices().getUserEmail());
+        if (userStripeId == null) {
+          FirebaseFirestore.instance
+              .collection('Users')
+              .doc(await AuthServices().getUserUID())
+              .update({'subscritionId': '', 'subscriptionType': 'trial'});
+        } else {
+          String? subscriptionId =
+              await StripeServices().getActiveSubscriptionId(userStripeId);
+          if (subscriptionId == null) {
+            FirebaseFirestore.instance
+                .collection('Users')
+                .doc(await AuthServices().getUserUID())
+                .update({'subscritionId': '', 'subscriptionType': 'trial'});
+          } else {
+            String? planId = await StripeServices().getPlanId(subscriptionId);
+            if (planId == null) {
+              FirebaseFirestore.instance
+                  .collection('Users')
+                  .doc(await AuthServices().getUserUID())
+                  .update({'subscritionId': '', 'subscriptionType': 'trial'});
+            } else {
+              FirebaseFirestore.instance
+                  .collection('Users')
+                  .doc(await AuthServices().getUserUID())
+                  .update({
+                'subscritionId': subscriptionId,
+                'subscriptionType': (planId == StripeServices().soloBRLId ||
+                        planId == StripeServices().soloUSDId)
+                    ? 'solo'
+                    : (planId == StripeServices().teamBRLId ||
+                            planId == StripeServices().teamUSDId)
+                        ? 'team'
+                        : 'trial'
+              });
+            }
+          }
+        }
         final docSnapshot =
             await FirebaseFirestore.instance.collection('Users').doc(uid).get();
 
@@ -103,7 +140,6 @@ class _MainAppState extends State<MainApp> {
           '/intro': (context) => const IntroPage(),
           '/login': (context) => const LoginPage(),
           '/sell': (context) => const SellPage(),
-          '/payment': (context) => const PaymentPage(),
           '/dashboard': (context) => const DashboardPage(),
         },
       );

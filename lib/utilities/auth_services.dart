@@ -1,75 +1,60 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stockchef/utilities/stripe_services.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
-import 'package:http/http.dart' as http;
 
 class AuthServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<String> signUp(
-      {required BuildContext context,
-      required Map texts,
-      required String email,
-      required String password,
-      required String checkPassword,
-      required String name}) async {
-    try {
-      if (name.isNotEmpty && email.isNotEmpty && password.isNotEmpty) {
-        if (password.length >= 6) {
-          if (password == checkPassword) {
-            UserCredential credential =
-                await _auth.createUserWithEmailAndPassword(
-                    email: email, password: password);
-            final customerResponse = await http.post(
-              Uri.parse('https://api.stripe.com/v1/customers'),
-              headers: {
-                'Authorization': 'Bearer ${StripeServices().secKey}',
-                'Content-Type': 'application/x-www-form-urlencoded',
-              },
-              body: {
-                'email': email,
-              },
-            );
+  Future<String> signUp({
+    required BuildContext context,
+    required Map texts,
+    required String email,
+    required String password,
+    required String checkPassword,
+    required String name,
+  }) async {
+    if (name.isEmpty || email.isEmpty || password.isEmpty) {
+      showSnackBar(context, texts['login'][8]);
+      return 'fields not filled';
+    }
+    if (password.length < 6) {
+      showSnackBar(context, texts['login'][10]);
+      return 'short password';
+    }
+    if (password != checkPassword) {
+      showSnackBar(context, texts['login'][15]);
+      return 'passwords not equal';
+    }
 
-            final customerId = jsonDecode(customerResponse.body)['id'];
-            
-            await _firestore.collection('Users').doc(credential.user!.uid).set({
-              'name': name,
-              'email': email,
-              'subscriptionType': 'trial',
-              'subscriptionStartDate': DateTime.now().toString(),
-              'subscriptionId': '',
-              'customerId': customerId,
-              'shareWith': '',
-              'createdAt': DateTime.now().toString()
-            });
-            Navigator.pushNamed(context, '/sell');
-            return 'success';
-          } else {
-            showSnackBar(context, texts['login'][15]);
-            return 'passwords not equal';
-          }
-        } else {
-          showSnackBar(context, texts['login'][10]);
-          return 'short password';
-        }
-      } else {
-        showSnackBar(context, texts['login'][8]);
-        return 'fields not filled';
-      }
+    try {
+      final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      await _firestore.collection('Users').doc(userCredential.user!.uid).set({
+        'name': name,
+        'email': email,
+        'subscriptionType': 'trial',
+        'subscriptionStartDate': DateTime.now().toString(),
+        'subscriptionId': '',
+        'customerId': '',
+        'shareWith': '',
+        'createdAt': DateTime.now().toString(),
+      });
+
+      Navigator.pushNamed(context, '/sell');
+      return 'success';
     } catch (e) {
-      String errorMessage = '';
+      String errorMessage;
       if (e.toString().contains('invalid-email')) {
         errorMessage = texts['login'][20];
-      }
-      if (e.toString().contains('email-already-in-use')) {
+      } else if (e.toString().contains('email-already-in-use')) {
         errorMessage = texts['login'][22];
       } else {
         errorMessage = "${texts['login'][9]}\n$e";
@@ -92,11 +77,49 @@ class AuthServices {
           final user = FirebaseAuth.instance.currentUser;
           final uid = user!.uid;
 
+          String? userStripeId =
+              await StripeServices().getCustomerIdByEmail(email);
+          if (userStripeId == null) {
+            FirebaseFirestore.instance
+                .collection('Users')
+                .doc(await AuthServices().getUserUID())
+                .update({'subscritionId': '', 'subscriptionType': 'trial'});
+          } else {
+            String? subscriptionId =
+                await StripeServices().getActiveSubscriptionId(userStripeId);
+            if (subscriptionId == null) {
+              FirebaseFirestore.instance
+                  .collection('Users')
+                  .doc(await AuthServices().getUserUID())
+                  .update({'subscritionId': '', 'subscriptionType': 'trial'});
+            } else {
+              String? planId = await StripeServices().getPlanId(subscriptionId);
+              if (planId == null) {
+                FirebaseFirestore.instance
+                    .collection('Users')
+                    .doc(await AuthServices().getUserUID())
+                    .update({'subscritionId': '', 'subscriptionType': 'trial'});
+              } else {
+                FirebaseFirestore.instance
+                    .collection('Users')
+                    .doc(await AuthServices().getUserUID())
+                    .update({
+                  'subscritionId': subscriptionId,
+                  'subscriptionType': (planId == StripeServices().soloBRLId ||
+                          planId == StripeServices().soloUSDId)
+                      ? 'solo'
+                      : (planId == StripeServices().teamBRLId ||
+                              planId == StripeServices().teamUSDId)
+                          ? 'team'
+                          : 'trial'
+                });
+              }
+            }
+          }
           final docSnapshot = await FirebaseFirestore.instance
               .collection('Users')
               .doc(uid)
               .get();
-
           String subscription = docSnapshot.data()!['subscriptionType'];
           Navigator.pushNamed(
               context, subscription == 'trial' ? '/sell' : '/dashboard');
@@ -153,12 +176,7 @@ class AuthServices {
   Future<String> getUserUID() async {
     final user = FirebaseAuth.instance.currentUser;
 
-    final uid = user!.uid;
-
-    final docSnapshot =
-        await FirebaseFirestore.instance.collection('Users').doc(uid).get();
-
-    return docSnapshot.data()!['subscriptionType'];
+    return user!.uid;
   }
 
   Future<String> getUserSubscription() async {
@@ -168,5 +186,32 @@ class AuthServices {
         .get();
 
     return docSnapshot.data()!['subscriptionType'];
+  }
+
+  Future<String> getUserCustomerId() async {
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(await getUserUID())
+        .get();
+
+    return docSnapshot.data()!['customerId'];
+  }
+
+  Future<String> getUserEmail() async {
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(await getUserUID())
+        .get();
+
+    return docSnapshot.data()!['email'];
+  }
+
+  Future<String> getUserName() async {
+    final docSnapshot = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(await getUserUID())
+        .get();
+
+    return docSnapshot.data()!['name'];
   }
 }

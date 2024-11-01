@@ -32,9 +32,9 @@ List<String> loginPT = [
   'Cancelar', //17
   'Enviar', //18
   'Não foi encontrado nenhum usuário com o Email fornecido.', //19
-  'O formato do endereço de email é inválido.',//20
-  'Email ou senha incorreta.',//21
-  'O email fornecido já está sendo utilizado por uma conta.',//22
+  'O formato do endereço de email é inválido.', //20
+  'Email ou senha incorreta.', //21
+  'O email fornecido já está sendo utilizado por uma conta.', //22
 ];
 List<String> loginEN = [
   'Name', //0
@@ -57,16 +57,36 @@ List<String> loginEN = [
   'Cancel', //17
   'Send', //18
   'No user was found with the provided email.', //19
-  'The email address is badly formatted.',//20
+  'The email address is badly formatted.', //20
   'Wrong email or password.', //21
-  'The provided email is already in use by an account.',//22
+  'The provided email is already in use by an account.', //22
 ];
 
+List<String> sellPT = [
+  'Algo deu errado. Tente novamente mais tarde.', //0
+  'Assinatura realizada com sucesso!', //1
+  'Assinatura cancelada com sucesso!', //2
+  'Contratar Assinatura', //3
+  'Contrate a assinatura e entre novamente para aproveitar suas novas funcionalidades.', //4
+  'Assinar', //5
+  'Cancelar', //6
+];
+List<String> sellEN = [
+  'Something went wrong. Please try again later.', //0
+  'Subscription completed successfully!', //1
+  'Subscription canceled successfully!', //2
+  'Subscribe', //3
+  'Subscribe and log in again to enjoy your new features.', //4
+  'Subscribe', //5
+  'Cancel', //6
+];
 Map<String, List<String>> portugueseTexts = {
   'intro': introPT,
   'login': loginPT,
+  'sell': sellPT,
 };
 Map<String, List<String>> englishTexts = {
   'intro': introEN,
   'login': loginEN,
+  'sell': sellEN,
 };

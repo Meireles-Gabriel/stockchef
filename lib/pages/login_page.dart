@@ -7,6 +7,13 @@ import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/forgot_password_dialog.dart';
 import 'package:stockchef/widgets/language_switch.dart';
 
+final isLoadingLogInProvider = StateProvider<bool>(
+  (ref) => false,
+);
+final isLoadingSignUpProvider = StateProvider<bool>(
+  (ref) => false,
+);
+
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
@@ -180,7 +187,8 @@ class LogInFields extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              enabled: !ref.watch(isLoadingProvider),
+              enabled: !ref.watch(isLoadingLogInProvider) &&
+                  !ref.watch(isLoadingSignUpProvider),
               controller: logInEmail,
               decoration: InputDecoration(
                 labelText: texts['login'][1],
@@ -190,7 +198,8 @@ class LogInFields extends ConsumerWidget {
               height: 10,
             ),
             TextField(
-              enabled: !ref.watch(isLoadingProvider),
+              enabled: !ref.watch(isLoadingLogInProvider) &&
+                  !ref.watch(isLoadingSignUpProvider),
               controller: logInPassword,
               obscureText: true,
               decoration: InputDecoration(
@@ -202,7 +211,7 @@ class LogInFields extends ConsumerWidget {
             ),
             SizedBox(
               width: size.width * .7,
-              child: ref.watch(isLoadingProvider)
+              child: ref.watch(isLoadingLogInProvider)
                   ? const Center(
                       child: SizedBox(
                         width: 30,
@@ -212,18 +221,24 @@ class LogInFields extends ConsumerWidget {
                     )
                   : DefaultButton(
                       text: texts['login'][3],
-                      action: () {
-                        ref.read(isLoadingProvider.notifier).state = true;
-                        AuthServices()
-                            .logIn(
-                                context: context,
-                                texts: texts,
-                                email: logInEmail.text,
-                                password: logInPassword.text)
-                            .then((value) {
-                          ref.read(isLoadingProvider.notifier).state = false;
-                        });
-                      },
+                      action: (ref.watch(isLoadingLogInProvider) ||
+                              ref.watch(isLoadingSignUpProvider))
+                          ? null
+                          : () {
+                              ref.read(isLoadingLogInProvider.notifier).state =
+                                  true;
+                              AuthServices()
+                                  .logIn(
+                                      context: context,
+                                      texts: texts,
+                                      email: logInEmail.text,
+                                      password: logInPassword.text)
+                                  .then((value) {
+                                ref
+                                    .read(isLoadingLogInProvider.notifier)
+                                    .state = false;
+                              });
+                            },
                     ),
             ),
             const SizedBox(
@@ -268,7 +283,8 @@ class SignUpFields extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              enabled: !ref.watch(isLoadingProvider),
+              enabled: !ref.watch(isLoadingLogInProvider) &&
+                  !ref.watch(isLoadingSignUpProvider),
               controller: signUpName,
               decoration: InputDecoration(
                 labelText: texts['login'][0],
@@ -278,7 +294,8 @@ class SignUpFields extends ConsumerWidget {
               height: 10,
             ),
             TextField(
-              enabled: !ref.watch(isLoadingProvider),
+              enabled: !ref.watch(isLoadingLogInProvider) &&
+                  !ref.watch(isLoadingSignUpProvider),
               controller: signUpEmail,
               decoration: InputDecoration(
                 labelText: texts['login'][1],
@@ -288,7 +305,8 @@ class SignUpFields extends ConsumerWidget {
               height: 10,
             ),
             TextField(
-              enabled: !ref.watch(isLoadingProvider),
+              enabled: !ref.watch(isLoadingLogInProvider) &&
+                  !ref.watch(isLoadingSignUpProvider),
               controller: signUpPassword,
               obscureText: true,
               decoration: InputDecoration(
@@ -299,7 +317,8 @@ class SignUpFields extends ConsumerWidget {
               height: 10,
             ),
             TextField(
-              enabled: !ref.watch(isLoadingProvider),
+              enabled: !ref.watch(isLoadingLogInProvider) &&
+                  !ref.watch(isLoadingSignUpProvider),
               controller: signUpCheckPassword,
               obscureText: true,
               decoration: InputDecoration(
@@ -311,7 +330,7 @@ class SignUpFields extends ConsumerWidget {
             ),
             SizedBox(
               width: size.width * .7,
-              child: ref.watch(isLoadingProvider)
+              child: ref.watch(isLoadingSignUpProvider)
                   ? const Center(
                       child: SizedBox(
                         width: 30,
@@ -321,20 +340,26 @@ class SignUpFields extends ConsumerWidget {
                     )
                   : DefaultButton(
                       text: texts['login'][6],
-                      action: () {
-                        ref.read(isLoadingProvider.notifier).state = true;
-                        AuthServices()
-                            .signUp(
-                                context: context,
-                                texts: texts,
-                                email: signUpEmail.text,
-                                password: signUpPassword.text,
-                                checkPassword: signUpCheckPassword.text,
-                                name: signUpName.text)
-                            .then((value) {
-                          ref.read(isLoadingProvider.notifier).state = false;
-                        });
-                      },
+                      action: (ref.watch(isLoadingLogInProvider) ||
+                              ref.watch(isLoadingSignUpProvider))
+                          ? null
+                          : () {
+                              ref.read(isLoadingSignUpProvider.notifier).state =
+                                  true;
+                              AuthServices()
+                                  .signUp(
+                                      context: context,
+                                      texts: texts,
+                                      email: signUpEmail.text,
+                                      password: signUpPassword.text,
+                                      checkPassword: signUpCheckPassword.text,
+                                      name: signUpName.text)
+                                  .then((value) {
+                                ref
+                                    .read(isLoadingSignUpProvider.notifier)
+                                    .state = false;
+                              });
+                            },
                     ),
             )
           ],

@@ -7,7 +7,7 @@ import 'package:stockchef/utilities/auth_services.dart';
 import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
 
-final isLoadingProvider = StateProvider<bool>(
+final isLoadingForgotPasswordProvider = StateProvider<bool>(
   (ref) => false,
 );
 void forgotPasswordDialog(BuildContext context, Map texts) {
@@ -24,13 +24,13 @@ void forgotPasswordDialog(BuildContext context, Map texts) {
               texts['login'][16],
             ),
             content: TextField(
-              enabled: !ref.watch(isLoadingProvider),
+              enabled: !ref.watch(isLoadingForgotPasswordProvider),
               controller: email,
               decoration: const InputDecoration(
                 label: Text('Email'),
               ),
             ),
-            actions: ref.watch(isLoadingProvider)
+            actions: ref.watch(isLoadingForgotPasswordProvider)
                 ? [
                     const Center(
                       child: CircularProgressIndicator(),
@@ -46,7 +46,7 @@ void forgotPasswordDialog(BuildContext context, Map texts) {
                     DefaultButton(
                       text: texts['login'][18],
                       action: () async {
-                        ref.read(isLoadingProvider.notifier).state = true;
+                        ref.read(isLoadingForgotPasswordProvider.notifier).state = true;
                         final querySnapshot = await FirebaseFirestore.instance
                             .collection('Users')
                             .where('email', isEqualTo: email.text)
@@ -56,12 +56,12 @@ void forgotPasswordDialog(BuildContext context, Map texts) {
                           AuthServices()
                               .forgotPassowrd(context, texts, email.text)
                               .then((value) {
-                            ref.read(isLoadingProvider.notifier).state = false;
+                            ref.read(isLoadingForgotPasswordProvider.notifier).state = false;
                           }).then((value) {
                             Navigator.of(context).pop();
                           });
                         } else {
-                          ref.read(isLoadingProvider.notifier).state = false;
+                          ref.read(isLoadingForgotPasswordProvider.notifier).state = false;
                           showSnackBar(context, texts['login'][19])
                               .then((value) {
                             Navigator.of(context).pop();

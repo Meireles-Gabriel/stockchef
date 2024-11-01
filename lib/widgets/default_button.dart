@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DefaultButton extends StatelessWidget {
-  final void Function() action;
+  final void Function()? action;
   final String text;
 
   const DefaultButton({
