@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,7 +11,7 @@ import 'package:stockchef/pages/dashboard_page.dart';
 import 'package:stockchef/pages/intro_page.dart';
 import 'package:stockchef/pages/login_page.dart';
 import 'package:stockchef/pages/sell_page.dart';
-import 'package:stockchef/utilities/auth_services.dart';
+import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/utilities/design.dart';
 import 'package:stockchef/utilities/firebase_options.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
@@ -34,40 +36,40 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   String userSubscriptionType = 'not logged';
+  String userReceiveFrom = '';
 
-  Future<String> _userSubscriptionType() async {
+  Future<void> _userSubscriptionType() async {
     try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        final uid = user.uid;
+      if (FirebaseServices().auth.currentUser != null) {
         String? userStripeId = await StripeServices()
-            .getCustomerIdByEmail(await AuthServices().getUserEmail());
+            .getCustomerIdByEmail(FirebaseServices().auth.currentUser!.email!);
+
         if (userStripeId == null) {
           FirebaseFirestore.instance
               .collection('Users')
-              .doc(await AuthServices().getUserUID())
-              .update({'subscritionId': '', 'subscriptionType': 'trial'});
+              .doc(FirebaseServices().auth.currentUser!.uid)
+              .update({'subscriptionId': '', 'subscriptionType': 'trial'});
         } else {
           String? subscriptionId =
               await StripeServices().getActiveSubscriptionId(userStripeId);
           if (subscriptionId == null) {
             FirebaseFirestore.instance
                 .collection('Users')
-                .doc(await AuthServices().getUserUID())
-                .update({'subscritionId': '', 'subscriptionType': 'trial'});
+                .doc(FirebaseServices().auth.currentUser!.uid)
+                .update({'subscriptionId': '', 'subscriptionType': 'trial'});
           } else {
             String? planId = await StripeServices().getPlanId(subscriptionId);
             if (planId == null) {
               FirebaseFirestore.instance
                   .collection('Users')
-                  .doc(await AuthServices().getUserUID())
-                  .update({'subscritionId': '', 'subscriptionType': 'trial'});
+                  .doc(FirebaseServices().auth.currentUser!.uid)
+                  .update({'subscriptionId': '', 'subscriptionType': 'trial'});
             } else {
               FirebaseFirestore.instance
                   .collection('Users')
-                  .doc(await AuthServices().getUserUID())
+                  .doc(FirebaseServices().auth.currentUser!.uid)
                   .update({
-                'subscritionId': subscriptionId,
+                'subscriptionId': subscriptionId,
                 'subscriptionType': (planId == StripeServices().soloBRLId ||
                         planId == StripeServices().soloUSDId)
                     ? 'solo'
@@ -79,36 +81,26 @@ class _MainAppState extends State<MainApp> {
             }
           }
         }
-        final docSnapshot =
-            await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+        final docSnapshot = await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(FirebaseServices().auth.currentUser!.uid)
+            .get();
 
-        return docSnapshot.data()!['subscriptionType'];
-      } else {
-        return 'not logged';
+        userSubscriptionType = docSnapshot.data()!['subscriptionType'];
+        userReceiveFrom = docSnapshot.data()!['receiveFrom'];
       }
     } catch (e) {
       if (kDebugMode) {
         print('Erro ao buscar informações do usuário: $e\nLogging Out.');
       }
       try {
-        AuthServices().logOut(context);
+        FirebaseServices().logOut(context);
       } catch (e) {
         if (kDebugMode) {
           print('Falha no LogOut: $e');
         }
       }
-      return 'not logged';
     }
-  }
-
-  Future<void> _initializeUserSubscriptionType() async {
-    userSubscriptionType = await _userSubscriptionType();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeUserSubscriptionType();
   }
 
   @override
@@ -127,11 +119,26 @@ class _MainAppState extends State<MainApp> {
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                if (userSubscriptionType == 'trial') {
-                  return const SellPage();
-                } else {
-                  return const DashboardPage();
-                }
+                return FutureBuilder(
+                  future: _userSubscriptionType(),
+                  builder: (context, subscriptionSnapshot) {
+                    if (subscriptionSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return Scaffold(
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        appBar: AppBar(),
+                        body: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    } else {
+                      return (userSubscriptionType == 'trial' &&
+                              userReceiveFrom == '')
+                          ? const SellPage()
+                          : const DashboardPage();
+                    }
+                  },
+                );
               } else {
                 return const IntroPage();
               }

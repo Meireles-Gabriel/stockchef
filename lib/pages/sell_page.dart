@@ -3,207 +3,407 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stockchef/utilities/auth_services.dart';
+import 'package:stockchef/pages/login_page.dart';
+import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/utilities/helper_class.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
 import 'package:stockchef/utilities/stripe_services.dart';
-import 'package:stockchef/utilities/theme_notifier.dart';
 import 'package:stockchef/widgets/default_button.dart';
-import 'package:stockchef/widgets/show_snack_bar.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-class SellPage extends StatelessWidget {
+class SellPage extends StatefulWidget {
   const SellPage({super.key});
 
   @override
+  State<SellPage> createState() => _SellPageState();
+}
+
+class _SellPageState extends State<SellPage> {
+  Map? userInfo;
+  int? timeRemaining;
+
+  Future<void> _getUserInfo() async {
+    final docSnapshot = await FirebaseServices()
+        .firestore
+        .collection('Users')
+        .doc(FirebaseServices().auth.currentUser!.uid)
+        .get();
+    userInfo = docSnapshot.data();
+    DateTime creationDate = DateTime.parse(userInfo!['createdAt']);
+    timeRemaining = 14 - DateTime.now().difference(creationDate).inDays;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserInfo();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.close),
+    return userInfo == null
+        ? Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            appBar: AppBar(),
+            body: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        : Scaffold(
+            appBar: AppBar(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              automaticallyImplyLeading: false,
+              title: Consumer(builder:
+                  (BuildContext context, WidgetRef ref, Widget? child) {
+                Map texts = ref.watch(languageNotifierProvider)['texts'];
+                return Text(
+                  timeRemaining! > 0
+                      ? texts['sell'][7] +
+                          timeRemaining.toString() +
+                          texts['sell'][8]
+                      : texts['sell'][16],
+                  style: Theme.of(context).textTheme.titleMedium,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                );
+              }),
+              actions: [
+                if (timeRemaining! > 0)
+                  Consumer(builder:
+                      (BuildContext context, WidgetRef ref, Widget? child) {
+                    final Size size = MediaQuery.sizeOf(context);
+                    Map texts = ref.watch(languageNotifierProvider)['texts'];
+                    return size.width > 768
+                        ? TextButton(
+                            child: Text(texts['sell'][15],
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary)),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/dashboard');
+                            },
+                          )
+                        : IconButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/dashboard');
+                            },
+                            icon: const Icon(Icons.close),
+                          );
+                  }),
+              ],
+            ),
+            body: Consumer(
+              builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                final Size size = MediaQuery.sizeOf(context);
+                Map texts = ref.watch(languageNotifierProvider)['texts'];
+
+                return HelperClass(
+                    mobile: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          texts['sell'][13],
+                          style: size.width > 768
+                              ? Theme.of(context).textTheme.headlineMedium
+                              : Theme.of(context).textTheme.headlineSmall,
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                        ),
+                        SoloPlanCard(
+                          texts: texts,
+                        ),
+                        SizedBox(
+                          width: 450,
+                          child: HDivider(texts: texts),
+                        ),
+                        TeamPlanCard(
+                          texts: texts,
+                        ),
+                        const SizedBox(),
+                      ],
+                    ),
+                    tablet: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          texts['sell'][13],
+                          style: size.width > 768
+                              ? Theme.of(context).textTheme.headlineMedium
+                              : Theme.of(context).textTheme.headlineSmall,
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                        ),
+                        SoloPlanCard(
+                          texts: texts,
+                        ),
+                        SizedBox(
+                          width: 450,
+                          child: HDivider(texts: texts),
+                        ),
+                        TeamPlanCard(
+                          texts: texts,
+                        ),
+                        const SizedBox(),
+                      ],
+                    ),
+                    desktop: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          texts['sell'][13],
+                          style: size.width > 768
+                              ? Theme.of(context).textTheme.headlineMedium
+                              : Theme.of(context).textTheme.headlineSmall,
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SoloPlanCard(
+                              texts: texts,
+                            ),
+                            SizedBox(
+                              height: 450,
+                              child: VDivider(texts: texts),
+                            ),
+                            Column(
+                              children: [
+                                TeamPlanCard(
+                                  texts: texts,
+                                ),
+                                const SizedBox(
+                                  height: 50,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(),
+                        const SizedBox(),
+                      ],
+                    ),
+                    paddingWidth: size.width * .05,
+                    bgColor: Theme.of(context).colorScheme.surface);
+              },
+            ),
+          );
+  }
+}
+
+class SoloPlanCard extends StatelessWidget {
+  const SoloPlanCard({
+    super.key,
+    required this.texts,
+  });
+
+  final Map texts;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 345,
+      width: 390,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        ),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.secondary,
+          width: 2, // Largura da borda
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(2, 4),
           ),
         ],
       ),
-      body: Consumer(
-        builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          Map texts = ref.watch(languageNotifierProvider)['texts'];
-          String soloBRLUrl =
-              'https://checkout.stripe.com/c/pay/cs_test_a1KPsxdLg3ym3tM8AfD7ylHjE0SH3FuP72jLK1hdMspoS9RsHhcpzK63Nv#fid1d2BpamRhQ2prcSc%2FJ0hqa3F2YHd3ZHEnKSd2cGd2ZndsdXFsamtQa2x0cGBrYHZ2QGtkZ2lgYSc%2FY2RpdmApJ2R1bE5gfCc%2FJ3VuWnFgdnFaMDRURmlhUkRCS2FGRDd8bk5fYHFdN29VMG9wZnNuYFdPYlR1MnVjak82RG40TjJfQ0JIUTxAMFBLR3BPYTB1fW5cMzNTbmh2amNPMFNIZH9QV1QwR0JmcGA1NWh%2Fc0E3b0kxJyknY3dqaFZgd3Ngdyc%2FcXdwYCknaWR8anBxUXx1YCc%2FJ3Zsa2JpYFpscWBoJyknYGtkZ2lgVWlkZmBtamlhYHd2Jz9xd3BgeCUl';
-          String teamBRLUrl =
-              'https://checkout.stripe.com/c/pay/cs_test_a1LTxcufwwvWKOOersoskg3cw1PqKpCQG8dDGph41tBFBTtayrIt0WbJYO#fid1d2BpamRhQ2prcSc%2FJ0hqa3F2YHd3ZHEnKSd2cGd2ZndsdXFsamtQa2x0cGBrYHZ2QGtkZ2lgYSc%2FY2RpdmApJ2R1bE5gfCc%2FJ3VuWnFgdnFaMDRURmlhUkRCS2FGRDd8bk5fYHFdN29VMG9wZnNuYFdPYlR1MnVjak82RG40TjJfQ0JIUTxAMFBLR3BPYTB1fW5cMzNTbmh2amNPMFNIZH9QV1QwR0JmcGA1NWh%2Fc0E3b0kxJyknY3dqaFZgd3Ngdyc%2FcXdwYCknaWR8anBxUXx1YCc%2FJ3Zsa2JpYFpscWBoJyknYGtkZ2lgVWlkZmBtamlhYHd2Jz9xd3BgeCUl';
-          String soloUSDUrl =
-              'https://checkout.stripe.com/c/pay/cs_test_a1O0duDRdYSO1e7BtV623jO16cc3cc4qUMcdDCLfdjO09ubrwgKOyysVqM#fid1d2BpamRhQ2prcSc%2FJ0hqa3F2YHd3ZHEnKSd2cGd2ZndsdXFsamtQa2x0cGBrYHZ2QGtkZ2lgYSc%2FY2RpdmApJ2R1bE5gfCc%2FJ3VuWnFgdnFaMDRURmlhUkRCS2FGRDd8bk5fYHFdN29VMG9wZnNuYFdPYlR1MnVjak82RG40TjJfQ0JIUTxAMFBLR3BPYTB1fW5cMzNTbmh2amNPMFNIZH9QV1QwR0JmcGA1NWh%2Fc0E3b0kxJyknY3dqaFZgd3Ngdyc%2FcXdwYCknaWR8anBxUXx1YCc%2FJ3Zsa2JpYFpscWBoJyknYGtkZ2lgVWlkZmBtamlhYHd2Jz9xd3BgeCUl';
-          String teamUSDUrl =
-              'https://checkout.stripe.com/c/pay/cs_test_a1qlk96ALiTyZLsWgO5TeCGFoZsbUlOWPfj0Wk1YnMZw6p6aWFu19xA0yB#fid1d2BpamRhQ2prcSc%2FJ0hqa3F2YHd3ZHEnKSd2cGd2ZndsdXFsamtQa2x0cGBrYHZ2QGtkZ2lgYSc%2FY2RpdmApJ2R1bE5gfCc%2FJ3VuWnFgdnFaMDRURmlhUkRCS2FGRDd8bk5fYHFdN29VMG9wZnNuYFdPYlR1MnVjak82RG40TjJfQ0JIUTxAMFBLR3BPYTB1fW5cMzNTbmh2amNPMFNIZH9QV1QwR0JmcGA1NWh%2Fc0E3b0kxJyknY3dqaFZgd3Ngdyc%2FcXdwYCknaWR8anBxUXx1YCc%2FJ3Zsa2JpYFpscWBoJyknYGtkZ2lgVWlkZmBtamlhYHd2Jz9xd3BgeCUl';
-          return HelperClass(
-              mobile: SingleChildScrollView(
-                child: SizedBox(
-                  height: size.height * .8,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(
-                          height: 50,
-                          width: 220,
-                          child: DefaultButton(
-                            text: 'Solo',
-                            action: () async {
-                              if (kIsWeb) {
-                                if (PlatformDispatcher.instance.locale
-                                        .toString() ==
-                                    'pt_BR') {
-                                  launchUrl(Uri.parse(soloBRLUrl));
-                                } else {
-                                  launchUrl(Uri.parse(soloUSDUrl));
-                                }
-                              } else {
-                                String customerId = await StripeServices()
-                                    .createCustomer(
-                                        context,
-                                        texts,
-                                        await AuthServices().getUserName(),
-                                        await AuthServices().getUserEmail());
-                                try {
-                                  List? intentData = await StripeServices()
-                                      .createPaymentIntent(
-                                          context,
-                                          texts,
-                                          customerId,
-                                          PlatformDispatcher.instance.locale
-                                                      .toString() ==
-                                                  'pt_BR'
-                                              ? StripeServices().soloBRLId
-                                              : StripeServices().soloUSDId);
-                                  final clientSecret = intentData![0];
-                                  final intentId = intentData[1];
-                                  if (clientSecret == null) {
-                                    throw Exception(
-                                        "Erro ao criar o PaymentIntent");
-                                  }
-
-                                  await StripeServices().showPaymentSheet(
-                                    context,
-                                    texts,
-                                    clientSecret,
-                                    customerId,
-                                    ref.watch(themeNotifierProvider),
-                                  );
-                                  if (kDebugMode) {
-                                    print("Pagamento confirmado!");
-                                  }
-                                  await StripeServices()
-                                      .retrieveAndAttachPaymentMethod(
-                                          intentId, customerId);
-                                  final subscriptionId = await StripeServices()
-                                      .createSubscription(
-                                          context,
-                                          texts,
-                                          customerId,
-                                          PlatformDispatcher.instance.locale
-                                                      .toString() ==
-                                                  'pt_BR'
-                                              ? StripeServices().soloBRLprice
-                                              : StripeServices().soloUSDprice,
-                                          StripeServices().soloBRLId);
-                                  if (subscriptionId != null) {
-                                    if (kDebugMode) {
-                                      print(
-                                          "Assinatura criada com sucesso! ID: $subscriptionId");
-                                    }
-                                  } else {
-                                    throw Exception(
-                                        "Erro ao criar a assinatura");
-                                  }
-                                } catch (e) {
-                                  if (kDebugMode) {
-                                    print("Erro no processo de assinatura: $e");
-                                  }
-                                }
-                              }
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 50,
-                          width: 220,
-                          child: DefaultButton(
-                            text: 'Team',
-                            action: () {
-                              try {} catch (e) {
-                                if (kDebugMode) {
-                                  print(e);
-                                }
-                              }
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 50,
-                          width: 220,
-                          child: DefaultButton(
-                            text: 'Check Subscription',
-                            action: () {
-                              try {} catch (e) {
-                                if (kDebugMode) {
-                                  showSnackBar(context, e.toString());
-                                }
-                              }
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 50,
-                          width: 220,
-                          child: DefaultButton(
-                            text: 'Change Subscription',
-                            action: () {
-                              try {} catch (e) {
-                                if (kDebugMode) {
-                                  showSnackBar(context, e.toString());
-                                }
-                              }
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          height: 50,
-                          width: 220,
-                          child: DefaultButton(
-                            text: 'Cancel Subscription',
-                            action: () {
-                              try {} catch (e) {
-                                if (kDebugMode) {
-                                  print(e);
-                                }
-                              }
-                            },
-                          ),
-                        ),
-                      ],
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  texts['sell'][9],
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      PlatformDispatcher.instance.locale.toString() == 'pt_BR'
+                          ? 'R\$ 9'
+                          : '\$4',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineLarge!
+                          .copyWith(fontWeight: FontWeight.bold),
                     ),
-                  ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          ',90',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          texts['sell'][14],
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+            const Spacer(),
+            Text(texts['sell'][10]),
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Consumer(builder:
+                    (BuildContext context, WidgetRef ref, Widget? child) {
+                  return DefaultButton(
+                    text: texts['sell'][5],
+                    action: () {
+                      StripeServices()
+                          .soloPlanButtonAction(context, ref, texts);
+                    },
+                  );
+                }),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TeamPlanCard extends StatelessWidget {
+  const TeamPlanCard({
+    super.key,
+    required this.texts,
+  });
+
+  final Map texts;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 225,
+      width: 390,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        ),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.secondary,
+          width: 2, // Largura da borda
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(2, 4),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  texts['sell'][11],
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
-              ),
-              tablet: SingleChildScrollView(
-                child: SizedBox(
-                  height: size.height * .8,
-                  child: const Placeholder(),
-                ),
-              ),
-              desktop: SingleChildScrollView(
-                child: SizedBox(
-                  height: size.height * .8,
-                  child: const Placeholder(),
-                ),
-              ),
-              paddingWidth: size.width * .1,
-              bgColor: Theme.of(context).colorScheme.surface);
-        },
+                Row(
+                  children: [
+                    Text(
+                      PlatformDispatcher.instance.locale.toString() == 'pt_BR'
+                          ? 'R\$14'
+                          : '\$9',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineLarge!
+                          .copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          ',90',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          texts['sell'][14],
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+            const Spacer(),
+            Text(texts['sell'][12]),
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Consumer(builder:
+                    (BuildContext context, WidgetRef ref, Widget? child) {
+                  return DefaultButton(
+                    text: texts['sell'][5],
+                    action: () {
+                      StripeServices()
+                          .teamPlanButtonAction(context, ref, texts);
+                    },
+                  );
+                }),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

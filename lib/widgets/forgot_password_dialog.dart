@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stockchef/utilities/auth_services.dart';
+import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
 
@@ -53,7 +53,7 @@ void forgotPasswordDialog(BuildContext context, Map texts) {
                             .limit(1)
                             .get();
                         if (querySnapshot.docs.isNotEmpty) {
-                          AuthServices()
+                          FirebaseServices()
                               .forgotPassowrd(context, texts, email.text)
                               .then((value) {
                             ref.read(isLoadingForgotPasswordProvider.notifier).state = false;

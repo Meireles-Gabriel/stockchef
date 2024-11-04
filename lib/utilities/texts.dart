@@ -70,6 +70,16 @@ List<String> sellPT = [
   'Contrate a assinatura e entre novamente para aproveitar suas novas funcionalidades.', //4
   'Assinar', //5
   'Cancelar', //6
+  'Seu período de teste acaba em ', //7
+  ' dia(s)', //8
+  'Plano Solo', //9
+  '- Gestão completa de 1 estoque.\n- Gestão de "Preparações": Partes menores de receitas maiores já produzidas e armazenadas (molhos, recheios, massas de fermentação, etc).\n- Painel de Controle com resumo de informações (produtos em falta, alertas de estoque mínimo e datas de validade).\n- Criação automática de listas de compras em PDF, levando em consideração as "Preparações" já produzidas.', //10
+  'Plano Equipe', //11
+  '-Todos os benefícios do Plano Solo.\n- Gestão completa de múltiplos estoques.\n- Compartilhamento de estoques com até 2 outros usuários, sejam eles assinantes ou não.', //12
+  'Escolha o Plano Ideal para o seu Negócio', //13
+  '/mês',//14
+  'Por enquanto não',//15
+  'Seu período de teste acabou.',//16
 ];
 List<String> sellEN = [
   'Something went wrong. Please try again later.', //0
@@ -79,7 +89,18 @@ List<String> sellEN = [
   'Subscribe and log in again to enjoy your new features.', //4
   'Subscribe', //5
   'Cancel', //6
+  'Your trial period ends in ', //7
+  ' day(s)', //8
+  'Solo Plan', //9
+  '- Complete management of 1 inventory.\n- Management of "Preparations": Smaller components of larger recipes already produced and stored (sauces, fillings, fermentation doughs, etc.).\n- Dashboard with a summary of information (out-of-stock items, minimum stock alerts, and expiration dates).\n- Automatic creation of shopping lists in PDF, taking into account already produced "Preparations."', //11
+  'Team Plan', //11
+  'All benefits of the Solo Plan.\n- Complete management of multiple inventories.\n- Inventory Sharing with up to 2 other users, whether they are subscribers or not.', //12
+  'Choose the Ideal Plan for Your Business', //13
+  '/month',//14
+  'Not for now',//15
+  'Your trial period has ended.',//16
 ];
+
 Map<String, List<String>> portugueseTexts = {
   'intro': introPT,
   'login': loginPT,

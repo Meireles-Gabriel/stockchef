@@ -26,8 +26,7 @@ class HelperClass extends StatelessWidget {
             width: size.width,
             alignment: Alignment.center,
             color: bgColor,
-            padding: EdgeInsets.symmetric(
-                vertical: size.height * 0.03, horizontal: 10),
+            padding: EdgeInsets.fromLTRB(10, 0, 10, size.height * 0.03),
             child: mobile,
           );
         } else if (constraints.maxWidth < 1200) {
@@ -36,8 +35,7 @@ class HelperClass extends StatelessWidget {
             width: size.width,
             alignment: Alignment.center,
             color: bgColor,
-            padding: EdgeInsets.symmetric(
-                vertical: size.height * 0.03, horizontal: paddingWidth),
+            padding: EdgeInsets.fromLTRB(10, 0, 10, size.height * 0.03),
             child: tablet,
           );
         } else {
@@ -46,8 +44,8 @@ class HelperClass extends StatelessWidget {
             width: size.width,
             alignment: Alignment.center,
             color: bgColor,
-            padding: EdgeInsets.symmetric(
-                vertical: size.height * 0.05, horizontal: paddingWidth * 2),
+            padding:
+                EdgeInsets.fromLTRB(paddingWidth * 2, 0, paddingWidth * 2, 0),
             child: desktop,
           );
         }

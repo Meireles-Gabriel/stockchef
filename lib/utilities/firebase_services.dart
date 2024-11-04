@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:stockchef/utilities/stripe_services.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
 
-class AuthServices {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class FirebaseServices {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<String> signUp({
     required BuildContext context,
@@ -32,19 +32,21 @@ class AuthServices {
     }
 
     try {
-      final userCredential = await _auth.createUserWithEmailAndPassword(
+      final userCredential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      await _firestore.collection('Users').doc(userCredential.user!.uid).set({
+      await firestore.collection('Users').doc(userCredential.user!.uid).set({
         'name': name,
         'email': email,
         'subscriptionType': 'trial',
         'subscriptionStartDate': DateTime.now().toString(),
         'subscriptionId': '',
+        'subscriptionStatus': 'notSubscribed',
         'customerId': '',
         'shareWith': '',
+        'receiveFrom': '',
         'createdAt': DateTime.now().toString(),
       });
 
@@ -71,58 +73,21 @@ class AuthServices {
       required String password}) async {
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
-        await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
+        await auth.signInWithEmailAndPassword(email: email, password: password);
         try {
-          final user = FirebaseAuth.instance.currentUser;
-          final uid = user!.uid;
-
-          String? userStripeId =
-              await StripeServices().getCustomerIdByEmail(email);
-          if (userStripeId == null) {
-            FirebaseFirestore.instance
-                .collection('Users')
-                .doc(await AuthServices().getUserUID())
-                .update({'subscritionId': '', 'subscriptionType': 'trial'});
-          } else {
-            String? subscriptionId =
-                await StripeServices().getActiveSubscriptionId(userStripeId);
-            if (subscriptionId == null) {
-              FirebaseFirestore.instance
-                  .collection('Users')
-                  .doc(await AuthServices().getUserUID())
-                  .update({'subscritionId': '', 'subscriptionType': 'trial'});
-            } else {
-              String? planId = await StripeServices().getPlanId(subscriptionId);
-              if (planId == null) {
-                FirebaseFirestore.instance
-                    .collection('Users')
-                    .doc(await AuthServices().getUserUID())
-                    .update({'subscritionId': '', 'subscriptionType': 'trial'});
-              } else {
-                FirebaseFirestore.instance
-                    .collection('Users')
-                    .doc(await AuthServices().getUserUID())
-                    .update({
-                  'subscritionId': subscriptionId,
-                  'subscriptionType': (planId == StripeServices().soloBRLId ||
-                          planId == StripeServices().soloUSDId)
-                      ? 'solo'
-                      : (planId == StripeServices().teamBRLId ||
-                              planId == StripeServices().teamUSDId)
-                          ? 'team'
-                          : 'trial'
-                });
-              }
-            }
-          }
+          String? subscription =
+              await StripeServices().getCustomerSubscription();
           final docSnapshot = await FirebaseFirestore.instance
               .collection('Users')
-              .doc(uid)
+              .doc(auth.currentUser!.uid)
               .get();
-          String subscription = docSnapshot.data()!['subscriptionType'];
+
+          String receiveFrom = docSnapshot.data()!['receiveFrom'];
           Navigator.pushNamed(
-              context, subscription == 'trial' ? '/sell' : '/dashboard');
+              context,
+              (subscription == 'trial' && receiveFrom == '')
+                  ? '/sell'
+                  : '/dashboard');
         } catch (e) {
           showSnackBar(context, texts['login'][9]);
           return e.toString();
@@ -149,7 +114,7 @@ class AuthServices {
 
   Future<String> logOut(context) async {
     try {
-      await _auth.signOut().then((value) {
+      await auth.signOut().then((value) {
         Navigator.pushNamed(context, '/intro');
       });
 
@@ -160,7 +125,7 @@ class AuthServices {
   }
 
   Future<void> forgotPassowrd(context, texts, email) async {
-    await _auth.sendPasswordResetEmail(email: email).then((value) {
+    await auth.sendPasswordResetEmail(email: email).then((value) {
       showSnackBar(
         context,
         texts['login'][13],
@@ -173,16 +138,10 @@ class AuthServices {
     });
   }
 
-  Future<String> getUserUID() async {
-    final user = FirebaseAuth.instance.currentUser;
-
-    return user!.uid;
-  }
-
   Future<String> getUserSubscription() async {
     final docSnapshot = await FirebaseFirestore.instance
         .collection('Users')
-        .doc(await getUserUID())
+        .doc(auth.currentUser!.uid)
         .get();
 
     return docSnapshot.data()!['subscriptionType'];
@@ -191,25 +150,16 @@ class AuthServices {
   Future<String> getUserCustomerId() async {
     final docSnapshot = await FirebaseFirestore.instance
         .collection('Users')
-        .doc(await getUserUID())
+        .doc(auth.currentUser!.uid)
         .get();
 
     return docSnapshot.data()!['customerId'];
   }
 
-  Future<String> getUserEmail() async {
-    final docSnapshot = await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(await getUserUID())
-        .get();
-
-    return docSnapshot.data()!['email'];
-  }
-
   Future<String> getUserName() async {
     final docSnapshot = await FirebaseFirestore.instance
         .collection('Users')
-        .doc(await getUserUID())
+        .doc(auth.currentUser!.uid)
         .get();
 
     return docSnapshot.data()!['name'];

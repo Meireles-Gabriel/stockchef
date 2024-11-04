@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stockchef/utilities/auth_services.dart';
+import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/utilities/helper_class.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
 import 'package:stockchef/widgets/default_button.dart';
@@ -227,7 +227,7 @@ class LogInFields extends ConsumerWidget {
                           : () {
                               ref.read(isLoadingLogInProvider.notifier).state =
                                   true;
-                              AuthServices()
+                              FirebaseServices()
                                   .logIn(
                                       context: context,
                                       texts: texts,
@@ -346,7 +346,7 @@ class SignUpFields extends ConsumerWidget {
                           : () {
                               ref.read(isLoadingSignUpProvider.notifier).state =
                                   true;
-                              AuthServices()
+                              FirebaseServices()
                                   .signUp(
                                       context: context,
                                       texts: texts,
