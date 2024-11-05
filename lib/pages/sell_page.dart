@@ -3,12 +3,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stockchef/pages/login_page.dart';
 import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/utilities/helper_class.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
 import 'package:stockchef/utilities/stripe_services.dart';
 import 'package:stockchef/widgets/default_button.dart';
+import 'package:stockchef/widgets/h_divider.dart';
+import 'package:stockchef/widgets/v_divider.dart';
 
 class SellPage extends StatefulWidget {
   const SellPage({super.key});

@@ -188,3 +188,27 @@ class IntroBody extends ConsumerWidget {
     );
   }
 }
+
+
+// class DefaultPage extends ConsumerWidget {
+//   const DefaultPage({super.key});
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final Size size = MediaQuery.sizeOf(context);
+//     ThemeMode theme = ref.watch(themeNotifierProvider);
+//     Map texts = ref.watch(languageNotifierProvider)['texts'];
+//     return Scaffold(
+//       appBar: AppBar(),
+//       bottomNavigationBar: DefaultBottomAppBar(texts: texts),
+//       drawer: DefaultDrawer(theme: theme, texts: texts),
+//       body: HelperClass(
+//         mobile: const Text('Page'),
+//         tablet: const Placeholder(),
+//         desktop: const Placeholder(),
+//         paddingWidth: size.width * .1,
+//         bgColor: Theme.of(context).colorScheme.surface,
+//       ),
+//     );
+//   }
+// }

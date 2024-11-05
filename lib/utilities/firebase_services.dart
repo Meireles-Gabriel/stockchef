@@ -115,7 +115,6 @@ class FirebaseServices {
   Future<String> logOut(context) async {
     try {
       await auth.signOut().then((value) {
-        Navigator.pushNamed(context, '/intro');
       });
 
       return 'success';

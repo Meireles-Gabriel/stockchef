@@ -5,7 +5,9 @@ import 'package:stockchef/utilities/helper_class.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
 import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/forgot_password_dialog.dart';
+import 'package:stockchef/widgets/h_divider.dart';
 import 'package:stockchef/widgets/language_switch.dart';
+import 'package:stockchef/widgets/v_divider.dart';
 
 final isLoadingLogInProvider = StateProvider<bool>(
   (ref) => false,
@@ -100,68 +102,6 @@ class LoginPage extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-}
-
-class HDivider extends StatelessWidget {
-  const HDivider({
-    super.key,
-    required this.texts,
-  });
-
-  final Map texts;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Expanded(
-          child: Divider(),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        Text(texts['login'][5]),
-        const SizedBox(
-          width: 10,
-        ),
-        const Expanded(
-          child: Divider(),
-        )
-      ],
-    );
-  }
-}
-
-class VDivider extends StatelessWidget {
-  const VDivider({
-    super.key,
-    required this.texts,
-  });
-
-  final Map texts;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Expanded(
-          child: VerticalDivider(),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Text(texts['login'][5]),
-        const SizedBox(
-          height: 10,
-        ),
-        const Expanded(
-          child: VerticalDivider(),
-        )
-      ],
     );
   }
 }

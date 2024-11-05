@@ -73,13 +73,13 @@ List<String> sellPT = [
   'Seu período de teste acaba em ', //7
   ' dia(s)', //8
   'Plano Solo', //9
-  '- Gestão completa de 1 estoque.\n- Gestão de "Preparações": Partes menores de receitas maiores já produzidas e armazenadas (molhos, recheios, massas de fermentação, etc).\n- Painel de Controle com resumo de informações (produtos em falta, alertas de estoque mínimo e datas de validade).\n- Criação automática de listas de compras em PDF, levando em consideração as "Preparações" já produzidas.', //10
+  '- Gestão completa de 1 estoque.\n- Gestão de "Preparações": Partes menores de receitas maiores já produzidas e armazenadas (molhos, recheios, massas de fermentação, etc).\n- Painel de Controle com resumo de informações (produtos em falta, alertas de estoque mínimo e datas de validade).\n- Criação de listas de compras em PDF, levando em consideração as "Preparações" já produzidas.', //10
   'Plano Equipe', //11
   '-Todos os benefícios do Plano Solo.\n- Gestão completa de múltiplos estoques.\n- Compartilhamento de estoques com até 2 outros usuários, sejam eles assinantes ou não.', //12
   'Escolha o Plano Ideal para o seu Negócio', //13
-  '/mês',//14
-  'Por enquanto não',//15
-  'Seu período de teste acabou.',//16
+  '/mês', //14
+  'Por enquanto não', //15
+  'Seu período de teste acabou.', //16
 ];
 List<String> sellEN = [
   'Something went wrong. Please try again later.', //0
@@ -92,22 +92,52 @@ List<String> sellEN = [
   'Your trial period ends in ', //7
   ' day(s)', //8
   'Solo Plan', //9
-  '- Complete management of 1 inventory.\n- Management of "Preparations": Smaller components of larger recipes already produced and stored (sauces, fillings, fermentation doughs, etc.).\n- Dashboard with a summary of information (out-of-stock items, minimum stock alerts, and expiration dates).\n- Automatic creation of shopping lists in PDF, taking into account already produced "Preparations."', //11
+  '- Complete management of 1 inventory.\n- Management of "Preparations": Smaller components of larger recipes already produced and stored (sauces, fillings, fermentation doughs, etc.).\n- Dashboard with a summary of information (out-of-stock items, minimum stock alerts, and expiration dates).\n- Creation of shopping lists in PDF, taking into account already produced "Preparations."', //11
   'Team Plan', //11
   'All benefits of the Solo Plan.\n- Complete management of multiple inventories.\n- Inventory Sharing with up to 2 other users, whether they are subscribers or not.', //12
   'Choose the Ideal Plan for Your Business', //13
-  '/month',//14
-  'Not for now',//15
-  'Your trial period has ended.',//16
+  '/month', //14
+  'Not for now', //15
+  'Your trial period has ended.', //16
 ];
+
+List<String> dashboardPT = [
+  'Painel de Controle',//0
+  'Itens', //1
+  'Preparações', //2
+  'Configurações', //3
+  'Trocar de Conta', //4
+  'Sair do Aplicativo', //5
+  
+];
+List<String> dashboardEN = [
+  'Dashboard', //0
+  'Itens', //1
+  'Preparations', //2
+  'Settings', //3
+  'Switch Account', //4
+  'Exit App', //5
+];
+
+List<String> itensPT = [];
+List<String> itensEN = [];
+
+List<String> preparationsPT = [];
+List<String> preparationsEN = [];
 
 Map<String, List<String>> portugueseTexts = {
   'intro': introPT,
   'login': loginPT,
   'sell': sellPT,
+  'dashboard': dashboardPT,
+  'itens': itensPT,
+  'preparations': preparationsPT,
 };
 Map<String, List<String>> englishTexts = {
   'intro': introEN,
   'login': loginEN,
   'sell': sellEN,
+  'dashboard': dashboardEN,
+  'itens': itensEN,
+  'preparations': preparationsEN,
 };

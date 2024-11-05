@@ -9,8 +9,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:stockchef/pages/dashboard_page.dart';
 import 'package:stockchef/pages/intro_page.dart';
+import 'package:stockchef/pages/itens_page.dart';
 import 'package:stockchef/pages/login_page.dart';
+import 'package:stockchef/pages/preparations_page.dart';
 import 'package:stockchef/pages/sell_page.dart';
+import 'package:stockchef/pages/settings_page.dart';
 import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/utilities/design.dart';
 import 'package:stockchef/utilities/firebase_options.dart';
@@ -148,6 +151,9 @@ class _MainAppState extends State<MainApp> {
           '/login': (context) => const LoginPage(),
           '/sell': (context) => const SellPage(),
           '/dashboard': (context) => const DashboardPage(),
+          '/itens': (context) => const ItensPage(),
+          '/preparations': (context) => const PreparationsPage(),
+          '/settings': (context) => const SettingsPage(),
         },
       );
     });
