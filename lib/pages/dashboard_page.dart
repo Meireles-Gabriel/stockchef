@@ -18,6 +18,7 @@ class DashboardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    
     final Size size = MediaQuery.sizeOf(context);
     ThemeMode theme = ref.watch(themeNotifierProvider);
     Map texts = ref.watch(languageNotifierProvider)['texts'];

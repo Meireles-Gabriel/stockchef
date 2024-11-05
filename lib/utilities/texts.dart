@@ -102,13 +102,12 @@ List<String> sellEN = [
 ];
 
 List<String> dashboardPT = [
-  'Painel de Controle',//0
+  'Painel de Controle', //0
   'Itens', //1
   'Preparações', //2
   'Configurações', //3
   'Trocar de Conta', //4
   'Sair do Aplicativo', //5
-  
 ];
 List<String> dashboardEN = [
   'Dashboard', //0
@@ -119,8 +118,23 @@ List<String> dashboardEN = [
   'Exit App', //5
 ];
 
-List<String> itensPT = [];
-List<String> itensEN = [];
+List<String> itensPT = [
+  'No plano atual é possível criar apenas 1 Estoque. Mude para o Plano Equipe e tenha Estoques ilimitados!', //0
+  'Novo Estoque', //1
+  'Nome', //2
+  'Criar', //3
+  'Já existe um Estoque com este nome.', //4
+  'Digite um nome para o Estoque.', //5
+];
+
+List<String> itensEN = [
+  'With the current plan, you can create only 1 Inventory. Switch to the Team Plan for unlimited Inventories!', //0
+  'New Inventory', //1
+  'Name', //2
+  'Create', //3
+  'An inventory with this name already exists.', //4
+  'Enter a name for the Inventory.',//5
+];
 
 List<String> preparationsPT = [];
 List<String> preparationsEN = [];

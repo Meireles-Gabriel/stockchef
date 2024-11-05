@@ -14,7 +14,7 @@ class LanguageSwitch extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           PopupMenuButton<String>(
-            tooltip: currentLanguage == 'en'? 'Mudar Idioma': 'Change Language',
+            tooltip: currentLanguage == 'pt'? 'Change Language': 'Mudar Idioma',
             color: Theme.of(context).colorScheme.surface,
             onSelected: (value) async {
               final isEnglish = value == 'en';

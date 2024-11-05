@@ -3,18 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/utilities/helper_class.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
+import 'package:stockchef/utilities/providers.dart';
 import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/forgot_password_dialog.dart';
 import 'package:stockchef/widgets/h_divider.dart';
 import 'package:stockchef/widgets/language_switch.dart';
 import 'package:stockchef/widgets/v_divider.dart';
 
-final isLoadingLogInProvider = StateProvider<bool>(
-  (ref) => false,
-);
-final isLoadingSignUpProvider = StateProvider<bool>(
-  (ref) => false,
-);
+
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

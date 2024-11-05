@@ -4,12 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stockchef/utilities/firebase_services.dart';
+import 'package:stockchef/utilities/providers.dart';
 import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
 
-final isLoadingForgotPasswordProvider = StateProvider<bool>(
-  (ref) => false,
-);
+
 void forgotPasswordDialog(BuildContext context, Map texts) {
   showDialog(
     barrierDismissible: false,

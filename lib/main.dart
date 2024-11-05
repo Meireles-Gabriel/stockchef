@@ -39,7 +39,7 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   String userSubscriptionType = 'not logged';
-  String userReceiveFrom = '';
+  List userReceiveFrom = [];
 
   Future<void> _userSubscriptionType() async {
     try {
@@ -136,7 +136,7 @@ class _MainAppState extends State<MainApp> {
                       );
                     } else {
                       return (userSubscriptionType == 'trial' &&
-                              userReceiveFrom == '')
+                              userReceiveFrom == [])
                           ? const SellPage()
                           : const DashboardPage();
                     }

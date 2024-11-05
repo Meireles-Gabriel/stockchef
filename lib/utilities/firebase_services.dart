@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:stockchef/utilities/providers.dart';
 import 'package:stockchef/utilities/stripe_services.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
 
@@ -45,8 +46,8 @@ class FirebaseServices {
         'subscriptionId': '',
         'subscriptionStatus': 'notSubscribed',
         'customerId': '',
-        'shareWith': '',
-        'receiveFrom': '',
+        'shareWith': [],
+        'receiveFrom': [],
         'createdAt': DateTime.now().toString(),
       });
 
@@ -82,10 +83,10 @@ class FirebaseServices {
               .doc(auth.currentUser!.uid)
               .get();
 
-          String receiveFrom = docSnapshot.data()!['receiveFrom'];
+          List receiveFrom = docSnapshot.data()!['receiveFrom'];
           Navigator.pushNamed(
               context,
-              (subscription == 'trial' && receiveFrom == '')
+              (subscription == 'trial' && receiveFrom == [])
                   ? '/sell'
                   : '/dashboard');
         } catch (e) {
@@ -114,8 +115,7 @@ class FirebaseServices {
 
   Future<String> logOut(context) async {
     try {
-      await auth.signOut().then((value) {
-      });
+      await auth.signOut().then((value) {});
 
       return 'success';
     } catch (e) {
@@ -162,5 +162,37 @@ class FirebaseServices {
         .get();
 
     return docSnapshot.data()!['name'];
+  }
+
+  Future<void> createStock(name) async {
+    await firestore.collection('Stocks').doc().set({
+      'name': name,
+      'owner': auth.currentUser!.email,
+      'sharedWith': [],
+      'canEdit': [],
+    });
+  }
+
+  Future<List> getStocks(ref) async {
+    var ownedStocks = await FirebaseServices()
+        .firestore
+        .collection('Stocks')
+        .where('owner', isEqualTo: FirebaseServices().auth.currentUser!.email)
+        .get();
+    var sharedStocks = await FirebaseServices()
+        .firestore
+        .collection('Stocks')
+        .where('sharedWith',
+            arrayContains: FirebaseServices().auth.currentUser!.email)
+        .get();
+    List stocks = [];
+    for (var doc in ownedStocks.docs) {
+      stocks.add(doc);
+    }
+    for (var doc in sharedStocks.docs) {
+      stocks.add(doc);
+    }
+    ref.read(stocksProvider.notifier).state = stocks;
+    return stocks;
   }
 }
