@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stockchef/utilities/providers.dart';
 import 'package:stockchef/utilities/stripe_services.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
@@ -86,7 +87,7 @@ class FirebaseServices {
           List receiveFrom = docSnapshot.data()!['receiveFrom'];
           Navigator.pushNamed(
               context,
-              (subscription == 'trial' && receiveFrom == [])
+              (subscription == 'trial' && receiveFrom.isEmpty)
                   ? '/sell'
                   : '/dashboard');
         } catch (e) {
@@ -164,13 +165,21 @@ class FirebaseServices {
     return docSnapshot.data()!['name'];
   }
 
-  Future<void> createStock(name) async {
+  Future<void> createStock(WidgetRef ref, String name) async {
     await firestore.collection('Stocks').doc().set({
       'name': name,
       'owner': auth.currentUser!.email,
       'sharedWith': [],
       'canEdit': [],
     });
+    var colection = await firestore
+        .collection('Stocss')
+        .where('name', isEqualTo: name)
+        .where('owner', isEqualTo: auth.currentUser!.email)
+        .get();
+    ref.read(currentStockProvider.notifier).state = colection.docs;
+    ref.read(itemsProvider.notifier).state = null;
+    ref.read(preparationsProvider.notifier).state = null;
   }
 
   Future<List> getStocks(ref) async {
@@ -193,6 +202,19 @@ class FirebaseServices {
       stocks.add(doc);
     }
     ref.read(stocksProvider.notifier).state = stocks;
+    if (ref.watch(currentStockProvider) == null && stocks.isNotEmpty) {
+      ref.read(currentStockProvider.notifier).state = stocks[0];
+      ref.read(itemsProvider.notifier).state =
+          stocks[0].reference.colection('Items').get();
+    }
     return stocks;
+  }
+
+  Future<void> setStock(WidgetRef ref, doc) async {
+    ref.read(currentStockProvider.notifier).state = doc;
+    ref.read(itemsProvider.notifier).state =
+        doc.reference.colection('Items').get();
+    ref.read(preparationsProvider.notifier).state =
+        doc.reference.colection('Preparations').get();
   }
 }

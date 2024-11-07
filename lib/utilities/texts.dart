@@ -111,29 +111,34 @@ List<String> dashboardPT = [
 ];
 List<String> dashboardEN = [
   'Dashboard', //0
-  'Itens', //1
+  'Items', //1
   'Preparations', //2
   'Settings', //3
   'Switch Account', //4
   'Exit App', //5
 ];
 
-List<String> itensPT = [
+List<String> itemsPT = [
   'No plano atual é possível criar apenas 1 Estoque. Mude para o Plano Equipe e tenha Estoques ilimitados!', //0
   'Novo Estoque', //1
   'Nome', //2
   'Criar', //3
   'Já existe um Estoque com este nome.', //4
   'Digite um nome para o Estoque.', //5
+  'Crie seu primeiro Estoque ', //6
+  'Não há Itens cadastrados.', //7
+  'Adicionar Item', //8
 ];
-
-List<String> itensEN = [
+List<String> itemsEN = [
   'With the current plan, you can create only 1 Inventory. Switch to the Team Plan for unlimited Inventories!', //0
   'New Inventory', //1
   'Name', //2
   'Create', //3
-  'An inventory with this name already exists.', //4
-  'Enter a name for the Inventory.',//5
+  'An Inventory with this name already exists.', //4
+  'Enter a name for the Inventory.', //5
+  'Create your first Inventory', //6
+  'No Items registered.', //7
+  'Add Item', //8
 ];
 
 List<String> preparationsPT = [];
@@ -144,7 +149,7 @@ Map<String, List<String>> portugueseTexts = {
   'login': loginPT,
   'sell': sellPT,
   'dashboard': dashboardPT,
-  'itens': itensPT,
+  'items': itemsPT,
   'preparations': preparationsPT,
 };
 Map<String, List<String>> englishTexts = {
@@ -152,6 +157,6 @@ Map<String, List<String>> englishTexts = {
   'login': loginEN,
   'sell': sellEN,
   'dashboard': dashboardEN,
-  'itens': itensEN,
+  'items': itemsEN,
   'preparations': preparationsEN,
 };

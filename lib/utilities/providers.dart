@@ -9,10 +9,12 @@ final isLoadingSignUpProvider = StateProvider<bool>(
 final isLoadingForgotPasswordProvider = StateProvider<bool>(
   (ref) => false,
 );
-
-final isLoadingItensProvider = StateProvider<bool>(
+final isLoadingItemsProvider = StateProvider<bool>(
   (ref) => false,
 );
 final stocksProvider = StateProvider<List>(
   (ref) => [],
 );
+final currentStockProvider = StateProvider<dynamic>((ref) => null);
+final itemsProvider = StateProvider<dynamic>((ref) => null);
+final preparationsProvider = StateProvider<dynamic>((ref) => null);

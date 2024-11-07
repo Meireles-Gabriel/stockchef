@@ -6,13 +6,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/utilities/helper_class.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
+import 'package:stockchef/utilities/providers.dart';
 import 'package:stockchef/utilities/theme_notifier.dart';
 import 'package:stockchef/widgets/add_stock_button.dart';
 import 'package:stockchef/widgets/default_bottom_app_bar.dart';
+import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/default_drawer.dart';
+import 'package:stockchef/widgets/stock_selection_button.dart';
 
-class ItensPage extends ConsumerWidget {
-  const ItensPage({super.key});
+class ItemsPage extends ConsumerWidget {
+  const ItemsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,13 +48,35 @@ class ItensPage extends ConsumerWidget {
             } else if (snapshot.hasData) {
               // Exibe os dados
               return HelperClass(
-                mobile: Row(
+                mobile: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-
-                    AddStockButton(
-                      texts: texts,
-                      ref: ref,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        StockSelectionButton(texts: texts),
+                        AddStockButton(
+                          texts: texts,
+                        ),
+                      ],
                     ),
+                    ref.watch(itemsProvider) == null
+                        ? Text(texts['items'][7])
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: ref.watch(itemsProvider).docs.length,
+                            itemBuilder: (context, index) {
+                              final doc = ref.watch(itemsProvider).docs[index];
+                              final data = doc.data() as Map<String, dynamic>;
+                              return ListTile(
+                                title: Text(data['name']),
+                                subtitle: Text(data['quantity']),
+                              );
+                            },
+                          ),
+                    ref.watch(currentStockProvider) != null
+                        ? DefaultButton(text: texts['items'][8], action: () {})
+                        : const SizedBox(),
                   ],
                 ),
                 tablet: const Placeholder(),

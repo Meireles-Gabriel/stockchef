@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:stockchef/pages/dashboard_page.dart';
 import 'package:stockchef/pages/intro_page.dart';
-import 'package:stockchef/pages/itens_page.dart';
+import 'package:stockchef/pages/items_page.dart';
 import 'package:stockchef/pages/login_page.dart';
 import 'package:stockchef/pages/preparations_page.dart';
 import 'package:stockchef/pages/sell_page.dart';
@@ -136,7 +136,7 @@ class _MainAppState extends State<MainApp> {
                       );
                     } else {
                       return (userSubscriptionType == 'trial' &&
-                              userReceiveFrom == [])
+                              userReceiveFrom.isEmpty)
                           ? const SellPage()
                           : const DashboardPage();
                     }
@@ -151,7 +151,7 @@ class _MainAppState extends State<MainApp> {
           '/login': (context) => const LoginPage(),
           '/sell': (context) => const SellPage(),
           '/dashboard': (context) => const DashboardPage(),
-          '/itens': (context) => const ItensPage(),
+          '/items': (context) => const ItemsPage(),
           '/preparations': (context) => const PreparationsPage(),
           '/settings': (context) => const SettingsPage(),
         },

@@ -20,7 +20,7 @@ class DefaultBottomAppBar extends StatelessWidget {
             text: texts['dashboard'][1],
             icon: Icons.shelves,
             action: () {
-              Navigator.pushNamed(context, '/itens');
+              Navigator.pushNamed(context, '/items');
             },
           ),
           const VerticalDivider(),

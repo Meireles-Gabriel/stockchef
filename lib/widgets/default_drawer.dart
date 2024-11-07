@@ -80,7 +80,7 @@ class DefaultDrawer extends StatelessWidget {
               ),
               DefaultDrawerButton(
                 action: () {
-                  Navigator.pushNamed(context, '/itens');
+                  Navigator.pushNamed(context, '/items');
                 },
                 text: texts['dashboard'][1],
                 icon: Icons.shelves,

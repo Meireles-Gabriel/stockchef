@@ -7,108 +7,125 @@ import 'package:stockchef/utilities/providers.dart';
 import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
 
-class AddStockButton extends StatelessWidget {
+class AddStockButton extends ConsumerWidget {
   const AddStockButton({
     super.key,
     required this.texts,
-    required this.ref,
   });
 
   final Map texts;
-  final WidgetRef ref;
 
   @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.add),
-      onPressed: () async {
-        ref.read(isLoadingItensProvider.notifier).state = true;
-        final userData = await FirebaseServices()
-            .firestore
-            .collection('Users')
-            .doc(FirebaseServices().auth.currentUser!.uid)
-            .get();
-        final databasesData = await FirebaseServices()
-            .firestore
-            .collection('Stocks')
-            .where('owner',
-                isEqualTo: FirebaseServices().auth.currentUser!.email)
-            .get();
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      height: 50,
+      width: 50,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        border: Border.all(
+          color: Theme.of(context).colorScheme.secondary,
+          width: 2, // Largura da borda
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(2, 4),
+          ),
+        ],
+      ),
+      child: IconButton(
+        icon: const Icon(Icons.add),
+        onPressed: () async {
+          ref.read(isLoadingItemsProvider.notifier).state = true;
+          final userData = await FirebaseServices()
+              .firestore
+              .collection('Users')
+              .doc(FirebaseServices().auth.currentUser!.uid)
+              .get();
+          final databasesData = await FirebaseServices()
+              .firestore
+              .collection('Stocks')
+              .where('owner',
+                  isEqualTo: FirebaseServices().auth.currentUser!.email)
+              .get();
 
-        if ((userData.data()!['subscriptionType'] == 'trial' ||
-                userData.data()!['subscriptionType'] == 'solo') &&
-            databasesData.docs.isNotEmpty) {
-          ref.read(isLoadingItensProvider.notifier).state = false;
-          showSnackBar(context, texts['itens'][0]);
-        } else {
-          ref.read(isLoadingItensProvider.notifier).state = false;
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                final TextEditingController nameController =
-                    TextEditingController();
-                return AlertDialog(
-                  backgroundColor: Theme.of(context).colorScheme.surface,
-                  title: Text(texts['itens'][1]),
-                  content: TextField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      labelText: texts['itens'][2],
+          if ((userData.data()!['subscriptionType'] == 'trial' ||
+                  userData.data()!['subscriptionType'] == 'solo') &&
+              databasesData.docs.isNotEmpty) {
+            ref.read(isLoadingItemsProvider.notifier).state = false;
+            showSnackBar(context, texts['items'][0]);
+          } else {
+            ref.read(isLoadingItemsProvider.notifier).state = false;
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  final TextEditingController nameController =
+                      TextEditingController();
+                  return AlertDialog(
+                    backgroundColor: Theme.of(context).colorScheme.surface,
+                    title: Text(texts['items'][1]),
+                    content: TextField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        labelText: texts['items'][2],
+                      ),
                     ),
-                  ),
-                  actions: ref.watch(isLoadingItensProvider)
-                      ? [
-                          const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        ]
-                      : [
-                          TextButton(
-                            child: Text(texts['login'][17]),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          DefaultButton(
-                            text: texts['itens'][3],
-                            action: () async {
-                              for (var doc in databasesData.docs) {
-                                if (doc['name'] == nameController.text) {
+                    actions: ref.watch(isLoadingItemsProvider)
+                        ? [
+                            const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ]
+                        : [
+                            TextButton(
+                              child: Text(texts['login'][17]),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            DefaultButton(
+                              text: texts['items'][3],
+                              action: () async {
+                                for (var doc in databasesData.docs) {
+                                  if (doc['name'] == nameController.text) {
+                                    ref
+                                        .read(isLoadingItemsProvider.notifier)
+                                        .state = false;
+                                    showSnackBar(context, texts['items'][4])
+                                        .then((value) async {
+                                      await FirebaseServices().getStocks(ref);
+                                      Navigator.of(context).pop();
+                                    });
+                                  }
+                                }
+                                if (nameController.text != '') {
+                                  await FirebaseServices()
+                                      .createStock(ref, nameController.text)
+                                      .then((value) {
+                                    Navigator.of(context).pop();
+                                  });
                                   ref
-                                      .read(isLoadingItensProvider.notifier)
+                                      .read(isLoadingItemsProvider.notifier)
                                       .state = false;
-                                  showSnackBar(context, texts['itens'][4])
-                                      .then((value) async {
-                                    await FirebaseServices().getStocks(ref);
+                                } else {
+                                  ref
+                                      .read(isLoadingItemsProvider.notifier)
+                                      .state = false;
+                                  showSnackBar(context, texts['items'][5])
+                                      .then((value) {
                                     Navigator.of(context).pop();
                                   });
                                 }
-                              }
-                              if (nameController.text != '') {
-                                await FirebaseServices()
-                                    .createStock(nameController.text)
-                                    .then((value) {
-                                  Navigator.of(context).pop();
-                                });
-                                ref
-                                    .read(isLoadingItensProvider.notifier)
-                                    .state = false;
-                              } else {
-                                ref
-                                    .read(isLoadingItensProvider.notifier)
-                                    .state = false;
-                                showSnackBar(context, texts['itens'][5])
-                                    .then((value) {
-                                  Navigator.of(context).pop();
-                                });
-                              }
-                            },
-                          ),
-                        ],
-                );
-              });
-        }
-      },
+                              },
+                            ),
+                          ],
+                  );
+                });
+          }
+        },
+      ),
     );
   }
 }
