@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stockchef/utilities/language_notifier.dart';
 import 'package:stockchef/widgets/default_bottom_button.dart';
 
-class DefaultBottomAppBar extends StatelessWidget {
+class DefaultBottomAppBar extends ConsumerWidget {
   const DefaultBottomAppBar({
     super.key,
-    required this.texts,
   });
 
-  final Map texts;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    Map texts = ref.watch(languageNotifierProvider)['texts'];
     return BottomAppBar(
       height: 70,
       color: Theme.of(context).colorScheme.surface,

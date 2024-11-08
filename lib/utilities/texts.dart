@@ -141,6 +141,37 @@ List<String> itemsEN = [
   'Add Item', //8
 ];
 
+List<String> createItemPT = [
+  'Criar Item', //0
+  'Nome', //1
+  'Quantidade:', //2
+  'Quantidade Mín.:', //3
+  'Unidade de medida:', //4
+  'Data de Vencimento:', //5
+  'Não definido', //6
+  'Selecionar Unidade', //7
+  'Não definido', //8
+  'Cancelar', //9
+  'Criar', //10
+  'Preencha todos os campos.', //11
+  'Data de Vencimento inválida!', //12
+];
+List<String> createItemEN = [
+  'Create Item', //0
+  'Name', //1
+  'Quantity:', //2
+  'Min. Quantity:', //3
+  'Unit of measurement:', //4
+  'Expiration Date:', //5
+  'Not defined', //6
+  'Select Unit', //7
+  'Not defined', //8
+  'Cancel', //9
+  'Create', //10
+  'Fill in all fields.', //11
+  'Invalid Expiration Date!', //12
+];
+
 List<String> preparationsPT = [];
 List<String> preparationsEN = [];
 
@@ -150,6 +181,7 @@ Map<String, List<String>> portugueseTexts = {
   'sell': sellPT,
   'dashboard': dashboardPT,
   'items': itemsPT,
+  'create_item': createItemPT,
   'preparations': preparationsPT,
 };
 Map<String, List<String>> englishTexts = {
@@ -158,5 +190,6 @@ Map<String, List<String>> englishTexts = {
   'sell': sellEN,
   'dashboard': dashboardEN,
   'items': itemsEN,
+  'create_item': createItemEN,
   'preparations': preparationsEN,
 };

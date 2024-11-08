@@ -2,23 +2,23 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stockchef/utilities/firebase_services.dart';
+import 'package:stockchef/utilities/language_notifier.dart';
+import 'package:stockchef/utilities/theme_notifier.dart';
 import 'package:stockchef/widgets/default_drawer_button.dart';
 import 'package:stockchef/widgets/language_switch.dart';
 import 'package:stockchef/widgets/theme_switch.dart';
 
-class DefaultDrawer extends StatelessWidget {
+class DefaultDrawer extends ConsumerWidget {
   const DefaultDrawer({
     super.key,
-    required this.theme,
-    required this.texts,
   });
 
-  final ThemeMode theme;
-  final Map texts;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    Map texts = ref.watch(languageNotifierProvider)['texts'];
+    ThemeMode theme = ref.watch(themeNotifierProvider);
     return Drawer(
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(

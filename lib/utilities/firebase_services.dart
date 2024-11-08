@@ -173,11 +173,11 @@ class FirebaseServices {
       'canEdit': [],
     });
     var colection = await firestore
-        .collection('Stocss')
+        .collection('Stocks')
         .where('name', isEqualTo: name)
         .where('owner', isEqualTo: auth.currentUser!.email)
         .get();
-    ref.read(currentStockProvider.notifier).state = colection.docs;
+    ref.read(currentStockProvider.notifier).state = colection.docs[0];
     ref.read(itemsProvider.notifier).state = null;
     ref.read(preparationsProvider.notifier).state = null;
   }
@@ -208,13 +208,5 @@ class FirebaseServices {
           stocks[0].reference.colection('Items').get();
     }
     return stocks;
-  }
-
-  Future<void> setStock(WidgetRef ref, doc) async {
-    ref.read(currentStockProvider.notifier).state = doc;
-    ref.read(itemsProvider.notifier).state =
-        doc.reference.colection('Items').get();
-    ref.read(preparationsProvider.notifier).state =
-        doc.reference.colection('Preparations').get();
   }
 }

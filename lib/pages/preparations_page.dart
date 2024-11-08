@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stockchef/utilities/helper_class.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
-import 'package:stockchef/utilities/theme_notifier.dart';
 import 'package:stockchef/widgets/default_bottom_app_bar.dart';
 import 'package:stockchef/widgets/default_drawer.dart';
 
@@ -12,7 +11,6 @@ class PreparationsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.sizeOf(context);
-    ThemeMode theme = ref.watch(themeNotifierProvider);
     Map texts = ref.watch(languageNotifierProvider)['texts'];
     return Scaffold(
       appBar: AppBar(
@@ -20,8 +18,8 @@ class PreparationsPage extends ConsumerWidget {
           texts['dashboard'][2],
         ),
       ),
-      bottomNavigationBar: DefaultBottomAppBar(texts: texts),
-      drawer: DefaultDrawer(theme: theme, texts: texts),
+      bottomNavigationBar: const DefaultBottomAppBar(),
+      drawer: const DefaultDrawer(),
       body: HelperClass(
         mobile: const Text('Preparations Page'),
         tablet: const Placeholder(),

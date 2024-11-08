@@ -7,7 +7,6 @@ import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/utilities/helper_class.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
 import 'package:stockchef/utilities/stripe_services.dart';
-import 'package:stockchef/utilities/theme_notifier.dart';
 import 'package:stockchef/widgets/default_bottom_app_bar.dart';
 import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/default_drawer.dart';
@@ -18,9 +17,7 @@ class DashboardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    
     final Size size = MediaQuery.sizeOf(context);
-    ThemeMode theme = ref.watch(themeNotifierProvider);
     Map texts = ref.watch(languageNotifierProvider)['texts'];
 
     return Scaffold(
@@ -29,8 +26,8 @@ class DashboardPage extends ConsumerWidget {
           texts['dashboard'][0],
         ),
       ),
-      drawer: DefaultDrawer(theme: theme, texts: texts),
-      bottomNavigationBar: DefaultBottomAppBar(texts: texts),
+      drawer: const DefaultDrawer(),
+      bottomNavigationBar: const DefaultBottomAppBar(),
       body: HelperClass(
           mobile: SingleChildScrollView(
             child: SizedBox(

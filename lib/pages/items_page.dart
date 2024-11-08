@@ -7,7 +7,6 @@ import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/utilities/helper_class.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
 import 'package:stockchef/utilities/providers.dart';
-import 'package:stockchef/utilities/theme_notifier.dart';
 import 'package:stockchef/widgets/add_stock_button.dart';
 import 'package:stockchef/widgets/default_bottom_app_bar.dart';
 import 'package:stockchef/widgets/default_button.dart';
@@ -20,7 +19,6 @@ class ItemsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.sizeOf(context);
-    ThemeMode theme = ref.watch(themeNotifierProvider);
     Map texts = ref.watch(languageNotifierProvider)['texts'];
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -29,8 +27,8 @@ class ItemsPage extends ConsumerWidget {
             texts['dashboard'][1],
           ),
         ),
-        bottomNavigationBar: DefaultBottomAppBar(texts: texts),
-        drawer: DefaultDrawer(theme: theme, texts: texts),
+        bottomNavigationBar: const DefaultBottomAppBar(),
+        drawer: const DefaultDrawer(),
         body: FutureBuilder(
           future: FirebaseServices().getStocks(ref),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -75,7 +73,11 @@ class ItemsPage extends ConsumerWidget {
                             },
                           ),
                     ref.watch(currentStockProvider) != null
-                        ? DefaultButton(text: texts['items'][8], action: () {})
+                        ? DefaultButton(
+                            text: texts['items'][8],
+                            action: () {
+                              Navigator.pushNamed(context, '/create_item');
+                            })
                         : const SizedBox(),
                   ],
                 ),

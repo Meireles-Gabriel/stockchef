@@ -18,7 +18,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
     primary: squidInk,
     onPrimary: unkWhite,
     secondary: queenBlue,
-    onSecondary: unkBlack,
+    onSecondary: unkWhite,
   ),
   textTheme: GoogleFonts.montserratTextTheme(ThemeData.light().textTheme).apply(
     bodyColor: unkBlack,
