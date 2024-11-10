@@ -16,19 +16,6 @@ final isLoadingItemsProvider = StateProvider<bool>(
 final stocksProvider = StateProvider<List>(
   (ref) => [],
 );
-final createItemNameProvider = StateProvider<String>(
-  (ref) => '',
-);
-final createItemQuantityProvider = StateProvider<String>(
-  (ref) => '',
-);
-final createItemMinQuantityProvider = StateProvider<String>(
-  (ref) => '0',
-);
-final createItemExpirationDateProvider = StateProvider<String>(
-  (ref) => '',
-);
-
 final unitItemProvider = StateProvider<String>((ref) {
   return ref.watch(languageNotifierProvider)['language'] == 'en'
       ? 'Select Unit'

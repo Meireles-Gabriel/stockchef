@@ -154,7 +154,8 @@ List<String> createItemPT = [
   'Cancelar', //9
   'Criar', //10
   'Preencha todos os campos.', //11
-  'Data de Vencimento inválida!', //12
+  'Data de Vencimento inválida.', //12
+  'Já existe um Item com esse nome.', //13
 ];
 List<String> createItemEN = [
   'Create Item', //0
@@ -169,7 +170,8 @@ List<String> createItemEN = [
   'Cancel', //9
   'Create', //10
   'Fill in all fields.', //11
-  'Invalid Expiration Date!', //12
+  'Invalid Expiration Date.', //12
+  'An Item with that name already exists.', //13
 ];
 
 List<String> preparationsPT = [];

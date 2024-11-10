@@ -205,8 +205,16 @@ class FirebaseServices {
     if (ref.watch(currentStockProvider) == null && stocks.isNotEmpty) {
       ref.read(currentStockProvider.notifier).state = stocks[0];
       ref.read(itemsProvider.notifier).state =
-          stocks[0].reference.colection('Items').get();
+          stocks[0].reference.collection('Items').get();
+          ref.read(preparationsProvider.notifier).state =
+          stocks[0].reference.collection('Preparations').get();
+    }else{
+      ref.read(itemsProvider.notifier).state =
+          ref.watch(currentStockProvider).reference.collection('Items').get();
+          ref.read(preparationsProvider.notifier).state =
+          ref.watch(currentStockProvider).reference.collection('Preparations').get();
     }
+    
     return stocks;
   }
 }
