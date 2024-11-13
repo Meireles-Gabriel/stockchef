@@ -178,8 +178,6 @@ class FirebaseServices {
         .where('owner', isEqualTo: auth.currentUser!.email)
         .get();
     ref.read(currentStockProvider.notifier).state = colection.docs[0];
-    ref.read(itemsProvider.notifier).state = null;
-    ref.read(preparationsProvider.notifier).state = null;
   }
 
   Future<List> getStocks(ref) async {
@@ -206,13 +204,16 @@ class FirebaseServices {
       ref.read(currentStockProvider.notifier).state = stocks[0];
       ref.read(itemsProvider.notifier).state =
           stocks[0].reference.collection('Items').get();
-          ref.read(preparationsProvider.notifier).state =
+      ref.read(preparationsProvider.notifier).state =
           stocks[0].reference.collection('Preparations').get();
-    }else{
+    } else {
       ref.read(itemsProvider.notifier).state =
           ref.watch(currentStockProvider).reference.collection('Items').get();
-          ref.read(preparationsProvider.notifier).state =
-          ref.watch(currentStockProvider).reference.collection('Preparations').get();
+      ref.read(preparationsProvider.notifier).state = ref
+          .watch(currentStockProvider)
+          .reference
+          .collection('Preparations')
+          .get();
     }
     
     return stocks;

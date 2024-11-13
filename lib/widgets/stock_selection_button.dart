@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stockchef/utilities/crud_services.dart';
 import 'package:stockchef/utilities/providers.dart';
 
 class StockSelectionButton extends ConsumerWidget {
@@ -47,7 +46,10 @@ class StockSelectionButton extends ConsumerWidget {
                     : texts['items'][6],
               ),
               if (ref.watch(currentStockProvider) == null)
-                const Icon(Icons.arrow_right, size: 34,),
+                const Icon(
+                  Icons.arrow_right,
+                  size: 34,
+                ),
             ],
           ),
         ),
@@ -73,7 +75,7 @@ class StockSelectionButton extends ConsumerWidget {
         }).toList();
       },
       onSelected: (value) {
-        CRUDServices().setStock(ref, value);
+        ref.read(currentStockProvider.notifier).state = value;
       },
     );
   }

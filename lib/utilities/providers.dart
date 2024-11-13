@@ -19,7 +19,7 @@ final stocksProvider = StateProvider<List>(
 final unitItemProvider = StateProvider<String>((ref) {
   return ref.watch(languageNotifierProvider)['language'] == 'en'
       ? 'Select Unit'
-      : 'Selecinar Unidade';
+      : 'Selecionar Unidade';
 });
 final definedExpirationProvider = StateProvider<bool>(
   (ref) => true,
