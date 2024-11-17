@@ -39,3 +39,10 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
     displayColor: antiFlashWhite,
   ),
 );
+
+class MyColors {
+  Color statusPastelBlue = const Color.fromARGB(255, 179, 235, 242);
+  Color statusPastelYellow = const Color.fromARGB(255, 255, 238, 140);
+  Color statusPastelOrange = const Color.fromARGB(255, 255, 192, 103);
+  Color statusPastelRed = const Color.fromARGB(255, 255, 116, 108);
+}

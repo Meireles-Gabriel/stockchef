@@ -412,6 +412,7 @@ class CreateItemBody extends StatelessWidget {
                           'minQuantity': minQuantity,
                           'unit': ref.read(unitItemProvider),
                           'expireDate': expDate,
+                          'status': 'blue',
                         });
 
                         ref.read(definedExpirationProvider.notifier).state =

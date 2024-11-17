@@ -12,6 +12,7 @@ import 'package:stockchef/widgets/add_stock_button.dart';
 import 'package:stockchef/widgets/default_bottom_app_bar.dart';
 import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/default_drawer.dart';
+import 'package:stockchef/widgets/item_tile.dart';
 import 'package:stockchef/widgets/stock_selection_button.dart';
 
 class ItemsPage extends ConsumerWidget {
@@ -72,6 +73,7 @@ class ItemsPage extends ConsumerWidget {
                                     .collection('Stocks')
                                     .doc(ref.read(currentStockProvider).id)
                                     .collection('Items')
+                                    .orderBy('name')
                                     .get(),
                                 builder: (BuildContext context,
                                     AsyncSnapshot itemsSnapshot) {
@@ -100,67 +102,10 @@ class ItemsPage extends ConsumerWidget {
                                             itemsData.docs[index].data();
                                         return Column(
                                           children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.black
-                                                        .withOpacity(0.2),
-                                                    spreadRadius: 1,
-                                                    blurRadius: 5,
-                                                    offset: const Offset(2, 4),
-                                                  ),
-                                                ],
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary,
-                                              ),
-                                              padding: const EdgeInsets.all(10),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        data['name'],
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .titleMedium,
-                                                      ),
-                                                      Text(
-                                                        '${data['quantity']} ${data['unit']}',
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .titleMedium,
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        'Expire: ${data['expireDate']}',
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodySmall,
-                                                      ),
-                                                      Text(
-                                                        'Min: ${data['minQuantity']}',
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .bodySmall,
-                                                      )
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
+                                            LayoutBuilder(
+                                              builder: (context, constraints) {
+                                                return ItemTile(data: data);
+                                              },
                                             ),
                                             const SizedBox(height: 5),
                                           ],
@@ -200,3 +145,4 @@ class ItemsPage extends ConsumerWidget {
     );
   }
 }
+
