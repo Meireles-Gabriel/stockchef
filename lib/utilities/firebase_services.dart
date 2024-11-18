@@ -203,19 +203,51 @@ class FirebaseServices {
     if (ref.watch(currentStockProvider) == null && stocks.isNotEmpty) {
       ref.read(currentStockProvider.notifier).state = stocks[0];
       ref.read(itemsProvider.notifier).state =
-          stocks[0].reference.collection('Items').get();
+          (await stocks[0].reference.collection('Items').orderBy('name').get())
+              .docs
+              .map((doc) => {
+                    'id': doc.id,
+                    ...doc.data(),
+                  })
+              .toList();
+
       ref.read(preparationsProvider.notifier).state =
-          stocks[0].reference.collection('Preparations').get();
+          (await stocks[0].reference.collection('Preparations')
+              .orderBy('name')
+              .get())
+              .docs
+              .map((doc) => {
+                    'id': doc.id, 
+                    ...doc.data(), 
+                  })
+              .toList();
     } else {
-      ref.read(itemsProvider.notifier).state =
-          ref.watch(currentStockProvider).reference.collection('Items').get();
-      ref.read(preparationsProvider.notifier).state = ref
-          .watch(currentStockProvider)
-          .reference
-          .collection('Preparations')
-          .get();
+      ref.read(itemsProvider.notifier).state = (await ref
+              .watch(currentStockProvider)
+              .reference
+              .collection('Items')
+              .orderBy('name')
+              .get())
+          .docs
+          .map((doc) => {
+                'id': doc.id,
+                ...doc.data(), 
+              })
+          .toList();
+      ref.read(preparationsProvider.notifier).state = (await ref
+              .watch(currentStockProvider)
+              .reference
+              .collection('Preparations')
+              .orderBy('name')
+              .get())
+          .docs
+          .map((doc) => {
+                'id': doc.id, 
+                ...doc.data(), 
+              })
+          .toList();
     }
-    
+
     return stocks;
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stockchef/utilities/design.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
+import 'package:stockchef/widgets/item_minus_button.dart';
+import 'package:stockchef/widgets/item_plus_button.dart';
 
 class ItemTile extends ConsumerWidget {
   const ItemTile({
@@ -97,17 +99,19 @@ class ItemTile extends ConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      InkWell(
-                        onTap: () {},
-                        child: const Icon(
-                          Icons.add,
-                        ),
+                      ItemPlusButton(
+                        ref: ref,
+                        amount: data['unit'] == 'g' || data['unit'] == 'mL'
+                            ? 10
+                            : 1,
+                        data: data,
                       ),
-                      InkWell(
-                        onTap: () {},
-                        child: const Icon(
-                          Icons.remove,
-                        ),
+                      ItemMinusButton(
+                        ref: ref,
+                        amount: data['unit'] == 'g' || data['unit'] == 'mL'
+                            ? 10
+                            : 1,
+                        data: data,
                       ),
                       InkWell(
                         onTap: () {},

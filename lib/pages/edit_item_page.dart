@@ -13,14 +13,14 @@ import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/default_drawer.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
 
-class CreateItemPage extends ConsumerStatefulWidget {
-  const CreateItemPage({super.key});
+class EditItemPage extends ConsumerStatefulWidget {
+  const EditItemPage({super.key});
 
   @override
-  ConsumerState<CreateItemPage> createState() => _CreateItemPageState();
+  ConsumerState<EditItemPage> createState() => _EditItemPageState();
 }
 
-class _CreateItemPageState extends ConsumerState<CreateItemPage> {
+class _EditItemPageState extends ConsumerState<EditItemPage> {
   late TextEditingController nameController;
   late TextEditingController quantityController;
   late TextEditingController minQuantityController;
@@ -52,7 +52,7 @@ class _CreateItemPageState extends ConsumerState<CreateItemPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          texts['create_item'][0],
+          texts['edit_item'][0],
         ),
       ),
       drawer: const DefaultDrawer(),

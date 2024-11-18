@@ -174,6 +174,13 @@ List<String> createItemEN = [
   'An Item with that name already exists.', //13
 ];
 
+List<String> editItemPT = [
+  'Editar Item',//0
+];
+List<String> editItemEN = [
+  'Edit Item',//0
+];
+
 List<String> preparationsPT = [];
 List<String> preparationsEN = [];
 
@@ -184,6 +191,7 @@ Map<String, List<String>> portugueseTexts = {
   'dashboard': dashboardPT,
   'items': itemsPT,
   'create_item': createItemPT,
+  'edit_item': editItemPT,
   'preparations': preparationsPT,
 };
 Map<String, List<String>> englishTexts = {
@@ -193,6 +201,6 @@ Map<String, List<String>> englishTexts = {
   'dashboard': dashboardEN,
   'items': itemsEN,
   'create_item': createItemEN,
+  'edit_item': editItemEN,
   'preparations': preparationsEN,
 };
-

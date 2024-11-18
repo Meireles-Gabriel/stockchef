@@ -26,5 +26,8 @@ final definedExpirationProvider = StateProvider<bool>(
 );
 
 final currentStockProvider = StateProvider<dynamic>((ref) => null);
-final itemsProvider = StateProvider<dynamic>((ref) => null);
-final preparationsProvider = StateProvider<dynamic>((ref) => null);
+final itemsProvider = StateProvider<List<dynamic>>((ref) => []);
+final preparationsProvider = StateProvider<List<dynamic>>((ref) => []);
+
+final pendingUpdatesProvider = StateProvider<int>((ref) => 0);
+

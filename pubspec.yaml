@@ -24,7 +24,7 @@ dependencies:
   url_launcher:
   flutter_launcher_icons:
   flutter_native_splash:
-
+  flutter_hooks:
 
 
 flutter_native_splash:

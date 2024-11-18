@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:stockchef/pages/create_item_page.dart';
 import 'package:stockchef/pages/dashboard_page.dart';
+import 'package:stockchef/pages/edit_item_page.dart';
 import 'package:stockchef/pages/intro_page.dart';
 import 'package:stockchef/pages/items_page.dart';
 import 'package:stockchef/pages/login_page.dart';
@@ -154,6 +155,7 @@ class _MainAppState extends State<MainApp> {
           '/dashboard': (context) => const DashboardPage(),
           '/items': (context) => const ItemsPage(),
           '/create_item':(context) => const CreateItemPage(),
+          '/edit_item': (context) => const EditItemPage(),
           '/preparations': (context) => const PreparationsPage(),
           '/settings': (context) => const SettingsPage(),
         },
