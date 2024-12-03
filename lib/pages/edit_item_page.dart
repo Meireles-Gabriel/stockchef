@@ -46,6 +46,18 @@ class _EditItemPageState extends ConsumerState<EditItemPage> {
 
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as Map;
+    nameController.text = data['name'];
+    quantityController.text = data['quantity'].toString();
+    minQuantityController.text = data['minQuantity'].toString();
+    expirationDateController.text = ref
+                .read(languageNotifierProvider)['language'] ==
+            'pt'
+        ? '${data['expireDate'].substring(8, 10)}/${data['expireDate'].substring(5, 7)}/${data['expireDate'].substring(0, 4)}'
+        : '${data['expireDate'].substring(5, 7)}-${data['expireDate'].substring(8, 10)}-${data['expireDate'].substring(0, 4)}';
+    if (data['expireDate'] == 'not defined') {
+      expirationDateController.text = '';
+    }
     final Size size = MediaQuery.sizeOf(context);
     Map texts = ref.watch(languageNotifierProvider)['texts'];
 
@@ -60,6 +72,7 @@ class _EditItemPageState extends ConsumerState<EditItemPage> {
       body: HelperClass(
         mobile: CreateItemBody(
           ref: ref,
+          data: data,
           nameController: nameController,
           quantityController: quantityController,
           minQuantityController: minQuantityController,
@@ -67,6 +80,7 @@ class _EditItemPageState extends ConsumerState<EditItemPage> {
         ),
         tablet: CreateItemBody(
           ref: ref,
+          data: data,
           nameController: nameController,
           quantityController: quantityController,
           minQuantityController: minQuantityController,
@@ -74,6 +88,7 @@ class _EditItemPageState extends ConsumerState<EditItemPage> {
         ),
         desktop: CreateItemBody(
           ref: ref,
+          data: data,
           nameController: nameController,
           quantityController: quantityController,
           minQuantityController: minQuantityController,
@@ -90,12 +105,14 @@ class CreateItemBody extends StatelessWidget {
   const CreateItemBody({
     super.key,
     required this.ref,
+    required this.data,
     required this.nameController,
     required this.quantityController,
     required this.minQuantityController,
     required this.expirationDateController,
   });
   final WidgetRef ref;
+  final Map data;
   final TextEditingController nameController;
   final TextEditingController quantityController;
   final TextEditingController minQuantityController;
@@ -337,7 +354,7 @@ class CreateItemBody extends StatelessWidget {
                     ),
                   ),
                   DefaultButton(
-                    text: texts['create_item'][10],
+                    text: texts['edit_item'][1],
                     action: () async {
                       if (nameController.text == '' ||
                           quantityController.text == '' ||
@@ -349,9 +366,9 @@ class CreateItemBody extends StatelessWidget {
                                   expirationDateController.text.length < 10))) {
                         showSnackBar(context, texts['create_item'][11]);
                       } else {
-                        DateTime exDate;
+                        DateTime? exDate;
                         if (ref.watch(definedExpirationProvider) &&
-                            expirationDateController.text.length != 8) {
+                            expirationDateController.text.length == 10) {
                           try {
                             if (ref.watch(
                                     languageNotifierProvider)['language'] ==
@@ -379,8 +396,10 @@ class CreateItemBody extends StatelessWidget {
                             return;
                           }
                         } else {
-                          showSnackBar(context, texts['create_item'][12]);
-                          return;
+                          if (ref.watch(definedExpirationProvider)) {
+                            showSnackBar(context, texts['create_item'][12]);
+                            return;
+                          }
                         }
 
                         String name = nameController.text.trim();
@@ -391,37 +410,42 @@ class CreateItemBody extends StatelessWidget {
                             : 'not defined';
 
                         final items = ref.watch(itemsProvider);
+
+                        bool duplicated = false;
                         for (var item in items) {
-                          if (name == item['name']) {
+                          if (name == item['name'] &&
+                              data['id'] != item['id']) {
                             showSnackBar(context, texts['create_item'][13]);
+                            duplicated = true;
                             return;
                           }
                         }
+                        if (!duplicated) {
+                          await FirebaseServices()
+                              .firestore
+                              .collection('Stocks')
+                              .doc(ref.watch(currentStockProvider).id)
+                              .collection('Items')
+                              .doc(data['id'])
+                              .update({
+                            'name': name,
+                            'quantity': int.parse(quantity),
+                            'minQuantity': int.parse(minQuantity),
+                            'unit': ref.read(unitItemProvider),
+                            'expireDate': expDate,
+                            'status': 'blue',
+                          });
 
-                        await FirebaseServices()
-                            .firestore
-                            .collection('Stocks')
-                            .doc(ref.watch(currentStockProvider).id)
-                            .collection('Items')
-                            .add({
-                          'name': name,
-                          'quantity': int.parse(quantity),
-                          'minQuantity': int.parse(minQuantity),
-                          'unit': ref.read(unitItemProvider),
-                          'expireDate': expDate,
-                          'status': 'blue',
-                        });
+                          ref.read(definedExpirationProvider.notifier).state =
+                              true;
+                          ref.read(unitItemProvider.notifier).state =
+                              ref.watch(languageNotifierProvider)['language'] ==
+                                      'en'
+                                  ? 'Select Unit'
+                                  : 'Selecionar Unidade';
 
-                        ref.read(definedExpirationProvider.notifier).state =
-                            true;
-                        ref.read(unitItemProvider.notifier).state =
-                            ref.watch(languageNotifierProvider)['language'] ==
-                                    'en'
-                                ? 'Select Unit'
-                                : 'Selecionar Unidade';
-
-                        await FirebaseServices().getStocks(ref);
-                        Navigator.pushNamed(context, '/items');
+                          Navigator.pushNamed(context, '/items');
+                        }
                       }
                     },
                   )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/utilities/providers.dart';
 
 class StockSelectionButton extends ConsumerWidget {
@@ -74,8 +75,9 @@ class StockSelectionButton extends ConsumerWidget {
           );
         }).toList();
       },
-      onSelected: (value) {
+      onSelected: (value) async {
         ref.read(currentStockProvider.notifier).state = value;
+        await FirebaseServices().loadStock(ref);
       },
     );
   }

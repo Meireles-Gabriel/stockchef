@@ -1,7 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stockchef/utilities/design.dart';
+import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
+import 'package:stockchef/utilities/providers.dart';
+import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/item_minus_button.dart';
 import 'package:stockchef/widgets/item_plus_button.dart';
 
@@ -15,6 +20,7 @@ class ItemTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    Map texts = ref.watch(languageNotifierProvider)['texts'];
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
@@ -81,12 +87,27 @@ class ItemTile extends ConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        ref.watch(languageNotifierProvider)['language'] == 'en'
-                            ? 'Expire: ${data['expireDate'].substring(5, 7)}-${data['expireDate'].substring(8, 10)}-${data['expireDate'].substring(0, 4)}'
-                            : 'Vencimento: ${data['expireDate'].substring(8, 10)}/${data['expireDate'].substring(5, 7)}/${data['expireDate'].substring(0, 4)}',
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
+                      data['expireDate'] == 'not defined'
+                          ? Row(
+                              children: [
+                                Text(ref.watch(languageNotifierProvider)[
+                                            'language'] ==
+                                        'en'
+                                    ? 'Expire:  '
+                                    : 'Vencimento:  '),
+                                const Icon(
+                                  Icons.all_inclusive,
+                                  size: 20,
+                                )
+                              ],
+                            )
+                          : Text(
+                              ref.watch(languageNotifierProvider)['language'] ==
+                                      'en'
+                                  ? 'Expire: ${data['expireDate'].substring(5, 7)}-${data['expireDate'].substring(8, 10)}-${data['expireDate'].substring(0, 4)}'
+                                  : 'Vencimento: ${data['expireDate'].substring(8, 10)}/${data['expireDate'].substring(5, 7)}/${data['expireDate'].substring(0, 4)}',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
                       Text(
                         'Min: ${data['minQuantity']}',
                         style: Theme.of(context).textTheme.bodySmall,
@@ -114,13 +135,79 @@ class ItemTile extends ConsumerWidget {
                         data: data,
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          ref.read(unitItemProvider.notifier).state =
+                              data['unit'];
+                          if (data['expireDate'] == 'not defined') {
+                            ref.read(definedExpirationProvider.notifier).state =
+                                false;
+                          }
+                          Navigator.pushNamed(context, '/edit_item',
+                              arguments: data);
+                        },
                         child: const Icon(
                           Icons.edit,
                         ),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          showDialog(
+                            barrierDismissible: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.surface,
+                                title: Text(texts['delete'][0]),
+                                content: Text(
+                                    texts['delete'][2] + data['name'] + '?'),
+                                actions: ref
+                                        .watch(isLoadingForgotPasswordProvider)
+                                    ? [
+                                        const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      ]
+                                    : <Widget>[
+                                        TextButton(
+                                          child: Text(texts['login'][17]),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        DefaultButton(
+                                          text: texts['delete'][3],
+                                          action: () async {
+                                            ref
+                                                .read(
+                                                    isLoadingForgotPasswordProvider
+                                                        .notifier)
+                                                .state = true;
+                                            await FirebaseServices()
+                                                .firestore
+                                                .collection('Stocks')
+                                                .doc(ref
+                                                    .read(currentStockProvider)
+                                                    .id)
+                                                .collection('Items')
+                                                .doc(data['id'])
+                                                .delete()
+                                                .then((value) {
+                                              ref
+                                                  .read(
+                                                      isLoadingForgotPasswordProvider
+                                                          .notifier)
+                                                  .state = false;
+                                              Navigator.pushNamed(
+                                                  context, '/items');
+                                            });
+                                          },
+                                        ),
+                                      ],
+                              );
+                            },
+                          );
+                        },
                         child: const Icon(
                           Icons.delete,
                         ),

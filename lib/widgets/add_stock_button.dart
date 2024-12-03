@@ -103,7 +103,8 @@ class AddStockButton extends ConsumerWidget {
                                 if (nameController.text != '') {
                                   await FirebaseServices()
                                       .createStock(ref, nameController.text)
-                                      .then((value) {
+                                      .then((value) async {
+                                    await FirebaseServices().loadStock(ref);
                                     Navigator.of(context).pop();
                                   });
                                   ref

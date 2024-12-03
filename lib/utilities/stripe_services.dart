@@ -482,6 +482,7 @@ class StripeServices {
           if (kDebugMode) {
             print("Assinatura criada com sucesso! ID: $subscriptionId");
           }
+          Navigator.pushNamed(context, '/dashboard');
         } else {
           throw Exception("Erro ao criar a assinatura");
         }

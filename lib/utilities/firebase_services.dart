@@ -250,4 +250,32 @@ class FirebaseServices {
 
     return stocks;
   }
+  
+  Future<void> loadStock(ref) async{
+    ref.read(itemsProvider.notifier).state = (await ref
+            .watch(currentStockProvider)
+            .reference
+            .collection('Items')
+            .orderBy('name')
+            .get())
+        .docs
+        .map((doc) => {
+              'id': doc.id,
+              ...doc.data(),
+            })
+        .toList();
+    ref.read(preparationsProvider.notifier).state = (await ref
+            .watch(currentStockProvider)
+            .reference
+            .collection('Preparations')
+            .orderBy('name')
+            .get())
+        .docs
+        .map((doc) => {
+              'id': doc.id,
+              ...doc.data(),
+            })
+        .toList();
+  }
+
 }

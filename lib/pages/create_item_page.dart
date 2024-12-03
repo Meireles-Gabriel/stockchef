@@ -349,9 +349,9 @@ class CreateItemBody extends StatelessWidget {
                                   expirationDateController.text.length < 10))) {
                         showSnackBar(context, texts['create_item'][11]);
                       } else {
-                        DateTime exDate;
+                        DateTime? exDate;
                         if (ref.watch(definedExpirationProvider) &&
-                            expirationDateController.text.length != 8) {
+                            expirationDateController.text.length == 10) {
                           try {
                             if (ref.watch(
                                     languageNotifierProvider)['language'] ==
@@ -379,8 +379,10 @@ class CreateItemBody extends StatelessWidget {
                             return;
                           }
                         } else {
-                          showSnackBar(context, texts['create_item'][12]);
-                          return;
+                          if (ref.watch(definedExpirationProvider)) {
+                            showSnackBar(context, texts['create_item'][12]);
+                            return;
+                          }
                         }
 
                         String name = nameController.text.trim();
@@ -420,7 +422,6 @@ class CreateItemBody extends StatelessWidget {
                                 ? 'Select Unit'
                                 : 'Selecionar Unidade';
 
-                        await FirebaseServices().getStocks(ref);
                         Navigator.pushNamed(context, '/items');
                       }
                     },

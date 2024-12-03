@@ -175,14 +175,29 @@ List<String> createItemEN = [
 ];
 
 List<String> editItemPT = [
-  'Editar Item',//0
+  'Editar Item', //0
+  'Atualizar', //1
 ];
 List<String> editItemEN = [
-  'Edit Item',//0
+  'Edit Item', //0
+  'Update', //1
 ];
 
 List<String> preparationsPT = [];
 List<String> preparationsEN = [];
+
+List<String> deletePT = [
+  'Apagar Item',//0
+  'Apagar Preparação',//1
+  'Tem certeza que deseja apagar ',//2
+  'Apagar',//3
+];
+List<String> deleteEN = [
+  'Delete Item',//0
+  'Delete Preparation',//1
+  'Are you sure you want to delete ',//2
+  'Delete',//3
+];
 
 Map<String, List<String>> portugueseTexts = {
   'intro': introPT,
@@ -193,6 +208,7 @@ Map<String, List<String>> portugueseTexts = {
   'create_item': createItemPT,
   'edit_item': editItemPT,
   'preparations': preparationsPT,
+  'delete': deletePT,
 };
 Map<String, List<String>> englishTexts = {
   'intro': introEN,
@@ -203,4 +219,5 @@ Map<String, List<String>> englishTexts = {
   'create_item': createItemEN,
   'edit_item': editItemEN,
   'preparations': preparationsEN,
+  'delete': deleteEN,
 };

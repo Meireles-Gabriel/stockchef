@@ -37,6 +37,8 @@ class _ItemsPageState extends ConsumerState<ItemsPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          surfaceTintColor: Colors.transparent,
         title: Text(
           texts['dashboard'][1],
         ),
@@ -48,10 +50,12 @@ class _ItemsPageState extends ConsumerState<ItemsPage> {
             texts: texts,
             stocksFuture: stocksFuture,
           ),
-          tablet: ItemsPageBody(texts: texts,
+          tablet: ItemsPageBody(
+            texts: texts,
             stocksFuture: stocksFuture,
           ),
-          desktop: ItemsPageBody(texts: texts,
+          desktop: ItemsPageBody(
+            texts: texts,
             stocksFuture: stocksFuture,
           ),
           paddingWidth: size.width * .1,
@@ -72,6 +76,7 @@ class ItemsPageBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final Size size = MediaQuery.sizeOf(context);
     return FutureBuilder(
       future: stocksFuture,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -90,44 +95,40 @@ class ItemsPageBody extends ConsumerWidget {
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      StockSelectionButton(texts: texts),
-                      AddStockButton(
-                        texts: texts,
-                      ),
-                    ],
+                  StockSelectionButton(texts: texts),
+                  AddStockButton(
+                    texts: texts,
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ref.watch(itemsProvider).isEmpty
-                      ? Text(texts['items'][7])
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: ref.watch(itemsProvider).length,
-                          itemBuilder: (context, index) {
-                            final data = ref.watch(itemsProvider)[index];
-                            return Column(
-                              children: [
-                                LayoutBuilder(
-                                  builder: (context, constraints) {
-                                    return ItemTile(
-                                      data: data,
-                                    );
-                                  },
-                                ),
-                                const SizedBox(height: 5),
-                              ],
-                            );
-                          },
-                        )
                 ],
               ),
+              
+              ref.watch(itemsProvider).isEmpty
+                  ? Text(texts['items'][7])
+                  : SizedBox(
+                      height: size.height * .6,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: ref.watch(itemsProvider).length,
+                        itemBuilder: (context, index) {
+                          final data = ref.watch(itemsProvider)[index];
+                          return Column(
+                            children: [
+                              LayoutBuilder(
+                                builder: (context, constraints) {
+                                  return ItemTile(
+                                    data: data,
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 5),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
               ref.watch(currentStockProvider) != null
                   ? DefaultButton(
                       text: texts['items'][8],
