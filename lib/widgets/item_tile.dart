@@ -20,6 +20,7 @@ class ItemTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    bool isItem = !data.containsKey('ingredients');
     Map texts = ref.watch(languageNotifierProvider)['texts'];
     return Container(
       decoration: BoxDecoration(
@@ -121,6 +122,7 @@ class ItemTile extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ItemPlusButton(
+                        isItem: isItem,
                         ref: ref,
                         amount: data['unit'] == 'g' || data['unit'] == 'mL'
                             ? 10
@@ -128,6 +130,7 @@ class ItemTile extends ConsumerWidget {
                         data: data,
                       ),
                       ItemMinusButton(
+                        isItem: isItem,
                         ref: ref,
                         amount: data['unit'] == 'g' || data['unit'] == 'mL'
                             ? 10
@@ -142,7 +145,8 @@ class ItemTile extends ConsumerWidget {
                             ref.read(definedExpirationProvider.notifier).state =
                                 false;
                           }
-                          Navigator.pushNamed(context, '/edit_item',
+                          Navigator.pushNamed(context,
+                              isItem ? '/edit_item' : '/edit_preparation',
                               arguments: data);
                         },
                         child: const Icon(
@@ -189,7 +193,9 @@ class ItemTile extends ConsumerWidget {
                                                 .doc(ref
                                                     .read(currentStockProvider)
                                                     .id)
-                                                .collection('Items')
+                                                .collection(isItem
+                                                    ? 'Items'
+                                                    : 'Preparations')
                                                 .doc(data['id'])
                                                 .delete()
                                                 .then((value) {
@@ -199,7 +205,10 @@ class ItemTile extends ConsumerWidget {
                                                           .notifier)
                                                   .state = false;
                                               Navigator.pushNamed(
-                                                  context, '/items');
+                                                  context,
+                                                  isItem
+                                                      ? '/items'
+                                                      : '/preparations');
                                             });
                                           },
                                         ),

@@ -183,8 +183,72 @@ List<String> editItemEN = [
   'Update', //1
 ];
 
-List<String> preparationsPT = [];
-List<String> preparationsEN = [];
+List<String> preparationsPT = [
+  'No plano atual é possível criar apenas 1 Estoque. Mude para o Plano Equipe e tenha Estoques ilimitados!', //0
+  'Novo Estoque', //1
+  'Nome', //2
+  'Criar', //3
+  'Já existe um Estoque com este nome.', //4
+  'Digite um nome para o Estoque.', //5
+  'Crie seu primeiro Estoque ', //6
+  'Não há Preparações cadastradas.', //7
+  'Adicionar Preparação', //8
+  'É necessário criar pelo menos 1 Item antes de criar Preparações.',//9
+];
+List<String> preparationsEN = [
+  'With the current plan, you can create only 1 Inventory. Switch to the Team Plan for unlimited Inventories!', //0
+  'New Inventory', //1
+  'Name', //2
+  'Create', //3
+  'An Inventory with this name already exists.', //4
+  'Enter a name for the Inventory.', //5
+  'Create your first Inventory', //6
+  'No Preparations registered.', //7
+  'Add Preparation', //8
+  'It is necessary to create at least 1 Item before creating Preparations.', //9
+];
+
+List<String> createPreparationPT = [
+  'Criar Preparação', //0
+  'Nome', //1
+  'Quantidade:', //2
+  'Quantidade Mín.:', //3
+  'Unidade de medida:', //4
+  'Data de Vencimento:', //5
+  'Não definido', //6
+  'Selecionar Unidade', //7
+  'Não definido', //8
+  'Cancelar', //9
+  'Criar', //10
+  'Preencha todos os campos.', //11
+  'Data de Vencimento inválida.', //12
+  'Já existe uma Preparação com esse nome.', //13
+];
+List<String> createPreparationEN = [
+  'Create Preparation', //0
+  'Name', //1
+  'Quantity:', //2
+  'Min. Quantity:', //3
+  'Unit of measurement:', //4
+  'Expiration Date:', //5
+  'Not defined', //6
+  'Select Unit', //7
+  'Not defined', //8
+  'Cancel', //9
+  'Create', //10
+  'Fill in all fields.', //11
+  'Invalid Expiration Date.', //12
+  'A Preparation with that name already exists.', //13
+];
+
+List<String> editPreparationPT = [
+  'Editar Preparação', //0
+  'Atualizar', //1
+];
+List<String> editPreparationEN = [
+  'Edit Preparation', //0
+  'Update', //1
+];
 
 List<String> deletePT = [
   'Apagar Item',//0
@@ -208,6 +272,8 @@ Map<String, List<String>> portugueseTexts = {
   'create_item': createItemPT,
   'edit_item': editItemPT,
   'preparations': preparationsPT,
+  'create_preparation': createPreparationPT,
+  'edit_preparation': editPreparationPT,
   'delete': deletePT,
 };
 Map<String, List<String>> englishTexts = {
@@ -219,5 +285,7 @@ Map<String, List<String>> englishTexts = {
   'create_item': createItemEN,
   'edit_item': editItemEN,
   'preparations': preparationsEN,
+  'create_preparation': createPreparationEN,
+  'edit_preparation': editPreparationEN,
   'delete': deleteEN,
 };

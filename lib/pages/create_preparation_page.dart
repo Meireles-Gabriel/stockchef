@@ -13,14 +13,14 @@ import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/default_drawer.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
 
-class EditItemPage extends ConsumerStatefulWidget {
-  const EditItemPage({super.key});
+class CreatePreparationPage extends ConsumerStatefulWidget {
+  const CreatePreparationPage({super.key});
 
   @override
-  ConsumerState<EditItemPage> createState() => _EditItemPageState();
+  ConsumerState<CreatePreparationPage> createState() => _CreatePreparationPageState();
 }
 
-class _EditItemPageState extends ConsumerState<EditItemPage> {
+class _CreatePreparationPageState extends ConsumerState<CreatePreparationPage> {
   late TextEditingController nameController;
   late TextEditingController quantityController;
   late TextEditingController minQuantityController;
@@ -46,49 +46,34 @@ class _EditItemPageState extends ConsumerState<EditItemPage> {
 
   @override
   Widget build(BuildContext context) {
-    final data = ModalRoute.of(context)!.settings.arguments as Map;
-    nameController.text = data['name'];
-    quantityController.text = data['quantity'].toString();
-    minQuantityController.text = data['minQuantity'].toString();
-    expirationDateController.text = ref
-                .read(languageNotifierProvider)['language'] ==
-            'pt'
-        ? '${data['expireDate'].substring(8, 10)}/${data['expireDate'].substring(5, 7)}/${data['expireDate'].substring(0, 4)}'
-        : '${data['expireDate'].substring(5, 7)}-${data['expireDate'].substring(8, 10)}-${data['expireDate'].substring(0, 4)}';
-    if (data['expireDate'] == 'not defined') {
-      expirationDateController.text = '';
-    }
     final Size size = MediaQuery.sizeOf(context);
     Map texts = ref.watch(languageNotifierProvider)['texts'];
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          texts['edit_item'][0],
+          texts['create_preparation'][0],
         ),
       ),
       drawer: const DefaultDrawer(),
       bottomNavigationBar: const DefaultBottomAppBar(),
       body: HelperClass(
-        mobile: EditItemBody(
+        mobile: CreatePreparationBody(
           ref: ref,
-          data: data,
           nameController: nameController,
           quantityController: quantityController,
           minQuantityController: minQuantityController,
           expirationDateController: expirationDateController,
         ),
-        tablet: EditItemBody(
+        tablet: CreatePreparationBody(
           ref: ref,
-          data: data,
           nameController: nameController,
           quantityController: quantityController,
           minQuantityController: minQuantityController,
           expirationDateController: expirationDateController,
         ),
-        desktop: EditItemBody(
+        desktop: CreatePreparationBody(
           ref: ref,
-          data: data,
           nameController: nameController,
           quantityController: quantityController,
           minQuantityController: minQuantityController,
@@ -101,18 +86,16 @@ class _EditItemPageState extends ConsumerState<EditItemPage> {
   }
 }
 
-class EditItemBody extends StatelessWidget {
-  const EditItemBody({
+class CreatePreparationBody extends StatelessWidget {
+  const CreatePreparationBody({
     super.key,
     required this.ref,
-    required this.data,
     required this.nameController,
     required this.quantityController,
     required this.minQuantityController,
     required this.expirationDateController,
   });
   final WidgetRef ref;
-  final Map data;
   final TextEditingController nameController;
   final TextEditingController quantityController;
   final TextEditingController minQuantityController;
@@ -141,7 +124,7 @@ class EditItemBody extends StatelessWidget {
               TextField(
                 controller: nameController,
                 decoration: InputDecoration(
-                  labelText: texts['create_item'][1],
+                  labelText: texts['create_preparation'][1],
                 ),
               ),
               const SizedBox(
@@ -151,7 +134,7 @@ class EditItemBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    texts['create_item'][2],
+                    texts['create_preparation'][2],
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   SizedBox(
@@ -165,7 +148,7 @@ class EditItemBody extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    texts['create_item'][3],
+                    texts['create_preparation'][3],
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   SizedBox(
@@ -187,7 +170,7 @@ class EditItemBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    texts['create_item'][4],
+                    texts['create_preparation'][4],
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   Container(
@@ -268,7 +251,7 @@ class EditItemBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    texts['create_item'][5],
+                    texts['create_preparation'][5],
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   SizedBox(
@@ -319,7 +302,7 @@ class EditItemBody extends StatelessWidget {
                           width: 5,
                         ),
                         Text(
-                          texts['create_item'][8],
+                          texts['create_preparation'][8],
                         ),
                         const SizedBox(
                           width: 65,
@@ -350,11 +333,11 @@ class EditItemBody extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     child: Text(
-                      texts['create_item'][9],
+                      texts['create_preparation'][9],
                     ),
                   ),
                   DefaultButton(
-                    text: texts['edit_item'][1],
+                    text: texts['create_preparation'][10],
                     action: () async {
                       if (nameController.text == '' ||
                           quantityController.text == '' ||
@@ -364,7 +347,7 @@ class EditItemBody extends StatelessWidget {
                           (ref.watch(definedExpirationProvider) &&
                               (expirationDateController.text == '' ||
                                   expirationDateController.text.length < 10))) {
-                        showSnackBar(context, texts['create_item'][11]);
+                        showSnackBar(context, texts['create_preparation'][11]);
                       } else {
                         DateTime? exDate;
                         if (ref.watch(definedExpirationProvider) &&
@@ -392,12 +375,12 @@ class EditItemBody extends StatelessWidget {
                               );
                             }
                           } catch (e) {
-                            showSnackBar(context, texts['create_item'][12]);
+                            showSnackBar(context, texts['create_preparation'][12]);
                             return;
                           }
                         } else {
                           if (ref.watch(definedExpirationProvider)) {
-                            showSnackBar(context, texts['create_item'][12]);
+                            showSnackBar(context, texts['create_preparation'][12]);
                             return;
                           }
                         }
@@ -409,43 +392,37 @@ class EditItemBody extends StatelessWidget {
                             ? exDate.toString()
                             : 'not defined';
 
-                        final items = ref.watch(itemsProvider);
-
-                        bool duplicated = false;
-                        for (var item in items) {
-                          if (name == item['name'] &&
-                              data['id'] != item['id']) {
-                            showSnackBar(context, texts['create_item'][13]);
-                            duplicated = true;
+                        final preparations = ref.watch(preparationsProvider);
+                        for (var preparation in preparations) {
+                          if (name == preparation['name']) {
+                            showSnackBar(context, texts['create_preparation'][13]);
                             return;
                           }
                         }
-                        if (!duplicated) {
-                          await FirebaseServices()
-                              .firestore
-                              .collection('Stocks')
-                              .doc(ref.watch(currentStockProvider).id)
-                              .collection('Items')
-                              .doc(data['id'])
-                              .update({
-                            'name': name,
-                            'quantity': int.parse(quantity),
-                            'minQuantity': int.parse(minQuantity),
-                            'unit': ref.read(unitItemProvider),
-                            'expireDate': expDate,
-                            'status': 'blue',
-                          });
 
-                          ref.read(definedExpirationProvider.notifier).state =
-                              true;
-                          ref.read(unitItemProvider.notifier).state =
-                              ref.watch(languageNotifierProvider)['language'] ==
-                                      'en'
-                                  ? 'Select Unit'
-                                  : 'Selecionar Unidade';
+                        await FirebaseServices()
+                            .firestore
+                            .collection('Stocks')
+                            .doc(ref.watch(currentStockProvider).id)
+                            .collection('Preparations')
+                            .add({
+                          'name': name,
+                          'quantity': int.parse(quantity),
+                          'minQuantity': int.parse(minQuantity),
+                          'unit': ref.read(unitItemProvider),
+                          'expireDate': expDate,
+                          'status': 'blue',
+                        });
 
-                          Navigator.pushNamed(context, '/items');
-                        }
+                        ref.read(definedExpirationProvider.notifier).state =
+                            true;
+                        ref.read(unitItemProvider.notifier).state =
+                            ref.watch(languageNotifierProvider)['language'] ==
+                                    'en'
+                                ? 'Select Unit'
+                                : 'Selecionar Unidade';
+
+                        Navigator.pushNamed(context, '/preparations');
                       }
                     },
                   )

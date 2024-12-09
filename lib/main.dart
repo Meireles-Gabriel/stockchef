@@ -8,8 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:stockchef/pages/create_item_page.dart';
+import 'package:stockchef/pages/create_preparation_page.dart';
 import 'package:stockchef/pages/dashboard_page.dart';
 import 'package:stockchef/pages/edit_item_page.dart';
+import 'package:stockchef/pages/edit_preparation_page.dart';
 import 'package:stockchef/pages/intro_page.dart';
 import 'package:stockchef/pages/items_page.dart';
 import 'package:stockchef/pages/login_page.dart';
@@ -157,6 +159,8 @@ class _MainAppState extends State<MainApp> {
           '/create_item':(context) => const CreateItemPage(),
           '/edit_item': (context) => const EditItemPage(),
           '/preparations': (context) => const PreparationsPage(),
+          '/create_preparation': (context) => const CreatePreparationPage(),
+          '/edit_preparation': (context) => const EditPreparationPage(),
           '/settings': (context) => const SettingsPage(),
         },
       );

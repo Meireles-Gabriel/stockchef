@@ -13,14 +13,14 @@ import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/default_drawer.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
 
-class EditItemPage extends ConsumerStatefulWidget {
-  const EditItemPage({super.key});
+class EditPreparationPage extends ConsumerStatefulWidget {
+  const EditPreparationPage({super.key});
 
   @override
-  ConsumerState<EditItemPage> createState() => _EditItemPageState();
+  ConsumerState<EditPreparationPage> createState() => _EditPreparationPageState();
 }
 
-class _EditItemPageState extends ConsumerState<EditItemPage> {
+class _EditPreparationPageState extends ConsumerState<EditPreparationPage> {
   late TextEditingController nameController;
   late TextEditingController quantityController;
   late TextEditingController minQuantityController;
@@ -64,13 +64,13 @@ class _EditItemPageState extends ConsumerState<EditItemPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          texts['edit_item'][0],
+          texts['edit_preparation'][0],
         ),
       ),
       drawer: const DefaultDrawer(),
       bottomNavigationBar: const DefaultBottomAppBar(),
       body: HelperClass(
-        mobile: EditItemBody(
+        mobile: EditPreparationBody(
           ref: ref,
           data: data,
           nameController: nameController,
@@ -78,7 +78,7 @@ class _EditItemPageState extends ConsumerState<EditItemPage> {
           minQuantityController: minQuantityController,
           expirationDateController: expirationDateController,
         ),
-        tablet: EditItemBody(
+        tablet: EditPreparationBody(
           ref: ref,
           data: data,
           nameController: nameController,
@@ -86,7 +86,7 @@ class _EditItemPageState extends ConsumerState<EditItemPage> {
           minQuantityController: minQuantityController,
           expirationDateController: expirationDateController,
         ),
-        desktop: EditItemBody(
+        desktop: EditPreparationBody(
           ref: ref,
           data: data,
           nameController: nameController,
@@ -101,8 +101,8 @@ class _EditItemPageState extends ConsumerState<EditItemPage> {
   }
 }
 
-class EditItemBody extends StatelessWidget {
-  const EditItemBody({
+class EditPreparationBody extends StatelessWidget {
+  const EditPreparationBody({
     super.key,
     required this.ref,
     required this.data,
@@ -141,7 +141,7 @@ class EditItemBody extends StatelessWidget {
               TextField(
                 controller: nameController,
                 decoration: InputDecoration(
-                  labelText: texts['create_item'][1],
+                  labelText: texts['create_preparation'][1],
                 ),
               ),
               const SizedBox(
@@ -151,7 +151,7 @@ class EditItemBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    texts['create_item'][2],
+                    texts['create_preparation'][2],
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   SizedBox(
@@ -165,7 +165,7 @@ class EditItemBody extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    texts['create_item'][3],
+                    texts['create_preparation'][3],
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   SizedBox(
@@ -187,7 +187,7 @@ class EditItemBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    texts['create_item'][4],
+                    texts['create_preparation'][4],
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   Container(
@@ -268,7 +268,7 @@ class EditItemBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    texts['create_item'][5],
+                    texts['create_preparation'][5],
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   SizedBox(
@@ -319,7 +319,7 @@ class EditItemBody extends StatelessWidget {
                           width: 5,
                         ),
                         Text(
-                          texts['create_item'][8],
+                          texts['create_preparation'][8],
                         ),
                         const SizedBox(
                           width: 65,
@@ -350,11 +350,11 @@ class EditItemBody extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     child: Text(
-                      texts['create_item'][9],
+                      texts['create_preparation'][9],
                     ),
                   ),
                   DefaultButton(
-                    text: texts['edit_item'][1],
+                    text: texts['edit_preparation'][1],
                     action: () async {
                       if (nameController.text == '' ||
                           quantityController.text == '' ||
@@ -364,7 +364,7 @@ class EditItemBody extends StatelessWidget {
                           (ref.watch(definedExpirationProvider) &&
                               (expirationDateController.text == '' ||
                                   expirationDateController.text.length < 10))) {
-                        showSnackBar(context, texts['create_item'][11]);
+                        showSnackBar(context, texts['create_preparation'][11]);
                       } else {
                         DateTime? exDate;
                         if (ref.watch(definedExpirationProvider) &&
@@ -392,12 +392,12 @@ class EditItemBody extends StatelessWidget {
                               );
                             }
                           } catch (e) {
-                            showSnackBar(context, texts['create_item'][12]);
+                            showSnackBar(context, texts['create_preparation'][12]);
                             return;
                           }
                         } else {
                           if (ref.watch(definedExpirationProvider)) {
-                            showSnackBar(context, texts['create_item'][12]);
+                            showSnackBar(context, texts['create_preparation'][12]);
                             return;
                           }
                         }
@@ -409,13 +409,13 @@ class EditItemBody extends StatelessWidget {
                             ? exDate.toString()
                             : 'not defined';
 
-                        final items = ref.watch(itemsProvider);
+                        final preparations = ref.watch(preparationsProvider);
 
                         bool duplicated = false;
-                        for (var item in items) {
-                          if (name == item['name'] &&
-                              data['id'] != item['id']) {
-                            showSnackBar(context, texts['create_item'][13]);
+                        for (var preparation in preparations) {
+                          if (name == preparation['name'] &&
+                              data['id'] != preparation['id']) {
+                            showSnackBar(context, texts['create_preparation'][13]);
                             duplicated = true;
                             return;
                           }
@@ -425,7 +425,7 @@ class EditItemBody extends StatelessWidget {
                               .firestore
                               .collection('Stocks')
                               .doc(ref.watch(currentStockProvider).id)
-                              .collection('Items')
+                              .collection('Preparations')
                               .doc(data['id'])
                               .update({
                             'name': name,
@@ -444,7 +444,7 @@ class EditItemBody extends StatelessWidget {
                                   ? 'Select Unit'
                                   : 'Selecionar Unidade';
 
-                          Navigator.pushNamed(context, '/items');
+                          Navigator.pushNamed(context, '/preparations');
                         }
                       }
                     },
