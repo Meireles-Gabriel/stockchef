@@ -278,4 +278,11 @@ class FirebaseServices {
         .toList();
   }
 
+ Future<void> updateItemsStatus(ref)async{
+  List<dynamic> items = ref.read(itemsProvider);
+  for (var item in items){
+    
+  }
+ }
+
 }

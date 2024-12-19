@@ -297,9 +297,6 @@ class EditItemBody extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

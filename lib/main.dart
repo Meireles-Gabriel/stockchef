@@ -156,7 +156,7 @@ class _MainAppState extends State<MainApp> {
           '/sell': (context) => const SellPage(),
           '/dashboard': (context) => const DashboardPage(),
           '/items': (context) => const ItemsPage(),
-          '/create_item':(context) => const CreateItemPage(),
+          '/create_item': (context) => const CreateItemPage(),
           '/edit_item': (context) => const EditItemPage(),
           '/preparations': (context) => const PreparationsPage(),
           '/create_preparation': (context) => const CreatePreparationPage(),

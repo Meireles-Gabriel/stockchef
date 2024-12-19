@@ -24,6 +24,9 @@ final unitItemProvider = StateProvider<String>((ref) {
 final definedExpirationProvider = StateProvider<bool>(
   (ref) => true,
 );
+final selectedIngredientsProvider = StateProvider<List>(
+  (ref) => [],
+);
 
 final currentStockProvider = StateProvider<dynamic>((ref) => null);
 final itemsProvider = StateProvider<List<dynamic>>((ref) => []);

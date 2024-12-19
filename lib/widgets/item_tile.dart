@@ -9,6 +9,7 @@ import 'package:stockchef/utilities/providers.dart';
 import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/item_minus_button.dart';
 import 'package:stockchef/widgets/item_plus_button.dart';
+import 'package:stockchef/widgets/show_snack_bar.dart';
 
 class ItemTile extends ConsumerWidget {
   const ItemTile({
@@ -145,6 +146,8 @@ class ItemTile extends ConsumerWidget {
                             ref.read(definedExpirationProvider.notifier).state =
                                 false;
                           }
+                          ref.read(selectedIngredientsProvider.notifier).state =
+                              data['ingredients'];
                           Navigator.pushNamed(context,
                               isItem ? '/edit_item' : '/edit_preparation',
                               arguments: data);
@@ -155,6 +158,19 @@ class ItemTile extends ConsumerWidget {
                       ),
                       InkWell(
                         onTap: () {
+                          if (isItem) {
+                            final preparations = ref.read(preparationsProvider);
+                            for (var preparation in preparations) {
+                              if (preparation['ingredients']
+                                  .contains(data['id'])) {
+                                showSnackBar(
+                                    context,
+                                    texts['delete'][4] +
+                                        ' ${preparation['name']}');
+                                return;
+                              }
+                            }
+                          }
                           showDialog(
                             barrierDismissible: true,
                             context: context,
@@ -187,6 +203,7 @@ class ItemTile extends ConsumerWidget {
                                                     isLoadingForgotPasswordProvider
                                                         .notifier)
                                                 .state = true;
+
                                             await FirebaseServices()
                                                 .firestore
                                                 .collection('Stocks')

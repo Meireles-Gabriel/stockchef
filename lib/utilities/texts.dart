@@ -193,7 +193,7 @@ List<String> preparationsPT = [
   'Crie seu primeiro Estoque ', //6
   'Não há Preparações cadastradas.', //7
   'Adicionar Preparação', //8
-  'É necessário criar pelo menos 1 Item antes de criar Preparações.',//9
+  'É necessário criar pelo menos 1 Item antes de criar Preparações.', //9
 ];
 List<String> preparationsEN = [
   'With the current plan, you can create only 1 Inventory. Switch to the Team Plan for unlimited Inventories!', //0
@@ -223,6 +223,8 @@ List<String> createPreparationPT = [
   'Preencha todos os campos.', //11
   'Data de Vencimento inválida.', //12
   'Já existe uma Preparação com esse nome.', //13
+  'Ingredientes:', //14
+  'Selecione pelo menos 1 Ingrediente.', //15
 ];
 List<String> createPreparationEN = [
   'Create Preparation', //0
@@ -239,6 +241,8 @@ List<String> createPreparationEN = [
   'Fill in all fields.', //11
   'Invalid Expiration Date.', //12
   'A Preparation with that name already exists.', //13
+  'Ingredients:', //14
+  'Select at least 1 Ingredient.', //15
 ];
 
 List<String> editPreparationPT = [
@@ -251,16 +255,18 @@ List<String> editPreparationEN = [
 ];
 
 List<String> deletePT = [
-  'Apagar Item',//0
-  'Apagar Preparação',//1
-  'Tem certeza que deseja apagar ',//2
-  'Apagar',//3
+  'Apagar Item', //0
+  'Apagar Preparação', //1
+  'Tem certeza que deseja apagar ', //2
+  'Apagar', //3
+  'O Item não pode ser apagado porque faz parte de uma ou mais Preparações: ',//4
 ];
 List<String> deleteEN = [
-  'Delete Item',//0
-  'Delete Preparation',//1
-  'Are you sure you want to delete ',//2
-  'Delete',//3
+  'Delete Item', //0
+  'Delete Preparation', //1
+  'Are you sure you want to delete ', //2
+  'Delete', //3
+  'The Item cannot be deleted because it is part of one or more Preparations: ',//4
 ];
 
 Map<String, List<String>> portugueseTexts = {

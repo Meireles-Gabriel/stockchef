@@ -17,7 +17,8 @@ class EditPreparationPage extends ConsumerStatefulWidget {
   const EditPreparationPage({super.key});
 
   @override
-  ConsumerState<EditPreparationPage> createState() => _EditPreparationPageState();
+  ConsumerState<EditPreparationPage> createState() =>
+      _EditPreparationPageState();
 }
 
 class _EditPreparationPageState extends ConsumerState<EditPreparationPage> {
@@ -63,6 +64,8 @@ class _EditPreparationPageState extends ConsumerState<EditPreparationPage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
         title: Text(
           texts['edit_preparation'][0],
         ),
@@ -120,7 +123,6 @@ class EditPreparationBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
     Map texts = ref.watch(languageNotifierProvider)['texts'];
     final List<String> unidadesDeMedida = [
       'Unit',
@@ -262,7 +264,89 @@ class EditPreparationBody extends StatelessWidget {
                 ],
               ),
               const SizedBox(
-                height: 30,
+                height: 20,
+              ),
+              Text(
+                texts['create_preparation'][14],
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: 125,
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 2.5,
+                  ),
+                  itemCount: ref.read(itemsProvider).length,
+                  itemBuilder: ((context, index) {
+                    final ingredients = ref.watch(selectedIngredientsProvider);
+                    final id = ref.watch(itemsProvider)[index]['id'];
+                    return InkWell(
+                      onTap: () {
+                        final updatedIngredients = List.of(ingredients);
+                        if (updatedIngredients.contains(id)) {
+                          updatedIngredients.remove(id);
+                        } else {
+                          updatedIngredients.add(id);
+                        }
+
+                        ref.read(selectedIngredientsProvider.notifier).state =
+                            updatedIngredients;
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 7),
+                        decoration: BoxDecoration(
+                          color: ingredients.contains(id)
+                              ? Theme.of(context).colorScheme.primary
+                              : Theme.of(context).colorScheme.surface,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          ),
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.secondary,
+                            width: 2,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              spreadRadius: 1,
+                              blurRadius: 5,
+                              offset: const Offset(2, 4),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            ref.watch(itemsProvider)[index]['name'],
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: ingredients.contains(id)
+                                        ? Theme.of(context).colorScheme.surface
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .color),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -297,9 +381,7 @@ class EditPreparationBody extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
+             
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -347,6 +429,7 @@ class EditPreparationBody extends StatelessWidget {
                               ? 'Select Unit'
                               : 'Selecionar Unidade';
                       ref.read(definedExpirationProvider.notifier).state = true;
+                      ref.read(selectedIngredientsProvider.notifier).state = [];
                       Navigator.pop(context);
                     },
                     child: Text(
@@ -361,10 +444,15 @@ class EditPreparationBody extends StatelessWidget {
                           minQuantityController.text == '' ||
                           ref.watch(unitItemProvider) == 'Selecionar Unidade' ||
                           ref.watch(unitItemProvider) == 'Select Unit' ||
+                          ref.read(selectedIngredientsProvider).isEmpty ||
                           (ref.watch(definedExpirationProvider) &&
                               (expirationDateController.text == '' ||
                                   expirationDateController.text.length < 10))) {
-                        showSnackBar(context, texts['create_preparation'][11]);
+                        ref.read(selectedIngredientsProvider).isEmpty
+                            ? showSnackBar(
+                                context, texts['create_preparation'][15])
+                            : showSnackBar(
+                                context, texts['create_preparation'][11]);
                       } else {
                         DateTime? exDate;
                         if (ref.watch(definedExpirationProvider) &&
@@ -392,12 +480,14 @@ class EditPreparationBody extends StatelessWidget {
                               );
                             }
                           } catch (e) {
-                            showSnackBar(context, texts['create_preparation'][12]);
+                            showSnackBar(
+                                context, texts['create_preparation'][12]);
                             return;
                           }
                         } else {
                           if (ref.watch(definedExpirationProvider)) {
-                            showSnackBar(context, texts['create_preparation'][12]);
+                            showSnackBar(
+                                context, texts['create_preparation'][12]);
                             return;
                           }
                         }
@@ -415,7 +505,8 @@ class EditPreparationBody extends StatelessWidget {
                         for (var preparation in preparations) {
                           if (name == preparation['name'] &&
                               data['id'] != preparation['id']) {
-                            showSnackBar(context, texts['create_preparation'][13]);
+                            showSnackBar(
+                                context, texts['create_preparation'][13]);
                             duplicated = true;
                             return;
                           }
@@ -434,6 +525,8 @@ class EditPreparationBody extends StatelessWidget {
                             'unit': ref.read(unitItemProvider),
                             'expireDate': expDate,
                             'status': 'blue',
+                            'ingredients':
+                                ref.read(selectedIngredientsProvider),
                           });
 
                           ref.read(definedExpirationProvider.notifier).state =
@@ -454,9 +547,6 @@ class EditPreparationBody extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(
-          height: size.height * .1,
-        )
       ],
     );
   }
