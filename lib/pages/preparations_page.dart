@@ -91,6 +91,7 @@ class PreparationsPageBody extends ConsumerWidget {
             child: Text('Error getting Data.'),
           );
         } else if (snapshot.hasData) {
+          FirebaseServices().updatePreparationsStatus(ref);
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

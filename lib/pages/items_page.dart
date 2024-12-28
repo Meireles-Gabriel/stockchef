@@ -37,8 +37,8 @@ class _ItemsPageState extends ConsumerState<ItemsPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          surfaceTintColor: Colors.transparent,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
         title: Text(
           texts['dashboard'][1],
         ),
@@ -92,6 +92,7 @@ class ItemsPageBody extends ConsumerWidget {
             child: Text('Error getting Data.'),
           );
         } else if (snapshot.hasData) {
+          FirebaseServices().updateItemsStatus(ref);
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -104,7 +105,6 @@ class ItemsPageBody extends ConsumerWidget {
                   ),
                 ],
               ),
-              
               ref.watch(itemsProvider).isEmpty
                   ? Text(texts['items'][7])
                   : SizedBox(

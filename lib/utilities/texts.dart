@@ -259,14 +259,46 @@ List<String> deletePT = [
   'Apagar Preparação', //1
   'Tem certeza que deseja apagar ', //2
   'Apagar', //3
-  'O Item não pode ser apagado porque faz parte de uma ou mais Preparações: ',//4
+  'O Item não pode ser apagado porque faz parte de uma ou mais Preparações: ', //4
 ];
 List<String> deleteEN = [
   'Delete Item', //0
   'Delete Preparation', //1
   'Are you sure you want to delete ', //2
   'Delete', //3
-  'The Item cannot be deleted because it is part of one or more Preparations: ',//4
+  'The Item cannot be deleted because it is part of one or more Preparations: ', //4
+];
+
+List<String> itemDescriptionPT = [
+  'A quantidade deste item está dentro do mínimo necessário.', //0
+  'A quantidade deste item está abaixo da quantidade mínima, mas não há preparações em falta que necessitem dele.', //1
+  'A quantidade do Item está abaixo do Estoque Mínimo.', //2
+  'A Data de Vencimento do Item está próxima.', //3
+  'Não há estoque deste Item!', //4
+  'A Data de Vencimento do Item já passou!' //5
+];
+List<String> itemDescriptionEN = [
+  'The quantity of this item is within the necessary minimum.', //0
+  'The quantity of this item is below the minimum, but there are no out-of-stock preparations that require it.', //1
+  'The quantity of the item is below the Minimum Stock.', //2
+  'The Item\'s Expiration Date is approaching.', //3
+  'The Item is out-of-stock!', //4
+  'The Item\'s Expiration Date has already passed!' //5
+];
+
+List<String> preparationDescriptionPT = [
+  'A quantidade desta Preparação está dentro do mínimo necessário.', //0
+  'A quantidade da Preparação está abaixo do Estoque Mínimo.', //1
+  'A Data de Vencimento da Preparação está próxima.', //2
+  'Não há estoque deste Preparação!', //3
+  'A Data de Vencimento da Preparação já passou!' //4
+];
+List<String> preparationDescriptionEN = [
+  'The quantity of this Preparation is within the necessary minimum.', //0
+  'The quantity of the Preparation is below the Minimum Stock.', //1
+  'The Preparation\'s Expiration Date is approaching.', //2
+  'The Preparation is out-of-stock!', //3
+  'The Preparation\'s Expiration Date has already passed!' //4
 ];
 
 Map<String, List<String>> portugueseTexts = {
@@ -281,6 +313,8 @@ Map<String, List<String>> portugueseTexts = {
   'create_preparation': createPreparationPT,
   'edit_preparation': editPreparationPT,
   'delete': deletePT,
+  'item_description': itemDescriptionPT,
+  'preparation_description': preparationDescriptionPT,
 };
 Map<String, List<String>> englishTexts = {
   'intro': introEN,
@@ -294,4 +328,6 @@ Map<String, List<String>> englishTexts = {
   'create_preparation': createPreparationEN,
   'edit_preparation': editPreparationEN,
   'delete': deleteEN,
+  'item_description': itemDescriptionEN,
+  'preparation_description': preparationDescriptionEN,
 };

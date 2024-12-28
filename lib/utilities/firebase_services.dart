@@ -211,16 +211,17 @@ class FirebaseServices {
                   })
               .toList();
 
-      ref.read(preparationsProvider.notifier).state =
-          (await stocks[0].reference.collection('Preparations')
+      ref.read(preparationsProvider.notifier).state = (await stocks[0]
+              .reference
+              .collection('Preparations')
               .orderBy('name')
               .get())
-              .docs
-              .map((doc) => {
-                    'id': doc.id, 
-                    ...doc.data(), 
-                  })
-              .toList();
+          .docs
+          .map((doc) => {
+                'id': doc.id,
+                ...doc.data(),
+              })
+          .toList();
     } else {
       ref.read(itemsProvider.notifier).state = (await ref
               .watch(currentStockProvider)
@@ -231,7 +232,7 @@ class FirebaseServices {
           .docs
           .map((doc) => {
                 'id': doc.id,
-                ...doc.data(), 
+                ...doc.data(),
               })
           .toList();
       ref.read(preparationsProvider.notifier).state = (await ref
@@ -242,16 +243,16 @@ class FirebaseServices {
               .get())
           .docs
           .map((doc) => {
-                'id': doc.id, 
-                ...doc.data(), 
+                'id': doc.id,
+                ...doc.data(),
               })
           .toList();
     }
 
     return stocks;
   }
-  
-  Future<void> loadStock(ref) async{
+
+  Future<void> loadStock(ref) async {
     ref.read(itemsProvider.notifier).state = (await ref
             .watch(currentStockProvider)
             .reference
@@ -278,11 +279,86 @@ class FirebaseServices {
         .toList();
   }
 
- Future<void> updateItemsStatus(ref)async{
-  List<dynamic> items = ref.read(itemsProvider);
-  for (var item in items){
-    
-  }
- }
+  Future<void> updateItemsStatus(ref) async {
+    List<dynamic> items = ref.read(itemsProvider);
+    List<dynamic> preparations = ref.read(preparationsProvider);
+    items.asMap().forEach((index, item) async {
+      String status = 'blue';
 
+      if (item['quantity'] > 0 && item['quantity'] < item['minQuantity']) {
+        status = 'yellow';
+        for (var preparation in preparations) {
+          if (preparation['ingredients'].contains(item['id']) &&
+              preparation['quantity'] < preparation['minQuantity']) {
+            status = 'orange';
+          }
+        }
+      }
+      if (item['expireDate'] != 'not defined' &&
+          DateTime.parse(item['expireDate'])
+              .subtract(const Duration(days: 5))
+              .isBefore(DateTime.now())) {
+        status = 'orange';
+      }
+      if (item['quantity'] <= 0 ||
+          (item['expireDate'] != 'not defined' &&
+              DateTime.parse(item['expireDate']).isBefore(DateTime.now()))) {
+        status = 'red';
+      }
+
+      if (item['status'] != status) {
+        items[index]['status'] = status;
+        ref.read(itemsProvider.notifier).state = items;
+
+        await FirebaseServices()
+            .firestore
+            .collection('Stocks')
+            .doc(ref.watch(currentStockProvider).id)
+            .collection('Items')
+            .doc(item['id'])
+            .update({
+          'status': status,
+        });
+      }
+    });
+  }
+
+  Future<void> updatePreparationsStatus(ref) async {
+    List<dynamic> preparations = ref.read(preparationsProvider);
+    preparations.asMap().forEach((index, preparation) async {
+      String status = 'blue';
+
+      if (preparation['quantity'] > 0 &&
+          preparation['quantity'] < preparation['minQuantity']) {
+        status = 'orange';
+      }
+      if (preparation['expireDate'] != 'not defined' &&
+          DateTime.parse(preparation['expireDate'])
+              .subtract(const Duration(days: 5))
+              .isBefore(DateTime.now())) {
+        status = 'orange';
+      }
+      if (preparation['quantity'] <= 0 ||
+          (preparation['expireDate'] != 'not defined' &&
+              DateTime.parse(preparation['expireDate'])
+                  .isBefore(DateTime.now()))) {
+        status = 'red';
+      }
+
+      if (preparation['status'] != status) {
+        preparations[index]['status'] = status;
+        ref.read(preparationsProvider.notifier).state = preparations;
+
+        await FirebaseServices()
+            .firestore
+            .collection('Stocks')
+            .doc(ref.watch(currentStockProvider).id)
+            .collection('Preparations')
+            .doc(preparation['id'])
+            .update({
+          'status': status,
+        });
+      }
+    });
+  }
 }
