@@ -23,7 +23,6 @@ class ItemTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     bool isItem = !data.containsKey('ingredients');
     Map texts = ref.watch(languageNotifierProvider)['texts'];
-    List<dynamic> items = ref.read(itemsProvider);
     List<dynamic> preparations = ref.read(preparationsProvider);
     return InkWell(
       onTap: () {
