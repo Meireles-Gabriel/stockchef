@@ -40,11 +40,12 @@ class StockSelectionButton extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 ref.watch(currentStockProvider) != null
                     ? ref.watch(currentStockProvider)['name']
                     : texts['items'][6],
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               if (ref.watch(currentStockProvider) == null)
                 const Icon(
@@ -69,6 +70,10 @@ class StockSelectionButton extends ConsumerWidget {
                   doc['name'],
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(fontWeight: FontWeight.bold)
                 ),
               ),
             ),

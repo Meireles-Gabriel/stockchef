@@ -17,7 +17,7 @@ import 'package:stockchef/pages/items_page.dart';
 import 'package:stockchef/pages/login_page.dart';
 import 'package:stockchef/pages/preparations_page.dart';
 import 'package:stockchef/pages/sell_page.dart';
-import 'package:stockchef/pages/settings_page.dart';
+import 'package:stockchef/pages/subscription_page.dart';
 import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/utilities/design.dart';
 import 'package:stockchef/utilities/firebase_options.dart';
@@ -161,7 +161,7 @@ class _MainAppState extends State<MainApp> {
           '/preparations': (context) => const PreparationsPage(),
           '/create_preparation': (context) => const CreatePreparationPage(),
           '/edit_preparation': (context) => const EditPreparationPage(),
-          '/settings': (context) => const SettingsPage(),
+          '/subscription': (context) => const SubscriptionPage(),
         },
       );
     });

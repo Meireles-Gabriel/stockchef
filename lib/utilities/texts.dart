@@ -105,7 +105,7 @@ List<String> dashboardPT = [
   'Painel de Controle', //0
   'Itens', //1
   'Preparações', //2
-  'Configurações', //3
+  'Assinatura', //3
   'Trocar de Conta', //4
   'Sair do Aplicativo', //5
 ];
@@ -113,7 +113,7 @@ List<String> dashboardEN = [
   'Dashboard', //0
   'Items', //1
   'Preparations', //2
-  'Settings', //3
+  'Subscription', //3
   'Switch Account', //4
   'Exit App', //5
 ];
@@ -301,6 +301,33 @@ List<String> preparationDescriptionEN = [
   'The Preparation\'s Expiration Date has already passed!' //4
 ];
 
+List<String> subscriptionPT = [
+  'Tipo de Assinatura:', //0
+  'Teste', //1
+  'Solo', //2
+  'Equipe', //3
+  'Assinar', //4
+  'Melhorar', //5
+  'Cancelar', //6
+  'Melhorar Plano?', //7
+  'O plano será alterado para o Plano Equipe e a diferença será cobrada na próxima mensalidade.\n\nEssa é a única tela de confirmação.', //8
+  'Cancelar Plano?', //9
+  'Confirmar', //10
+];
+List<String> subscriptionEN = [
+  'Subscription Type:', //0
+  'Trial', //1
+  'Solo', //2
+  'Team', //3
+  'Subscribe', //4
+  'Upgrade', //5
+  'Cancel', //6
+  'Upgrade Plan?', //7
+  'The plan will be changed to the Team Plan, and the price difference will be charged in the next monthly payment.\n\nThis is the only confirmation screen.', //8
+  'Cancel Plan?', //9
+  'Confirm', //10
+];
+
 Map<String, List<String>> portugueseTexts = {
   'intro': introPT,
   'login': loginPT,
@@ -315,6 +342,7 @@ Map<String, List<String>> portugueseTexts = {
   'delete': deletePT,
   'item_description': itemDescriptionPT,
   'preparation_description': preparationDescriptionPT,
+  'subscription': subscriptionPT,
 };
 Map<String, List<String>> englishTexts = {
   'intro': introEN,
@@ -330,4 +358,5 @@ Map<String, List<String>> englishTexts = {
   'delete': deleteEN,
   'item_description': itemDescriptionEN,
   'preparation_description': preparationDescriptionEN,
+  'subscription': subscriptionEN,
 };

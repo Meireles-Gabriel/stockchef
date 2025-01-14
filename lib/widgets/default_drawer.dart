@@ -100,10 +100,10 @@ class DefaultDrawer extends ConsumerWidget {
               ),
               DefaultDrawerButton(
                 action: () {
-                  Navigator.pushNamed(context, '/settings');
+                  Navigator.pushNamed(context, '/subscription');
                 },
                 text: texts['dashboard'][3],
-                icon: Icons.settings,
+                icon: Icons.card_membership,
               ),
               const SizedBox(
                 height: 1,

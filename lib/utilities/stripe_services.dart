@@ -318,6 +318,18 @@ class StripeServices {
         }
       }
     }
+    final docSnap = await FirebaseServices()
+        .firestore
+        .collection('Users')
+        .doc(FirebaseServices().auth.currentUser!.uid)
+        .get();
+    var userInfo = docSnap.data();
+    if (userInfo!['subscriptionStatus'] == 'canceled') {
+      FirebaseFirestore.instance
+          .collection('Users')
+          .doc(FirebaseServices().auth.currentUser!.uid)
+          .update({'subscriptionId': '', 'subscriptionType': 'trial'});
+    }
     final docSnapshot = await FirebaseFirestore.instance
         .collection('Users')
         .doc(FirebaseServices().auth.currentUser!.uid)

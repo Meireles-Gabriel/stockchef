@@ -87,7 +87,8 @@ class FirebaseServices {
           List receiveFrom = docSnapshot.data()!['receiveFrom'];
           Navigator.pushNamed(
               context,
-              (subscription == 'trial' && receiveFrom.isEmpty)
+              ((subscription == 'trial' || subscription == 'canceled') &&
+                      receiveFrom.isEmpty)
                   ? '/sell'
                   : '/dashboard');
         } catch (e) {
