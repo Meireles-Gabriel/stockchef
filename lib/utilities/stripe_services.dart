@@ -302,19 +302,43 @@ class StripeServices {
               .doc(FirebaseServices().auth.currentUser!.uid)
               .update({'subscriptionId': '', 'subscriptionType': 'trial'});
         } else {
-          FirebaseFirestore.instance
+          final docSnapshot = await FirebaseServices()
+              .firestore
               .collection('Users')
               .doc(FirebaseServices().auth.currentUser!.uid)
-              .update({
-            'subscriptionId': subscriptionId,
-            'subscriptionType': (planId == StripeServices().soloBRLId ||
-                    planId == StripeServices().soloUSDId)
-                ? 'solo'
-                : (planId == StripeServices().teamBRLId ||
-                        planId == StripeServices().teamUSDId)
-                    ? 'team'
-                    : 'trial'
-          });
+              .get();
+          Map? userInfo = docSnapshot.data();
+          if (userInfo!['subscriptionStatus'] == 'canceled') {
+            FirebaseFirestore.instance
+                .collection('Users')
+                .doc(FirebaseServices().auth.currentUser!.uid)
+                .update({
+              'subscriptionId': '',
+              'subscriptionStatus': 'notSubscribed',
+              'subscriptionType': 'trial'
+            });
+          } else {
+            FirebaseFirestore.instance
+                .collection('Users')
+                .doc(FirebaseServices().auth.currentUser!.uid)
+                .update({
+              'subscriptionId': subscriptionId,
+              'subscriptionType': (planId == StripeServices().soloBRLId ||
+                      planId == StripeServices().soloUSDId)
+                  ? 'solo'
+                  : (planId == StripeServices().teamBRLId ||
+                          planId == StripeServices().teamUSDId)
+                      ? 'team'
+                      : 'trial',
+              'subscriptionStatus': (planId == StripeServices().soloBRLId ||
+                      planId == StripeServices().soloUSDId)
+                  ? 'active'
+                  : (planId == StripeServices().teamBRLId ||
+                          planId == StripeServices().teamUSDId)
+                      ? 'active'
+                      : 'notSubscribed',
+            });
+          }
         }
       }
     }
@@ -428,6 +452,7 @@ class StripeServices {
           if (kDebugMode) {
             print("Assinatura criada com sucesso! ID: $subscriptionId");
           }
+          Navigator.pushNamed(context, '/dashboard');
         } else {
           throw Exception("Erro ao criar a assinatura");
         }

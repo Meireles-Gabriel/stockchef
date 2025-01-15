@@ -12,6 +12,7 @@ import 'package:stockchef/widgets/default_drawer.dart';
 import 'package:stockchef/widgets/item_tile.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
 import 'package:stockchef/widgets/stock_selection_button.dart';
+import 'package:stockchef/widgets/stock_settings_button.dart';
 
 class PreparationsPage extends ConsumerStatefulWidget {
   const PreparationsPage({super.key});
@@ -98,6 +99,7 @@ class PreparationsPageBody extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  StockSettingsButton(ref: ref, texts: texts),
                   StockSelectionButton(texts: texts),
                   AddStockButton(
                     texts: texts,

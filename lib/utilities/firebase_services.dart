@@ -181,6 +181,12 @@ class FirebaseServices {
     ref.read(currentStockProvider.notifier).state = colection.docs[0];
   }
 
+  Future<void> deleteStock(WidgetRef ref, String id) async {
+    await firestore.collection('Stocks').doc(id).delete();
+    ref.read(currentStockProvider.notifier).state = null;
+    getStocks(ref);
+  }
+
   Future<List> getStocks(ref) async {
     var ownedStocks = await FirebaseServices()
         .firestore

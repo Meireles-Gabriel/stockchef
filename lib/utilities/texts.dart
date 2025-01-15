@@ -328,6 +328,34 @@ List<String> subscriptionEN = [
   'Confirm', //10
 ];
 
+List<String> stockSettingsPT = [
+  'Compartilhar', //0
+  'Excluir', //1
+  'Excluir Estoque?', //2
+  'Essa ação não pode ser desfeita.', //3
+  'Cancelar', //4
+  'Confirmar', //5
+  'Compartilhar Estoque', //6
+  'Selecione os usuários com quem deseja compartilhar o Estoque.\nExcluir um usuário irá removê-lo de todos os seus Estoques.', //7
+  'Usuário já adicionado.', //8
+  'Excluir Usuário', //9
+  'Adquira o Plano Equipe para compartilhar Estoques com outros usuários.', //10
+
+];
+List<String> stockSettingsEN = [
+  'Share', //0
+  'Delete', //1
+  'Delete Inventory?', //2
+  'This action cannot be undone.', //3
+  'Cancel', //4
+  'Confirm', //5
+  'Share Inventory', //6
+  'Select the users with whom you want to share the Inventory.\nDeleting a user will remove them from all your Inventories.', //7
+  'Add User', //8
+  'Delete User', //9
+  'Get the Team Plan to share Stocks with other users.', //10
+];
+
 Map<String, List<String>> portugueseTexts = {
   'intro': introPT,
   'login': loginPT,
@@ -343,6 +371,7 @@ Map<String, List<String>> portugueseTexts = {
   'item_description': itemDescriptionPT,
   'preparation_description': preparationDescriptionPT,
   'subscription': subscriptionPT,
+  'stock_settings': stockSettingsPT,
 };
 Map<String, List<String>> englishTexts = {
   'intro': introEN,
@@ -359,4 +388,5 @@ Map<String, List<String>> englishTexts = {
   'item_description': itemDescriptionEN,
   'preparation_description': preparationDescriptionEN,
   'subscription': subscriptionEN,
+  'stock_settings': stockSettingsEN,
 };
