@@ -191,8 +191,8 @@ class StockSettingsButton extends StatelessWidget {
 
                                           emailList.remove(email);
 
-                                          await doc.reference
-                                              .update({'sharedWith': emailList});
+                                          await doc.reference.update(
+                                              {'sharedWith': emailList});
                                         }
                                       },
                                       icon: const Icon(Icons.delete),
@@ -262,6 +262,14 @@ class StockSettingsButton extends StatelessWidget {
                         ),
                       ],
                     ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(texts['stock_settings'][11]),
+                      ),
+                    ],
                   );
                 });
               },

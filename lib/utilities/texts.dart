@@ -340,7 +340,7 @@ List<String> stockSettingsPT = [
   'Usuário já adicionado.', //8
   'Excluir Usuário', //9
   'Adquira o Plano Equipe para compartilhar Estoques com outros usuários.', //10
-
+  'Fechar'//11
 ];
 List<String> stockSettingsEN = [
   'Share', //0
@@ -354,6 +354,16 @@ List<String> stockSettingsEN = [
   'Add User', //8
   'Delete User', //9
   'Get the Team Plan to share Stocks with other users.', //10
+  'Close'//11
+];
+
+List<String> shopPT = [
+  'Lista de Compras', //0
+  'Criar PDF', //1
+];
+List<String> shopEN = [
+  'Shopping List', //0
+  'Create PDF', //1
 ];
 
 Map<String, List<String>> portugueseTexts = {
@@ -372,6 +382,7 @@ Map<String, List<String>> portugueseTexts = {
   'preparation_description': preparationDescriptionPT,
   'subscription': subscriptionPT,
   'stock_settings': stockSettingsPT,
+  'shop': shopPT,
 };
 Map<String, List<String>> englishTexts = {
   'intro': introEN,
@@ -389,4 +400,5 @@ Map<String, List<String>> englishTexts = {
   'preparation_description': preparationDescriptionEN,
   'subscription': subscriptionEN,
   'stock_settings': stockSettingsEN,
+  'shop': shopEN,
 };

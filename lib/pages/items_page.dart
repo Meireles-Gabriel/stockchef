@@ -130,11 +130,21 @@ class ItemsPageBody extends ConsumerWidget {
                       ),
                     ),
               ref.watch(currentStockProvider) != null
-                  ? DefaultButton(
-                      text: texts['items'][8],
-                      action: () {
-                        Navigator.pushNamed(context, '/create_item');
-                      })
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        DefaultButton(
+                            text: texts['shop'][0],
+                            action: () {
+                              Navigator.pushNamed(context, '/shop');
+                            }),
+                        DefaultButton(
+                            text: texts['items'][8],
+                            action: () {
+                              Navigator.pushNamed(context, '/create_item');
+                            }),
+                      ],
+                    )
                   : const SizedBox(),
             ],
           );
