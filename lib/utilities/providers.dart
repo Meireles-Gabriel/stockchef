@@ -34,3 +34,6 @@ final preparationsProvider = StateProvider<List<dynamic>>((ref) => []);
 
 final pendingUpdatesProvider = StateProvider<int>((ref) => 0);
 
+final shopItemsProvider = StateProvider<List>(
+  (ref) => [],
+);

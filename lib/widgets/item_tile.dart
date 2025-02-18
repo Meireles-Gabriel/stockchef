@@ -190,15 +190,15 @@ class ItemTile extends ConsumerWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        ItemPlusButton(
+                        ItemMinusButton(
                           isItem: isItem,
                           ref: ref,
-                          amount: data['unit'] == 'g' || data['unit'] == 'mL'
+                          amount: data['quantity'] <= 0 ? 0 : data['unit'] == 'g' || data['unit'] == 'mL'
                               ? 10
                               : 1,
                           data: data,
                         ),
-                        ItemMinusButton(
+                        ItemPlusButton(
                           isItem: isItem,
                           ref: ref,
                           amount: data['unit'] == 'g' || data['unit'] == 'mL'

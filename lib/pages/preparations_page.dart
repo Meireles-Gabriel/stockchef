@@ -7,7 +7,6 @@ import 'package:stockchef/utilities/language_notifier.dart';
 import 'package:stockchef/utilities/providers.dart';
 import 'package:stockchef/widgets/add_stock_button.dart';
 import 'package:stockchef/widgets/default_bottom_app_bar.dart';
-import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/default_drawer.dart';
 import 'package:stockchef/widgets/item_tile.dart';
 import 'package:stockchef/widgets/show_snack_bar.dart';
@@ -131,14 +130,45 @@ class PreparationsPageBody extends ConsumerWidget {
                       ),
                     ),
               ref.watch(currentStockProvider) != null
-                  ? DefaultButton(
-                      text: texts['preparations'][8],
-                      action: () {
-                        ref.read(itemsProvider).isEmpty
-                            ? showSnackBar(context, texts['preparations'][9])
-                            : Navigator.pushNamed(
-                                context, '/create_preparation');
-                      })
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStatePropertyAll(
+                                  Theme.of(context).colorScheme.primary),
+                            ),
+                            onPressed: () {
+                              ref.read(itemsProvider).isEmpty
+                                  ? showSnackBar(
+                                      context, texts['preparations'][9])
+                                  : Navigator.pushNamed(
+                                      context, '/create_preparation');
+                            },
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.add,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  texts['preparations'][8],
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium!
+                                      .copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary),
+                                )
+                              ],
+                            )),
+                      ],
+                    )
                   : const SizedBox(),
             ],
           );

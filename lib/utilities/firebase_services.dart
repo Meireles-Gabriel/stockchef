@@ -230,30 +230,32 @@ class FirebaseServices {
               })
           .toList();
     } else {
-      ref.read(itemsProvider.notifier).state = (await ref
-              .watch(currentStockProvider)
-              .reference
-              .collection('Items')
-              .orderBy('name')
-              .get())
-          .docs
-          .map((doc) => {
-                'id': doc.id,
-                ...doc.data(),
-              })
-          .toList();
-      ref.read(preparationsProvider.notifier).state = (await ref
-              .watch(currentStockProvider)
-              .reference
-              .collection('Preparations')
-              .orderBy('name')
-              .get())
-          .docs
-          .map((doc) => {
-                'id': doc.id,
-                ...doc.data(),
-              })
-          .toList();
+      if (ref.read(currentStockProvider) != null) {
+        ref.read(itemsProvider.notifier).state = (await ref
+                .watch(currentStockProvider)
+                .reference
+                .collection('Items')
+                .orderBy('name')
+                .get())
+            .docs
+            .map((doc) => {
+                  'id': doc.id,
+                  ...doc.data(),
+                })
+            .toList();
+        ref.read(preparationsProvider.notifier).state = (await ref
+                .watch(currentStockProvider)
+                .reference
+                .collection('Preparations')
+                .orderBy('name')
+                .get())
+            .docs
+            .map((doc) => {
+                  'id': doc.id,
+                  ...doc.data(),
+                })
+            .toList();
+      }
     }
 
     return stocks;

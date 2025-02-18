@@ -21,6 +21,8 @@ dependencies:
   flutter_stripe:
   flutter_stripe_web:
   http:
+  pdf:
+  printing:
   url_launcher:
   flutter_launcher_icons:
   flutter_native_splash:

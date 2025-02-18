@@ -125,7 +125,7 @@ List<String> itemsPT = [
   'Criar', //3
   'Já existe um Estoque com este nome.', //4
   'Digite um nome para o Estoque.', //5
-  'Crie seu primeiro Estoque ', //6
+  'Crie um Estoque ', //6
   'Não há Itens cadastrados.', //7
   'Adicionar Item', //8
 ];
@@ -136,7 +136,7 @@ List<String> itemsEN = [
   'Create', //3
   'An Inventory with this name already exists.', //4
   'Enter a name for the Inventory.', //5
-  'Create your first Inventory', //6
+  'Create an Inventory', //6
   'No Items registered.', //7
   'Add Item', //8
 ];
@@ -358,12 +358,25 @@ List<String> stockSettingsEN = [
 ];
 
 List<String> shopPT = [
-  'Lista de Compras', //0
+  'Compras', //0
   'Criar PDF', //1
+  'Quant.', //2
+  'Min.', //3
+  'Comprar', //4
+  'Lista de Compras - ', //5
+  'Unidade', //6
+  'Nome', //7
+
 ];
 List<String> shopEN = [
-  'Shopping List', //0
+  'Shopping', //0
   'Create PDF', //1
+  'Qty.', //2
+  'Min.', //3
+  'Buy', //4
+  'Shopping List - ', //5
+  'Unit', //6
+  'Name', //7
 ];
 
 Map<String, List<String>> portugueseTexts = {

@@ -24,7 +24,7 @@ class ItemMinusButton extends HookWidget {
   Widget build(BuildContext context) {
     final pendingUpdates = useState(0);
 
-    void itemPlus() {
+    void itemMinus() {
       pendingUpdates.value += 1;
       Debouncer.run(() async {
         await FirebaseFirestore.instance
@@ -40,25 +40,28 @@ class ItemMinusButton extends HookWidget {
     }
 
     return InkWell(
-      onTap: () {
-        final List<dynamic> updatedItems = [
-          for (var item in isItem
-              ? ref.read(itemsProvider)
-              : ref.read(preparationsProvider))
-            if (item['id'] == data['id'])
-              {...item, 'quantity': item['quantity'] - amount}
-            else
-              item,
-        ];
-        isItem
-            ? ref.read(itemsProvider.notifier).state = updatedItems
-            : ref.read(preparationsProvider.notifier).state = updatedItems;
+      onTap: data['quantity'] <= 0
+          ? () {}
+          : () {
+              final List<dynamic> updatedItems = [
+                for (var item in isItem
+                    ? ref.read(itemsProvider)
+                    : ref.read(preparationsProvider))
+                  if (item['id'] == data['id'])
+                    {...item, 'quantity': item['quantity'] - amount}
+                  else
+                    item,
+              ];
+              isItem
+                  ? ref.read(itemsProvider.notifier).state = updatedItems
+                  : ref.read(preparationsProvider.notifier).state =
+                      updatedItems;
 
-        itemPlus();
-        isItem
-            ? FirebaseServices().updateItemsStatus(ref)
-            : FirebaseServices().updatePreparationsStatus(ref);
-      },
+              itemMinus();
+              isItem
+                  ? FirebaseServices().updateItemsStatus(ref)
+                  : FirebaseServices().updatePreparationsStatus(ref);
+            },
       child: const Icon(
         Icons.remove,
       ),

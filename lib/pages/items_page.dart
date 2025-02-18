@@ -9,7 +9,6 @@ import 'package:stockchef/utilities/language_notifier.dart';
 import 'package:stockchef/utilities/providers.dart';
 import 'package:stockchef/widgets/add_stock_button.dart';
 import 'package:stockchef/widgets/default_bottom_app_bar.dart';
-import 'package:stockchef/widgets/default_button.dart';
 import 'package:stockchef/widgets/default_drawer.dart';
 import 'package:stockchef/widgets/item_tile.dart';
 import 'package:stockchef/widgets/stock_selection_button.dart';
@@ -133,16 +132,74 @@ class ItemsPageBody extends ConsumerWidget {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        DefaultButton(
-                            text: texts['shop'][0],
-                            action: () {
-                              Navigator.pushNamed(context, '/shop');
-                            }),
-                        DefaultButton(
-                            text: texts['items'][8],
-                            action: () {
-                              Navigator.pushNamed(context, '/create_item');
-                            }),
+                        ElevatedButton(
+                          onPressed: ref.read(itemsProvider).isEmpty
+                              ? null
+                              : () {
+                                  Navigator.pushNamed(context, '/shop');
+                                },
+                          style: ref.read(itemsProvider).isEmpty
+                              ? const ButtonStyle(
+                                  backgroundColor:
+                                      WidgetStatePropertyAll(Colors.grey),
+                                )
+                              : ButtonStyle(
+                                  backgroundColor: WidgetStatePropertyAll(
+                                    Theme.of(context).colorScheme.primary,
+                                  ),
+                                ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.local_grocery_store,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                texts['shop'][0],
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
+                              )
+                            ],
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/create_item');
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll(
+                                Theme.of(context).colorScheme.primary),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.add,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                texts['items'][8],
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     )
                   : const SizedBox(),
