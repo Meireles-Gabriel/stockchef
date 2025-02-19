@@ -15,18 +15,18 @@ import 'package:url_launcher/url_launcher.dart';
 
 class StripeServices {
   final pubKey =
-      'pk_test_51QCldWAGNdCA2ykKZetX2jP5jucvkeRJgQp7pfoJ3Ak1K7ZFGMT9E5UNBuJd5pxkY66VkmsofJ5VMazURQ5BGcue00mzvD2jL4';
+      'pk_live_51QCldWAGNdCA2ykKGSMmM4gGiQfL9UlAkXXjQUOoVkQ0OO768nVX1h4X2hYekZ3UIy9bvEEl0Xt8WJiRQvNjNork006AOz7vCv';
   final secKey =
-      'sk_test_51QCldWAGNdCA2ykKwFTqRLfmt6DbKn5Vam7k6jTj5Pyk00NYh3rZ3k2wkkAMa9yOfAHFARqJQBYVtJUL1F00uPDE00kNU5gd0F';
+      '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';
 
-  final soloBRLId = 'prod_R8HRoDQr9nSxSM';
-  final soloBRLprice = 'price_1QG0sfAGNdCA2ykKajaINR4d';
-  final teamBRLId = 'prod_R8HRnqJcWdQRnz';
-  final teamBRLprice = 'price_1QG0syAGNdCA2ykKwxwbKDw2';
-  final soloUSDId = 'prod_R8HSdX7wr9Fa0N';
-  final soloUSDprice = 'price_1QG0tIAGNdCA2ykKGltKNaGG';
-  final teamUSDId = 'prod_R8HTWDGjn70Mcl';
-  final teamUSDprice = 'price_1QG0uaAGNdCA2ykK2W0PUsZA';
+  final soloBRLId = 'prod_RnsWVJFRteeGJJ';
+  final soloBRLprice = 'price_1QuGlKAGNdCA2ykKoU1AzcFl';
+  final teamBRLId = 'prod_RnsWjVr6T0VzQQ';
+  final teamBRLprice = 'price_1QuGlGAGNdCA2ykK3SRkHwqI';
+  final soloUSDId = 'prod_RnsWOjYQOwipaX';
+  final soloUSDprice = 'price_1QuGlDAGNdCA2ykKOXnUZvC8';
+  final teamUSDId = 'prod_RnsWNCXoL6AvNY';
+  final teamUSDprice = 'price_1QuGl8AGNdCA2ykK65PhzRd7';
 
   Future<dynamic> createCustomer(
       BuildContext context, Map texts, String name, String email) async {

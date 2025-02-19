@@ -108,6 +108,15 @@ List<String> dashboardPT = [
   'Assinatura', //3
   'Trocar de Conta', //4
   'Sair do Aplicativo', //5
+  'A quantidade deste item está dentro do mínimo\nnecessário.', //6
+  'A quantidade deste item está abaixo da quantidade\nmínima, mas não há preparações em falta que\nnecessitem dele.', //7
+  'A quantidade do Item está abaixo do Estoque\nMínimo, ou a Data de Vencimento do Item está\npróxima.', //8
+  'Não há estoque deste Item, ou a Data de\nVencimento do Item já passou!', //9
+  'A quantidade desta Preparação está dentro do\nmínimo necessário.', //10
+  'A quantidade da Preparação está abaixo do Estoque\nMínimo, ou a Data de Vencimento da Preparação\nestá próxima.', //11
+  'Não há estoque desta Preparação, ou a Data de\nVencimento da Preparação já passou!', //12
+  'Adicione Itens para começar a gerenciar seu estoque.', //13
+  'Adicione Preparações para começar a gerenciar seu estoque.', //14
 ];
 List<String> dashboardEN = [
   'Dashboard', //0
@@ -116,6 +125,15 @@ List<String> dashboardEN = [
   'Subscription', //3
   'Switch Account', //4
   'Exit App', //5
+  'The quantity of this item is within the necessary\nminimum.', //6
+  'The quantity of this item is below the minimum,\nbut there are no out-of-stock Preparations that\nrequire it.', //7
+  'The quantity of the Item is below the Minimum\nStock, or the Item\'s Expiration Date is approaching.', //8
+  'The Item is out-of-stock, or the Item\'s\nExpiration Date has already passed!', //9
+  'The quantity of this Preparation is within the\nnecessary minimum.', //10
+  'The quantity of the Preparation is below the\nMinimum Stock, or the Preparation\'s Expiration\nDate is approaching.', //11
+  'The Preparation is out-of-stock, or the Preparation\'s\nExpiration Date has already passed!', //12
+  'Add Items to start managing your inventory.', //13
+  'Add Preparations to start managing your inventory.', //14
 ];
 
 List<String> itemsPT = [
@@ -340,7 +358,7 @@ List<String> stockSettingsPT = [
   'Usuário já adicionado.', //8
   'Excluir Usuário', //9
   'Adquira o Plano Equipe para compartilhar Estoques com outros usuários.', //10
-  'Fechar'//11
+  'Fechar' //11
 ];
 List<String> stockSettingsEN = [
   'Share', //0
@@ -354,7 +372,7 @@ List<String> stockSettingsEN = [
   'Add User', //8
   'Delete User', //9
   'Get the Team Plan to share Stocks with other users.', //10
-  'Close'//11
+  'Close' //11
 ];
 
 List<String> shopPT = [
@@ -366,7 +384,6 @@ List<String> shopPT = [
   'Lista de Compras - ', //5
   'Unidade', //6
   'Nome', //7
-
 ];
 List<String> shopEN = [
   'Shopping', //0
