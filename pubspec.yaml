@@ -17,7 +17,7 @@ dependencies:
   firebase_core:
   cloud_firestore:
   firebase_auth:
-  flutter_stripe:
+  flutter_stripe: 11.4.0
   flutter_stripe_web:
   http:
   pdf:

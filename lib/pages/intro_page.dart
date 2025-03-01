@@ -100,10 +100,11 @@ class IntroBody extends ConsumerWidget {
     final Size size = MediaQuery.sizeOf(context);
     return Center(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
             children: [
+              const SizedBox(),
               Stack(
                 alignment: Alignment.center,
                 children: [
@@ -160,7 +161,7 @@ class IntroBody extends ConsumerWidget {
               ),
               SmoothPageIndicator(
                 controller: pageController,
-                count: texts['intro'].length - 1,
+                count: texts['intro'].length - 5,
                 effect: WormEffect(
                   dotHeight: 7,
                   dotWidth: 10,
@@ -182,6 +183,19 @@ class IntroBody extends ConsumerWidget {
                 Navigator.pushNamed(context, '/login');
               },
             ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () {},
+                child: Text(texts['intro'][4]),
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Text(texts['intro'][5]),
+              ),
+            ],
           )
         ],
       ),

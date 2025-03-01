@@ -68,6 +68,36 @@ class AddStockButton extends ConsumerWidget {
                     title: Text(texts['items'][1]),
                     content: TextField(
                       controller: nameController,
+                      onSubmitted: (value) async {
+                        for (var doc in databasesData.docs) {
+                          if (doc['name'] == nameController.text) {
+                            ref.read(isLoadingItemsProvider.notifier).state =
+                                false;
+                            showSnackBar(context, texts['items'][4])
+                                .then((value) async {
+                              await FirebaseServices().getStocks(ref);
+                              Navigator.of(context).pop();
+                            });
+                          }
+                        }
+                        if (nameController.text != '') {
+                          await FirebaseServices()
+                              .createStock(ref, nameController.text)
+                              .then((value) async {
+                            await FirebaseServices().loadStock(ref);
+                            Navigator.of(context).pop();
+                          });
+                          ref.read(isLoadingItemsProvider.notifier).state =
+                              false;
+                        } else {
+                          ref.read(isLoadingItemsProvider.notifier).state =
+                              false;
+                          showSnackBar(context, texts['items'][5])
+                              .then((value) {
+                            Navigator.of(context).pop();
+                          });
+                        }
+                      },
                       decoration: InputDecoration(
                         labelText: texts['items'][2],
                       ),

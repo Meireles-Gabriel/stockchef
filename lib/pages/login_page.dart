@@ -10,8 +10,6 @@ import 'package:stockchef/widgets/h_divider.dart';
 import 'package:stockchef/widgets/language_switch.dart';
 import 'package:stockchef/widgets/v_divider.dart';
 
-
-
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
@@ -32,6 +30,14 @@ class LoginPage extends StatelessWidget {
           final TextEditingController signUpPassword = TextEditingController();
           final TextEditingController signUpCheckPassword =
               TextEditingController();
+
+          final FocusNode focusNodeloginEmail = FocusNode();
+          final FocusNode focusNodeloginPassword = FocusNode();
+          final FocusNode focusNodesignUpName = FocusNode();
+          final FocusNode focusNodesignUpEmail = FocusNode();
+          final FocusNode focusNodesignUpPassword = FocusNode();
+          final FocusNode focusNodesignUpCheckPassword = FocusNode();
+
           Map texts = ref.watch(languageNotifierProvider)['texts'];
           return HelperClass(
             mobile: SingleChildScrollView(
@@ -43,6 +49,8 @@ class LoginPage extends StatelessWidget {
                     LogInFields(
                       logInEmail: logInEmail,
                       logInPassword: logInPassword,
+                      focusNodeloginEmail: focusNodeloginEmail,
+                      focusNodeloginPassword: focusNodeloginPassword,
                     ),
                     HDivider(texts: texts),
                     SignUpFields(
@@ -50,6 +58,10 @@ class LoginPage extends StatelessWidget {
                       signUpEmail,
                       signUpPassword,
                       signUpCheckPassword,
+                      focusNodesignUpName,
+                      focusNodesignUpEmail,
+                      focusNodesignUpPassword,
+                      focusNodesignUpCheckPassword,
                     )
                   ],
                 ),
@@ -62,13 +74,21 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     LogInFields(
-                        logInEmail: logInEmail, logInPassword: logInPassword),
+                      logInEmail: logInEmail,
+                      logInPassword: logInPassword,
+                      focusNodeloginEmail: focusNodeloginEmail,
+                      focusNodeloginPassword: focusNodeloginPassword,
+                    ),
                     VDivider(texts: texts),
                     SignUpFields(
                       signUpName,
                       signUpEmail,
                       signUpPassword,
                       signUpCheckPassword,
+                      focusNodesignUpName,
+                      focusNodesignUpEmail,
+                      focusNodesignUpPassword,
+                      focusNodesignUpCheckPassword,
                     ),
                   ],
                 ),
@@ -81,13 +101,21 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     LogInFields(
-                        logInEmail: logInEmail, logInPassword: logInPassword),
+                      logInEmail: logInEmail,
+                      logInPassword: logInPassword,
+                      focusNodeloginEmail: focusNodeloginEmail,
+                      focusNodeloginPassword: focusNodeloginPassword,
+                    ),
                     VDivider(texts: texts),
                     SignUpFields(
                       signUpName,
                       signUpEmail,
                       signUpPassword,
                       signUpCheckPassword,
+                      focusNodesignUpName,
+                      focusNodesignUpEmail,
+                      focusNodesignUpPassword,
+                      focusNodesignUpCheckPassword,
                     ),
                   ],
                 ),
@@ -105,11 +133,15 @@ class LoginPage extends StatelessWidget {
 class LogInFields extends ConsumerWidget {
   final dynamic logInEmail;
   final dynamic logInPassword;
+  final FocusNode focusNodeloginEmail;
+  final FocusNode focusNodeloginPassword;
 
   const LogInFields({
     super.key,
     required this.logInEmail,
     required this.logInPassword,
+    required this.focusNodeloginEmail,
+    required this.focusNodeloginPassword,
   });
 
   @override
@@ -126,6 +158,9 @@ class LogInFields extends ConsumerWidget {
               enabled: !ref.watch(isLoadingLogInProvider) &&
                   !ref.watch(isLoadingSignUpProvider),
               controller: logInEmail,
+              focusNode: focusNodeloginEmail,
+              onSubmitted: (value) =>
+                  FocusScope.of(context).requestFocus(focusNodeloginPassword),
               decoration: InputDecoration(
                 labelText: texts['login'][1],
               ),
@@ -137,6 +172,22 @@ class LogInFields extends ConsumerWidget {
               enabled: !ref.watch(isLoadingLogInProvider) &&
                   !ref.watch(isLoadingSignUpProvider),
               controller: logInPassword,
+              focusNode: focusNodeloginPassword,
+              onSubmitted: (ref.watch(isLoadingLogInProvider) ||
+                      ref.watch(isLoadingSignUpProvider))
+                  ? null
+                  : (value) {
+                      ref.read(isLoadingLogInProvider.notifier).state = true;
+                      FirebaseServices()
+                          .logIn(
+                              context: context,
+                              texts: texts,
+                              email: logInEmail.text,
+                              password: logInPassword.text)
+                          .then((value) {
+                        ref.read(isLoadingLogInProvider.notifier).state = false;
+                      });
+                    },
               obscureText: true,
               decoration: InputDecoration(
                 labelText: texts['login'][2],
@@ -200,11 +251,19 @@ class SignUpFields extends ConsumerWidget {
   final TextEditingController signUpEmail;
   final TextEditingController signUpPassword;
   final TextEditingController signUpCheckPassword;
+  final FocusNode focusNodesignUpName;
+  final FocusNode focusNodesignUpEmail;
+  final FocusNode focusNodesignUpPassword;
+  final FocusNode focusNodesignUpCheckPassword;
   const SignUpFields(
     this.signUpName,
     this.signUpEmail,
     this.signUpPassword,
-    this.signUpCheckPassword, {
+    this.signUpCheckPassword,
+    this.focusNodesignUpName,
+    this.focusNodesignUpEmail,
+    this.focusNodesignUpPassword,
+    this.focusNodesignUpCheckPassword, {
     super.key,
   });
 
@@ -222,6 +281,9 @@ class SignUpFields extends ConsumerWidget {
               enabled: !ref.watch(isLoadingLogInProvider) &&
                   !ref.watch(isLoadingSignUpProvider),
               controller: signUpName,
+              focusNode: focusNodesignUpName,
+              onSubmitted: (value) =>
+                  FocusScope.of(context).requestFocus(focusNodesignUpEmail),
               decoration: InputDecoration(
                 labelText: texts['login'][0],
               ),
@@ -233,6 +295,9 @@ class SignUpFields extends ConsumerWidget {
               enabled: !ref.watch(isLoadingLogInProvider) &&
                   !ref.watch(isLoadingSignUpProvider),
               controller: signUpEmail,
+              focusNode: focusNodesignUpEmail,
+              onSubmitted: (value) =>
+                  FocusScope.of(context).requestFocus(focusNodesignUpPassword),
               decoration: InputDecoration(
                 labelText: texts['login'][1],
               ),
@@ -244,6 +309,9 @@ class SignUpFields extends ConsumerWidget {
               enabled: !ref.watch(isLoadingLogInProvider) &&
                   !ref.watch(isLoadingSignUpProvider),
               controller: signUpPassword,
+              focusNode: focusNodesignUpPassword,
+              onSubmitted: (value) => FocusScope.of(context)
+                  .requestFocus(focusNodesignUpCheckPassword),
               obscureText: true,
               decoration: InputDecoration(
                 labelText: texts['login'][2],
@@ -256,6 +324,25 @@ class SignUpFields extends ConsumerWidget {
               enabled: !ref.watch(isLoadingLogInProvider) &&
                   !ref.watch(isLoadingSignUpProvider),
               controller: signUpCheckPassword,
+              focusNode: focusNodesignUpCheckPassword,
+              onSubmitted: (ref.watch(isLoadingLogInProvider) ||
+                      ref.watch(isLoadingSignUpProvider))
+                  ? null
+                  : (value) {
+                      ref.read(isLoadingSignUpProvider.notifier).state = true;
+                      FirebaseServices()
+                          .signUp(
+                              context: context,
+                              texts: texts,
+                              email: signUpEmail.text,
+                              password: signUpPassword.text,
+                              checkPassword: signUpCheckPassword.text,
+                              name: signUpName.text)
+                          .then((value) {
+                        ref.read(isLoadingSignUpProvider.notifier).state =
+                            false;
+                      });
+                    },
               obscureText: true,
               decoration: InputDecoration(
                 labelText: texts['login'][14],

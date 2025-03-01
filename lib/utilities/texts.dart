@@ -2,13 +2,204 @@ List<String> introPT = [
   'Gerencie seu estoque e produção com facilidade.', //0
   'Saiba o que comprar antes de faltar.', //1
   'Use sozinho ou compartilhe com sua equipe.', //2
-  'Começar' //3
+  'Começar', //3
+  'Termos de Uso', //4
+  'Política de Privacidade', //5
+  '''
+Última atualização: 28/02/2025
+
+Bem-vindo ao StockChef! Ao utilizar nosso aplicativo, você concorda com os seguintes Termos de Uso. Leia atentamente antes de prosseguir.
+
+1. Aceitação dos Termos
+
+Ao criar uma conta e utilizar o StockChef, você concorda com estes Termos de Uso e nossa Política de Privacidade. Se não concordar, não utilize o aplicativo.
+
+2. Objetivo do Aplicativo
+
+O StockChef é um aplicativo de gerenciamento de estoque para cozinhas, permitindo o controle de ingredientes, produtos armazenados e recomendações para reposição.
+
+3. Cadastro e Conta
+
+Para utilizar o StockChef, você deve criar uma conta com um email válido.
+
+Você é responsável por manter a segurança da sua conta e não compartilhar suas credenciais com terceiros.
+
+4. Assinatura e Pagamentos
+
+O StockChef oferece um período de teste de 15 dias.
+
+Após o período de teste, é necessário assinar um dos planos disponíveis: Individual (R\$ 9,90/mês) ou Equipe (R\$ 14,90/mês).
+
+O pagamento é processado via Stripe e será cobrado automaticamente a cada período de assinatura.
+
+O cancelamento da assinatura pode ser feito a qualquer momento, mas não haverá reembolso por períodos já pagos.
+
+5. Uso do Aplicativo
+
+Você concorda em utilizar o StockChef apenas para fins legítimos de gerenciamento de estoque.
+
+Não é permitido uso abusivo, como tentativa de burlar o sistema, acesso não autorizado ou cópia do aplicativo.
+
+6. Responsabilidades
+
+O StockChef não se responsabiliza por decisões comerciais tomadas com base nos dados fornecidos pelo aplicativo.
+
+Não garantimos funcionamento ininterrupto ou livre de erros.
+
+7. Privacidade
+
+O uso do StockChef também está sujeito à nossa Política de Privacidade.
+
+8. Modificações nos Termos
+
+Podemos atualizar estes Termos periodicamente. O uso contínuo do StockChef após alterações significa sua aceitação das novas condições.
+
+9. Contato
+
+Para dúvidas ou suporte, entre em contato pelo email [contato.gabrielmeireles@gmail.com].
+''', //6
+'''
+Última atualização: 28/02/2025
+
+Sua privacidade é importante para nós. Esta Política de Privacidade explica como coletamos, usamos e protegemos suas informações ao utilizar o StockChef.
+
+1. Informações Coletadas
+
+Informações da Conta: Nome, email e senha criptografada.
+
+Dados de Uso: Informações sobre seus estoques, ingredientes cadastrados e preferências dentro do aplicativo.
+
+Dados de Pagamento: Gerenciados diretamente pelo Stripe. O StockChef não armazena informações de pagamento.
+
+2. Como Utilizamos Suas Informações
+
+Para fornecer os serviços do StockChef e personalizar sua experiência.
+
+Para processar assinaturas e pagamentos.
+
+Para notificações relacionadas ao estoque e comunicações importantes.
+
+3. Compartilhamento de Dados
+
+Não vendemos ou compartilhamos seus dados com terceiros sem consentimento, exceto quando necessário para prestação do serviço (ex.: Stripe para pagamentos).
+
+Podemos compartilhar dados em caso de exigência legal.
+
+4. Segurança
+
+Utilizamos medidas de segurança para proteger suas informações, incluindo criptografia de dados e autenticação segura.
+
+5. Alterações nesta Política
+
+Podemos atualizar esta Política de Privacidade ocasionalmente. O uso contínuo do aplicativo indica sua concordância com as mudanças.
+
+6. Contato
+
+Caso tenha dúvidas sobre esta Política, entre em contato pelo email [contato.gabrielmeireles@gmail.com].
+''' //7
+
 ];
 List<String> introEN = [
   'Manage your inventory and production with ease.', //0
   'Know what to buy before it runs out.', //1
   'Use solo or share with your team.', //2
-  'Start' //3
+  'Start', //3
+  'Terms of Use', //4
+  'Privacy Policy', //5
+  '''
+Last update: 02-28-2025
+
+Welcome to StockChef! By using our app, you agree to the following Terms of Use. Please read them carefully before proceeding.
+
+1. Acceptance of Terms
+
+By creating an account and using StockChef, you agree to these Terms of Use and our Privacy Policy. If you do not agree, do not use the app.
+
+2. Purpose of the App
+
+StockChef is a kitchen inventory management app that allows you to control ingredients, stored products, and get recommendations for replenishment.
+
+3. Registration and Account
+
+To use StockChef, you must create an account with a valid email.
+
+You are responsible for maintaining the security of your account and should not share your credentials with third parties.
+
+4. Subscription and Payments
+
+StockChef offers a 15-day trial period.
+
+After the trial period, you must subscribe to one of the available plans: Individual (R\$ 9.90/month) or Team (R\$ 14.90/month).
+
+Payment is processed via Stripe and will be charged automatically for each subscription period.
+
+You can cancel your subscription at any time, but there will be no refunds for already paid periods.
+
+5. Use of the App
+
+You agree to use StockChef only for legitimate inventory management purposes.
+
+Abusive use, such as attempting to bypass the system, unauthorized access, or copying the app, is not allowed.
+
+6. Responsibilities
+
+StockChef is not responsible for business decisions made based on the data provided by the app.
+
+We do not guarantee uninterrupted or error-free operation.
+
+7. Privacy
+
+The use of StockChef is also subject to our Privacy Policy.
+
+8. Changes to the Terms
+
+We may update these Terms periodically. Continued use of StockChef after changes means you accept the new conditions.
+
+9. Contact
+
+For questions or support, contact us at [contato.gabrielmeireles@gmail.com].
+''', //6
+'''
+Last update: 02-28-2025
+
+Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when using StockChef.
+
+1. Information Collected
+
+Account Information: Name, email, and encrypted password.
+
+Usage Data: Information about your inventories, registered ingredients, and preferences within the app.
+
+Payment Data: Managed directly by Stripe. StockChef does not store payment information.
+
+2. How We Use Your Information
+
+To provide StockChef services and personalize your experience.
+
+To process subscriptions and payments.
+
+For stock-related notifications and important communications.
+
+3. Data Sharing
+
+We do not sell or share your data with third parties without consent, except when necessary to provide the service (e.g., Stripe for payments).
+
+We may share data if legally required.
+
+4. Security
+
+We use security measures to protect your information, including data encryption and secure authentication.
+
+5. Changes to This Policy
+
+We may update this Privacy Policy occasionally. Continued use of the app indicates your agreement with the changes.
+
+6. Contact
+
+If you have any questions about this Policy, contact us at [contato.gabrielmeireles@gmail.com].
+
+
+''' //7
 ];
 
 List<String> loginPT = [
