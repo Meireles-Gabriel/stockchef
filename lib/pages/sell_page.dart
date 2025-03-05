@@ -53,6 +53,7 @@ class _SellPageState extends State<SellPage> {
         : Scaffold(
             appBar: AppBar(
               backgroundColor: Theme.of(context).colorScheme.surface,
+              surfaceTintColor: Colors.transparent,
               automaticallyImplyLeading: false,
               title: Consumer(builder:
                   (BuildContext context, WidgetRef ref, Widget? child) {
@@ -103,7 +104,8 @@ class _SellPageState extends State<SellPage> {
                 Map texts = ref.watch(languageNotifierProvider)['texts'];
 
                 return HelperClass(
-                    mobile: Column(
+                  mobile: SingleChildScrollView(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
@@ -127,69 +129,84 @@ class _SellPageState extends State<SellPage> {
                         const SizedBox(),
                       ],
                     ),
-                    tablet: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          texts['sell'][13],
-                          style: size.width > 768
-                              ? Theme.of(context).textTheme.headlineMedium
-                              : Theme.of(context).textTheme.headlineSmall,
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                        ),
-                        SoloPlanCard(
-                          texts: texts,
-                        ),
-                        SizedBox(
-                          width: 450,
-                          child: HDivider(texts: texts),
-                        ),
-                        TeamPlanCard(
-                          texts: texts,
-                        ),
-                        const SizedBox(),
-                      ],
-                    ),
-                    desktop: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          texts['sell'][13],
-                          style: size.width > 768
-                              ? Theme.of(context).textTheme.headlineMedium
-                              : Theme.of(context).textTheme.headlineSmall,
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            SoloPlanCard(
-                              texts: texts,
-                            ),
-                            SizedBox(
-                              height: 450,
-                              child: VDivider(texts: texts),
-                            ),
-                            Column(
-                              children: [
-                                TeamPlanCard(
-                                  texts: texts,
-                                ),
-                                const SizedBox(
-                                  height: 50,
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(),
-                        const SizedBox(),
-                      ],
-                    ),
-                    paddingWidth: size.width * .05,
-                    bgColor: Theme.of(context).colorScheme.surface);
+                  ),
+                  tablet: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        texts['sell'][13],
+                        style: size.width > 768
+                            ? Theme.of(context).textTheme.headlineMedium
+                            : Theme.of(context).textTheme.headlineSmall,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SoloPlanCard(
+                            texts: texts,
+                          ),
+                          SizedBox(
+                            height: 450,
+                            child: VDivider(texts: texts),
+                          ),
+                          Column(
+                            children: [
+                              TeamPlanCard(
+                                texts: texts,
+                              ),
+                              const SizedBox(
+                                height: 50,
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(),
+                      const SizedBox(),
+                    ],
+                  ),
+                  desktop: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        texts['sell'][13],
+                        style: size.width > 768
+                            ? Theme.of(context).textTheme.headlineMedium
+                            : Theme.of(context).textTheme.headlineSmall,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SoloPlanCard(
+                            texts: texts,
+                          ),
+                          SizedBox(
+                            height: 450,
+                            child: VDivider(texts: texts),
+                          ),
+                          Column(
+                            children: [
+                              TeamPlanCard(
+                                texts: texts,
+                              ),
+                              const SizedBox(
+                                height: 50,
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(),
+                      const SizedBox(),
+                    ],
+                  ),
+                  paddingWidth: size.width * .05,
+                  bgColor: Theme.of(context).colorScheme.surface,
+                );
               },
             ),
           );

@@ -28,6 +28,11 @@ class StripeServices {
   final teamUSDId = 'prod_RnsWNCXoL6AvNY';
   final teamUSDprice = 'price_1QuGl8AGNdCA2ykK65PhzRd7';
 
+  String soloBRLUrl = 'https://buy.stripe.com/aEUbMw4QY7UL7yE144';
+  String soloUSDUrl = 'https://buy.stripe.com/dR62bW2IQej9aKQ4gi';
+  String teamBRLUrl = 'https://buy.stripe.com/4gw03OgzG4Iz2ek4gh';
+  String teamUSDUrl = 'https://buy.stripe.com/eVa17S1EMcb16uA9AD';
+
   Future<dynamic> createCustomer(
       BuildContext context, Map texts, String name, String email) async {
     try {
@@ -399,9 +404,6 @@ class StripeServices {
 
   Future<void> soloPlanButtonAction(
       BuildContext context, WidgetRef ref, Map texts) async {
-    String soloBRLUrl = 'https://buy.stripe.com/test_dR6bJMb2w0s45SE7ss';
-    String soloUSDUrl = 'https://buy.stripe.com/test_28oeVYgmQ7Uwa8U3ce';
-
     if (kIsWeb) {
       if (PlatformDispatcher.instance.locale.toString() == 'pt_BR') {
         launchUrl(Uri.parse(soloBRLUrl));
@@ -466,9 +468,6 @@ class StripeServices {
 
   Future<void> teamPlanButtonAction(
       BuildContext context, WidgetRef ref, Map texts) async {
-    String teamBRLUrl = 'https://buy.stripe.com/test_4gw7tw5Icb6Iepa7st';
-
-    String teamUSDUrl = 'https://buy.stripe.com/test_5kA5lodaE4Ik1Co8wz';
     if (kIsWeb) {
       if (PlatformDispatcher.instance.locale.toString() == 'pt_BR') {
         launchUrl(Uri.parse(teamBRLUrl));

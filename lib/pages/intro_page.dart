@@ -56,6 +56,8 @@ class _IntroPageState extends State<IntroPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
         actions: const [LanguageSwitch()],
       ),
       body: HelperClass(
@@ -161,7 +163,7 @@ class IntroBody extends ConsumerWidget {
               ),
               SmoothPageIndicator(
                 controller: pageController,
-                count: texts['intro'].length - 5,
+                count: texts['intro'].length - 6,
                 effect: WormEffect(
                   dotHeight: 7,
                   dotWidth: 10,
@@ -188,12 +190,66 @@ class IntroBody extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                onPressed: () {},
-                child: Text(texts['intro'][4]),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        content: SingleChildScrollView(
+                          child: Text(texts['intro'][6]),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              texts['intro'][8],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Text(
+                  texts['intro'][4],
+                  style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.bodySmall!.fontSize,
+                  ),
+                ),
               ),
               TextButton(
-                onPressed: () {},
-                child: Text(texts['intro'][5]),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        content: SingleChildScrollView(
+                          child: Text(texts['intro'][7]),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              texts['intro'][8],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Text(
+                  texts['intro'][5],
+                  style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.bodySmall!.fontSize,
+                  ),
+                ),
               ),
             ],
           )

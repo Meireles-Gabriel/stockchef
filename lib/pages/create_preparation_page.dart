@@ -310,6 +310,7 @@ class CreatePreparationBody extends StatelessWidget {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             softWrap: true,
+                            textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium!

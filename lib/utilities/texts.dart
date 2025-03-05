@@ -58,7 +58,7 @@ Podemos atualizar estes Termos periodicamente. O uso contínuo do StockChef apó
 
 Para dúvidas ou suporte, entre em contato pelo email [contato.gabrielmeireles@gmail.com].
 ''', //6
-'''
+  '''
 Última atualização: 28/02/2025
 
 Sua privacidade é importante para nós. Esta Política de Privacidade explica como coletamos, usamos e protegemos suas informações ao utilizar o StockChef.
@@ -96,8 +96,8 @@ Podemos atualizar esta Política de Privacidade ocasionalmente. O uso contínuo 
 6. Contato
 
 Caso tenha dúvidas sobre esta Política, entre em contato pelo email [contato.gabrielmeireles@gmail.com].
-''' //7
-
+''', //7
+  'Fechar', //8
 ];
 List<String> introEN = [
   'Manage your inventory and production with ease.', //0
@@ -159,7 +159,7 @@ We may update these Terms periodically. Continued use of StockChef after changes
 
 For questions or support, contact us at [contato.gabrielmeireles@gmail.com].
 ''', //6
-'''
+  '''
 Last update: 02-28-2025
 
 Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when using StockChef.
@@ -199,7 +199,8 @@ We may update this Privacy Policy occasionally. Continued use of the app indicat
 If you have any questions about this Policy, contact us at [contato.gabrielmeireles@gmail.com].
 
 
-''' //7
+''', //7
+  'Close', //8
 ];
 
 List<String> loginPT = [
