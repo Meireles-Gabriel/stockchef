@@ -616,7 +616,7 @@ class ItemsGraphic extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         SizedBox(
-          height: 600,
+          height: 550,
           child: SfCircularChart(
             legend: Legend(
               height: '80%',

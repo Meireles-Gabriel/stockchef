@@ -7,6 +7,7 @@ import 'package:stockchef/utilities/firebase_services.dart';
 import 'package:stockchef/utilities/language_notifier.dart';
 import 'package:stockchef/utilities/theme_notifier.dart';
 import 'package:stockchef/widgets/default_drawer_button.dart';
+import 'package:stockchef/widgets/download_dialog.dart';
 import 'package:stockchef/widgets/language_switch.dart';
 import 'package:stockchef/widgets/theme_switch.dart';
 
@@ -119,14 +120,21 @@ class DefaultDrawer extends ConsumerWidget {
               const SizedBox(
                 height: 1,
               ),
-              if (!kIsWeb)
-                DefaultDrawerButton(
-                  action: () {
-                    exit(0);
-                  },
-                  text: texts['dashboard'][5],
-                  icon: Icons.close,
-                ),
+              !kIsWeb
+                  ? DefaultDrawerButton(
+                      action: () {
+                        exit(0);
+                      },
+                      text: texts['dashboard'][5],
+                      icon: Icons.close,
+                    )
+                  : DefaultDrawerButton(
+                      action: () {
+                        downloadDialog(context, texts);
+                      },
+                      text: texts['download'][0],
+                      icon: Icons.download,
+                    ),
             ],
           ),
           const Spacer(),

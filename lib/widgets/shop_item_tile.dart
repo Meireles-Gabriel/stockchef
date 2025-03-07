@@ -36,7 +36,8 @@ class _ShopItemTileState extends ConsumerState<ShopItemTile> {
         } else if (widget.data['status'] == 'orange') {
           for (var preparation in preparations) {
             if (preparation['ingredients'].contains(widget.data['id']) &&
-                preparation['quantity'] < preparation['minQuantity']) {
+                preparation['quantity'] < preparation['minQuantity'] &&
+                widget.data['quantity'] < widget.data['minQuantity']) {
               message = texts['item_description'][2];
             }
           }

@@ -35,7 +35,8 @@ class ItemTile extends ConsumerWidget {
           } else if (data['status'] == 'orange') {
             for (var preparation in preparations) {
               if (preparation['ingredients'].contains(data['id']) &&
-                  preparation['quantity'] < preparation['minQuantity']) {
+                  preparation['quantity'] < preparation['minQuantity'] &&
+                  data['quantity'] < data['minQuantity']) {
                 message = texts['item_description'][2];
               }
             }
@@ -193,9 +194,11 @@ class ItemTile extends ConsumerWidget {
                         ItemMinusButton(
                           isItem: isItem,
                           ref: ref,
-                          amount: data['quantity'] <= 0 ? 0 : data['unit'] == 'g' || data['unit'] == 'mL'
-                              ? 10
-                              : 1,
+                          amount: data['quantity'] <= 0
+                              ? 0
+                              : data['unit'] == 'g' || data['unit'] == 'mL'
+                                  ? 10
+                                  : 1,
                           data: data,
                         ),
                         ItemPlusButton(

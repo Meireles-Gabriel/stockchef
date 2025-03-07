@@ -300,13 +300,13 @@ List<String> dashboardPT = [
   'Assinatura', //3
   'Trocar de Conta', //4
   'Sair do Aplicativo', //5
-  'A quantidade deste item está dentro do mínimo\nnecessário.', //6
-  'A quantidade deste item está abaixo da quantidade\nmínima, mas não há preparações em falta que\nnecessitem dele.', //7
-  'A quantidade do Item está abaixo do Estoque\nMínimo, ou a Data de Vencimento do Item está\npróxima.', //8
-  'Não há estoque deste Item, ou a Data de\nVencimento do Item já passou!', //9
-  'A quantidade desta Preparação está dentro do\nmínimo necessário.', //10
-  'A quantidade da Preparação está abaixo do Estoque\nMínimo, ou a Data de Vencimento da Preparação\nestá próxima.', //11
-  'Não há estoque desta Preparação, ou a Data de\nVencimento da Preparação já passou!', //12
+  'Itens dentro do mínimo necessário.', //6
+  'Itens abaixo da quantidade mínima, mas\nnão há preparações em falta que necessitem\ndele.', //7
+  'Itens abaixo da quantidade mínima, ou a\nData de Vencimento do Item está próxima.', //8
+  'Não há estoque destes Itens, ou a Data de\nVencimento dos Itens já passou!', //9
+  'Preparações dentro do mínimo necessário.', //10
+  'Preparações abaixo da quantidade mínima,\nou a Data de Vencimento da Preparação\nestá próxima.', //11
+  'Não há estoque destas Preparações, ou a\nData de Vencimento das Preparações já passou!', //12
   'Adicione Itens para começar a gerenciar seu estoque.', //13
   'Adicione Preparações para começar a gerenciar seu estoque.', //14
 ];
@@ -317,13 +317,13 @@ List<String> dashboardEN = [
   'Subscription', //3
   'Switch Account', //4
   'Exit App', //5
-  'The quantity of this item is within the necessary\nminimum.', //6
-  'The quantity of this item is below the minimum,\nbut there are no out-of-stock Preparations that\nrequire it.', //7
-  'The quantity of the Item is below the Minimum\nStock, or the Item\'s Expiration Date is approaching.', //8
-  'The Item is out-of-stock, or the Item\'s\nExpiration Date has already passed!', //9
-  'The quantity of this Preparation is within the\nnecessary minimum.', //10
-  'The quantity of the Preparation is below the\nMinimum Stock, or the Preparation\'s Expiration\nDate is approaching.', //11
-  'The Preparation is out-of-stock, or the Preparation\'s\nExpiration Date has already passed!', //12
+  'Items within the necessary minimum.', //6
+  'Items below the minimum quantity,\nbut there are no out-of-stock Preparations that\nrequire it.', //7
+  'Items below the minimum quantity,\nor the Item\'s Expiration Date is approaching.', //8
+  'Items is out-of-stock, or the Item\'s\nExpiration Date has already passed!', //9
+  'Preparations within the necessary minimum.', //10
+  'Items below the minimum quantity,\nor the Preparation\'s Expiration\nDate is approaching.', //11
+  'Preparations out-of-stock, or the\nPreparation\'s Expiration Date has\nalready passed!', //12
   'Add Items to start managing your inventory.', //13
   'Add Preparations to start managing your inventory.', //14
 ];
@@ -588,6 +588,21 @@ List<String> shopEN = [
   'Name', //7
 ];
 
+List<String> downloadPT = [
+  'Instalar App', //0
+  'Abra o Menu do seu Navegador e procure por "Apps", "Instalar este site como app" ou "Adicionar à tela inicial".\n\nSe preferir, baixe nosso APK:',//1
+  'Baixar APK',//2
+  'Fechar',//3
+  'Erro ao iniciar download.',//4
+];
+List<String> downloadEN = [
+  'Install App', //0
+  'Open your Browser Menu and look for "Apps", "Install this site as app" or "Add to Home Screen".\n\nIf you prefer, download our APK:',//1
+  'Download APK',//2
+  'Close',//3
+  'Error starting download.',//4
+];
+
 Map<String, List<String>> portugueseTexts = {
   'intro': introPT,
   'login': loginPT,
@@ -605,6 +620,7 @@ Map<String, List<String>> portugueseTexts = {
   'subscription': subscriptionPT,
   'stock_settings': stockSettingsPT,
   'shop': shopPT,
+  'download': downloadPT,
 };
 Map<String, List<String>> englishTexts = {
   'intro': introEN,
@@ -623,4 +639,5 @@ Map<String, List<String>> englishTexts = {
   'subscription': subscriptionEN,
   'stock_settings': stockSettingsEN,
   'shop': shopEN,
+  'download': downloadEN,
 };

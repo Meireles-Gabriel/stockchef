@@ -34,9 +34,13 @@ class _ShopPageState extends ConsumerState<ShopPage> {
           'expireDate': item['expireDate'],
           'buy': item['status'] == 'blue' || item['status'] == 'yellow'
               ? 0
-              : item['status'] == 'orange'
+              : item['status'] == 'orange' &&
+                      item['quantity'] < item['minQuantity']
                   ? item['minQuantity'] - item['quantity']
-                  : item['minQuantity'],
+                  : item['status'] == 'orange' &&
+                          item['quantity'] > item['minQuantity']
+                      ? item['quantity'] - item['minQuantity']
+                      : item['minQuantity'],
         },
       );
     }
