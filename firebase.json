@@ -1,1 +1,37 @@
-{"hosting":{"site":"stockchef","public":"build/web","ignore":["firebase.json","**/.*","**/node_modules/**"],"rewrites":[{"source":"**","destination":"/index.html"}]},"flutter":{"platforms":{"android":{"default":{"projectId":"stockchef-e08d4","appId":"1:304542064690:android:b711f3ce74981a9ce45c2b","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"stockchef-e08d4","configurations":{"android":"1:304542064690:android:b711f3ce74981a9ce45c2b","web":"1:304542064690:web:f78bcaae02243ba4e45c2b"}}}}}}
+{
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "site": "stockchef"
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "stockchef-e08d4",
+          "appId": "1:304542064690:android:b711f3ce74981a9ce45c2b",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "stockchef-e08d4",
+          "configurations": {
+            "android": "1:304542064690:android:b711f3ce74981a9ce45c2b",
+            "web": "1:304542064690:web:f78bcaae02243ba4e45c2b"
+          }
+        }
+      }
+    }
+  }
+}
